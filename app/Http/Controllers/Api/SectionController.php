@@ -196,7 +196,11 @@ class SectionController extends Controller
         // replace days for weekends
         
         $enddate = Carbon::parse($secd->copy()->addDays($weekends)); // 15112019
+<<<<<<< HEAD
         // dd($enddate);
+=======
+       // dd($enddate);
+>>>>>>> origin/Aco-mmit-proj
         
         // Find weekends from secd
         $weekends = $secd->diffInDaysFiltered(function(Carbon $date) {
@@ -246,7 +250,10 @@ class SectionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+
     {
+
+
         $section =  DB::table('sections')
             ->select(
 
@@ -276,7 +283,7 @@ class SectionController extends Controller
             ->where('sections.duration_id','=',$id)
             ->orderBy('sections.id', 'desc')
             ->get();
-            // dd($section);
+             //dd($section);
 
             $sections =  SectionResource::collection($section);
 

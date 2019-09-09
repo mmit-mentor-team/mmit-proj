@@ -186,6 +186,8 @@ return [
 
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+
+        Laravel\Passport\PassportServiceProvider::class,
     ],
 
     /*

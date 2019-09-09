@@ -502,17 +502,22 @@ class InquireController extends Controller
 
         $inquire = new InquireResource($inquire);
 
-        if (empty($inquire)) {
-            return response()->json([
-                'inquire'  =>  $inquire['receiveno'=>date('dmY').'0001'],
-                'message'   =>  'Successfully selected Last Inquired!'
-            ],200);
-        }else{
-            return response()->json([
-                'inquire'  =>  $inquire,
-                'message'   =>  'Successfully selected Last Inquired!'
-            ],200);
-        }
+        // if (empty($inquire)) {
+        //     return response()->json([
+        //         'inquire'  =>  $inquire['receiveno'=>date('dmY').'0001'],
+        //         'message'   =>  'Successfully selected Last Inquired!'
+        //     ],200);
+        // }else{
+        //     return response()->json([
+        //         'inquire'  =>  $inquire,
+        //         'message'   =>  'Successfully selected Last Inquired!'
+        //     ],200);
+        // }
+
+        return response()->json([
+            'inquire'  =>  $inquire,
+            'message'   =>  'Successfully selected Last Inquired!'
+        ],200);
         
     }
 

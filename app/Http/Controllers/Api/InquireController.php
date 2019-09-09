@@ -161,6 +161,8 @@ class InquireController extends Controller
             ->get();
 
 
+$inquireAll=Inquire::all();
+$inquiresAlls=InquireResource::collection($inquireAll);
 
             // $titles = DB::table('inquires')->pluck('name');
 
@@ -175,7 +177,8 @@ class InquireController extends Controller
             'hr_ygn_inquires' => $hr_ygn_inquires,
             'hr_mdy_inquires'   => $hr_mdy_inquires,
             'php_inquires'  =>  $php_inquires,
-            'ios_inquires'  =>  $ios_inquires
+            'ios_inquires'  =>  $ios_inquires,
+            'inquires'=>$inquiresAlls
         ],200);
 
         
@@ -501,18 +504,23 @@ class InquireController extends Controller
         // dd($inquire);
 
         $inquire = new InquireResource($inquire);
+        $receiveno=date('dmY').'0001';
 
-        if (empty($inquire)) {
-            return response()->json([
-                'inquire'  =>  $inquire['receiveno'=>date('dmY').'0001'],
-                'message'   =>  'Successfully selected Last Inquired!'
-            ],200);
-        }else{
-            return response()->json([
+        // if (empty($inquire)) {
+        //     return response()->json([
+        //         //'inquire'  =>  $inquire['receiveno'=>$receiveno],
+        //         'message'   =>  'Successfully selected Last Inquired!'
+        //     ],200);
+        // }else{
+        //     return response()->json([
+        //         'inquire'  =>  $inquire,
+        //         'message'   =>  'Successfully selected Last Inquired!'
+        //     ],200);
+        // }
+        return response()->json([
                 'inquire'  =>  $inquire,
                 'message'   =>  'Successfully selected Last Inquired!'
             ],200);
-        }
         
     }
 

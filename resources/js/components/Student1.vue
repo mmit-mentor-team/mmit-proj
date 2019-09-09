@@ -1044,7 +1044,7 @@
       methods:{
         showPrint(inq,sec,fee){
           var v=parseInt(inq)+parseInt(sec);
-          console.log("this value is "+ v+ " and the fee is "+ fee);
+          //console.log("this value is "+ v+ " and the fee is "+ fee);
           if(v==fee){
             return this.showprint==1;
           }else{
@@ -1052,7 +1052,7 @@
           }
         },
         check(first,last,fee){
-          console.log(fee);
+          //console.log(fee);
 
           var d=parseInt(first)+parseInt(last);
           if(d!=fee){
@@ -1062,7 +1062,7 @@
           }
         },
          makeDecision(index){
-        console.log("decision is "+index);
+        //console.log("decision is "+index);
           if(index=='add'){
             var d=0;var addremain1=0;
             $('.fullpaid').removeClass('d-none');
@@ -1084,39 +1084,39 @@
         readInquire(){
           axios.get(`/api/setup/inquire/`)
                   .then(response=>{
-                    console.log(response.data.inquires);
+                    //console.log(response.data.inquires);
                     this.inquireArray1=response.data.inquires;
                   })
         },
         checktab(){
          if($('.active.tab-pane').hasClass('hr-ygn')){
-          console.log('this is muse is active');
+          //console.log('this is muse is active');
           var d=$('.active.tab-pane').data('id');
           this.showDuration(d);
          } 
          else if($('.active.tab-pane').hasClass('hr-mdy')){
-          console.log('this is muse is active');
+          //console.log('this is muse is active');
           var d=$('.active.tab-pane').data('id');
           this.showDuration(d);
          } 
          else if($('.active.tab-pane').hasClass('bootcamp-ygn')){
-          console.log('this is muse is active');
+          //console.log('this is muse is active');
           var d=$('.active.tab-pane').data('id');
           this.showDuration(d);
          }else if($('.active.tab-pane').hasClass('bootcamp-mdy')){
           
           var d=$('.active.tab-pane').data('id');
-          console.log('this is muse is active '+d);
+          //console.log('this is muse is active '+d);
           this.showDuration(d);
          } else{
-          console.log('nothig');
+          //console.log('nothig');
          }
         },
         checkremain(){
 
           var amount=parseInt(this.update_Student.i_installmentamount);
           var fees=parseInt(this.update_Student.course_fee);
-            console.log(amount+"ok ka"+fees);
+            //console.log(amount+"ok ka"+fees);
           if(amount<fees){
             this.remain=fees-amount;
             this.update_Student.secondSecinstallmentamount=this.remain;
@@ -1125,7 +1125,7 @@
         },
 
         secondpay(index){
-          console.log("the second pay is "+index);
+          //console.log("the second pay is "+index);
           $('#secondpaying_modal').modal('show');
           this.update_Student=this.students1[index];
           
@@ -1161,13 +1161,13 @@
           
         },
         setZero(){
-          console.log('heo');
+         // console.log('heo');
           this.duration1='';
           this.section1='';
         },
         settimeout(){
           setTimeout(function(){ $('.alert').fadeOut() },6000 );
-          console.log(this.noti);
+         // console.log(this.noti);
           
           
         },
@@ -1244,7 +1244,7 @@
         readInquires(){
                   axios.get(`/api/setup/inquire/${this.section}`)
                   .then(response=>{
-                    console.log(response.data.inquires);
+                    //console.log(response.data.inquires);
                     this.inquireArray=response.data.inquires;
                   })
 
@@ -1254,7 +1254,7 @@
           var data='';
             axios.get(`/api/setup/showstudent/${this.section1}`)
                   .then(response=>{
-                    console.log(response.data.students);
+                   // console.log(response.data.students);
                     this.students1 = response.data.students;
                     // this.inquireArray=response.data.inquires;
                   })
@@ -1286,7 +1286,7 @@
                    });
                    
                  }else{
-                  console.log('nothing');
+                  //console.log('nothing');
                  }
           
         }
@@ -1304,7 +1304,7 @@
                    });
                    
                  }else{
-                  console.log('nothing');
+                  //console.log('nothing');
                  }
           
         }
@@ -1338,7 +1338,7 @@
 
             printStudent(index)
            {
-            console.log(index);
+            //console.log(index);
             //  location.href="interview/"+id;
             this.print_Student = this.students1[index];
 
@@ -1521,7 +1521,7 @@
 
             creatStudent(){
               this.noti=0;var dbSectionInstallmentamount=0;
-              console.log("the amount is"+this.student.secondSecinstallmentamount);
+             // console.log("the amount is"+this.student.secondSecinstallmentamount);
                 //console.log(this.files);
                // console.log(this.amount);
 
@@ -1636,7 +1636,7 @@
              },
              payamount(){
               this.noti=0;
-               console.log(this.files);
+               //console.log(this.files);
                 var formdatas=new FormData();
                 formdatas.append('installmentdate',this.update_Student.secinstallmentdate);
                 formdatas.append('installmentamount',this.update_Student.secondSecinstallmentamount);
@@ -1678,7 +1678,7 @@
                 //    // do stuff
                 // });
 
-                console.log(formdatas);
+                //console.log(formdatas);
               
               // axios.patch('api/student/'+this.update_Student.id,formdatas,{
               //    headers: {
@@ -1687,7 +1687,7 @@
               // })
               axios.post('api/setup/student/'+this.update_Student.id,formdatas)
               .then(response=>{
-                console.log(response);
+               // console.log(response);
                 if(response.data.errors){
                   this.noti=1;
                       this.message='Student has been updated sucessfully!!'+response.data.errors;

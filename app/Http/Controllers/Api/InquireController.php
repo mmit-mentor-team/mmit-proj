@@ -496,54 +496,13 @@ class InquireController extends Controller
 
     public function lastinquire(){
         $inquire=Inquire::orderBy('id','desc')
-                ->first();
-                
+                ->first();     
         // dd($inquire);
-
         $inquire = new InquireResource($inquire);
 
-        if (empty($inquire)) {
-            return response()->json([
-                'inquire'  =>  $inquire['receiveno'=>date('dmY').'0001'],
-                'message'   =>  'Successfully selected Last Inquired!'
-            ],200);
-        }else{
-            return response()->json([
-                'inquire'  =>  $inquire,
-                'message'   =>  'Successfully selected Last Inquired!'
-            ],200);
-        }
-        
-    }
-
-    public function teacherlist($id)
-    {
-        $teacherlist =  DB::table('sections')
-            ->select(
-                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
-                )
-            ->distinct()
-            ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
-            ->join('teachers', 'section_teacher.teacher_id', '=', 'teachers.id')
-            ->join('staffs','teachers.staff_id', '=', 'staffs.id')
-            ->join('users','staffs.user_id', '=', 'users.id')
-            ->join('durations', 'durations.id', '=', 'sections.duration_id')
-            ->join('courses','courses.id','=','durations.course_id')
-            ->join('locations','locations.id','=','courses.location_id')
-            ->join('cities','cities.id','=','locations.city_id')
-            ->groupBy('section_teacher.section_id')
-            ->where('sections.id','=',$id)
-            ->orderBy('sections.id', 'desc')
-            ->get();
-
-        // dd($teacherlist);
         return response()->json([
-            'teacherlist'   =>  $teacherlist[0]
+            'inquire'  =>  $inquire,
+            'message'   =>  'Successfully selected Last Inquired!'
         ],200);
     }
-
-
-
-
-
 }

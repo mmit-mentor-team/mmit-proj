@@ -339,7 +339,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if=" student.secinstallmentamount != 0" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -582,13 +582,13 @@
                   <!-- 0 means not full paid -->
               
                     <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="two" value="0" v-model="decision">
-                      <label class="form-check-label" for="two">No</label>
+                    <input type="radio" class="form-check-input" @change="makeDecision(decision)"  id="decisionTwo" value="Noadd" v-model="decision">
+                      <label class="form-check-label" for="decisionTwo">No</label>
                   </div>
                   <!-- 1 means full paid -->
                   <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="one" value="1" v-model="decision">
-                        <label class="form-check-label" for="one">Yes</label>
+                    <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="decisioOne" value="add" v-model="decision">
+                        <label class="form-check-label" for="decisioOne">Yes</label>
                   </div>
                      
               
@@ -910,6 +910,7 @@
           studentstatus:0,
           addremain:0,
           showremain:1,
+          showprint:1,
           activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
 
           print_Student:{},
@@ -932,6 +933,15 @@
       
       },
       methods:{
+        showPrint(inq,sec){
+          var v=parseInt(inq)+parseInt(sec);
+          console.log("this value is "+ v);
+          if(v>0){
+            return this.showprint==1;
+          }else{
+            return this.showprint!=1;
+          }
+        },
         check(first,last,fee){
           console.log(fee);
 
@@ -943,8 +953,8 @@
           }
         },
          makeDecision(index){
-        console.log(index);
-          if(index==1){
+        console.log("decision is "+index);
+          if(index=='add'){
             var d=0;var addremain1=0;
             $('.fullpaid').removeClass('d-none');
           $('.fullpaid').show();
@@ -957,6 +967,7 @@
 
         }else{
           $('.fullpaid').hide();
+          this.student.secondSecinstallmentamount=0;
         }
           
         },
@@ -1395,7 +1406,7 @@
 
             creatStudent(){
               this.noti=0;var dbSectionInstallmentamount=0;
-              console.log(this.student.secondSecinstallmentamount);
+              console.log("the amount is"+this.student.secondSecinstallmentamount);
                 //console.log(this.files);
                // console.log(this.amount);
 

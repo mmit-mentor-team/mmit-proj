@@ -196,11 +196,8 @@ class SectionController extends Controller
         // replace days for weekends
         
         $enddate = Carbon::parse($secd->copy()->addDays($weekends)); // 15112019
-<<<<<<< HEAD
+
         // dd($enddate);
-=======
-       // dd($enddate);
->>>>>>> origin/Aco-mmit-proj
         
         // Find weekends from secd
         $weekends = $secd->diffInDaysFiltered(function(Carbon $date) {

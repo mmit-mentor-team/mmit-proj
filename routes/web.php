@@ -70,3 +70,6 @@ Route::get('/interviewform/{id}','HomeController@interviewform')->name('intervie
 Route::get('/interview/{id}','HomeController@interviewform')->name('interview');
 
 Route::get('/role','HomeController@role')->name('role');
+
+Route::get('/attendances/collection', 'AttendanceController@attendanceCollect')->name('attendances.collect');
+Route::get('/attendances/reports', 'AttendanceController@attendanceReport')->name('attendances.reports');

@@ -44,6 +44,7 @@ Vue.component('role', require('./components/Role.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('report', require('./components/Report.vue').default);
 Vue.component('profile',require('./components/Profile.vue').default);
+Vue.component('attendance-collect', require('./components/attendances/AttendanceCollect.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

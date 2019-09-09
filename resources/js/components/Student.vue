@@ -131,7 +131,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if=" student.secinstallmentamount != 0" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -234,7 +234,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if=" student.secinstallmentamount != 0" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -339,7 +339,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount)" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -443,7 +443,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if=" student.secinstallmentamount != 0" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -933,10 +933,10 @@
       
       },
       methods:{
-        showPrint(inq,sec){
+        showPrint(inq,sec,fee){
           var v=parseInt(inq)+parseInt(sec);
-          console.log("this value is "+ v);
-          if(v>0){
+          console.log("this value is "+ v+ " and the fee is "+ fee);
+          if(v==fee){
             return this.showprint==1;
           }else{
             return this.showprint!=1;

@@ -1315,7 +1315,7 @@
                 .then(response => {
                   /*console.log(response.data.inquire);*/
                    this.lastinquire = response.data.inquire;
-                   console.log(this.lastinquire.receiveno);
+                   // console.log("last inquire"+this.lastinquire.receiveno);
                     
                     this.caculatedate(this.lastinquire.receiveno);
                 });
@@ -1331,10 +1331,17 @@
             var year=datearray[0];
             var date=day+month+year;
             var output='';
-            //console.log(typeof(receiveno));
-            var currentreceiveno=receiveno.substring(0,8);
+            
+            
 
-            console.log(currentreceiveno+'=='+date);
+            if (receiveno == 0) {
+              // console.log('0 condition');
+              this.receiveno = date+'0001';
+            }else{
+              var currentreceiveno=receiveno.substring(0,8);
+              console.log(currentreceiveno+'=='+date);
+            }
+
 
             if(currentreceiveno==date){ // 04092019 == 04092019
 

@@ -47,8 +47,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -79,8 +78,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -111,8 +109,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -147,8 +144,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -319,8 +315,7 @@ $inquiresAlls=InquireResource::collection($inquireAll);
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -475,8 +470,7 @@ $inquiresAlls=InquireResource::collection($inquireAll);
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -501,11 +495,24 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         $inquire=Inquire::orderBy('id','desc')
                 ->first();     
         // dd($inquire);
-        $inquire = new InquireResource($inquire);
 
-        return response()->json([
-            'inquire'  =>  $inquire,
-            'message'   =>  'Successfully selected Last Inquired!'
-        ],200);
+
+        if ($inquire == null) {
+            $inquire = [
+                "receiveno" => 0
+            ];
+            return response()->json([
+                'inquire'  =>  $inquire,
+                'message'   =>  'Successfully selected Last Inquired!'
+            ],200);
+        }else{
+            $inquire = new InquireResource($inquire);
+
+            return response()->json([
+                'inquire'  =>  $inquire,
+                'message'   =>  'Successfully selected Last Inquired!'
+            ],200);
+        }
+        
     }
 }

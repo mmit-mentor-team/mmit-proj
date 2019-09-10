@@ -417,9 +417,6 @@
                 <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="inquire.acceptedyear">
             </div>
 
-           
-           
-
             <div class="form-group">
               <label for="names">Position:</label>
                 <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="inquire.position">
@@ -430,11 +427,6 @@
                 
                 <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="inquire.remark"></textarea>
             </div>
-
-            
-            
-
-          
 
            </div> 
           <div class="modal-footer">
@@ -1258,6 +1250,8 @@
 
                $("#detail_inquire_model").modal("show");
                this.detail_inquire = inquire_data;
+
+               // this.detail_inquire = JSON.parse(JSON.stringify(inquire_data));
                // this.detail_inquire.push(teacherlist);
            },
            updateInquire()

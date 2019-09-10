@@ -61,6 +61,10 @@ Vue.use(Multiselect);
 
 Vue.component('multiselect', Multiselect);
 
+
+import Select2 from 'v-select2-component';
+Vue.component('Select2', Select2);
+
 require('./backend/vendor/fontawesome-free/css/all.min.css');
 require('./backend/css/sb-admin-2.min.css');
 require('./backend/vendor/jquery/jquery.min.js');

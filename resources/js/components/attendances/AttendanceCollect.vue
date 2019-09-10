@@ -23,15 +23,18 @@
                         <td>
                             <div class="form-check">
                                 <input type="checkbox" :value="student.id" v-model="presentStudents"
-                                    @change="checkStatus(student, index, $event)">
+                                    @change="changeStatus(student, index, $event)">
                             </div>
                         </td>
                         <td class="p-0">
-                            <input class="form-control my-1" type="text" placeholder="Fill remark" v-model="remarks[index]"/>
+                            <input v-if="checkAbsence(student)" class="form-control my-1" type="text" placeholder="Fill remark"
+                                v-model="remarks[index]" />
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+            <button class="btn btn-primary">Submit</button>
         </div>
     </div>
 </template>
@@ -48,7 +51,6 @@
                 presentStudents: [],
                 absences: [],
                 remarks: [],
-                remarkIndex: []
             };
         },
 
@@ -85,22 +87,26 @@
                     });
             },
 
-            checkStatus(student, i, event) {
+            changeStatus(student, i, event) {
                 if (!event.target.checked) {
-                    this.absences.push({id: student.id});
-                    this.remarkIndex.push(student);
+                    this.absences.push(student);
+                    // this.remarks[i] = student.id;
                 } else {
-                    let index = this.absences.indexOf(student.id);
-                    if (index) {
-
+                    let index = this.absences.indexOf(student);
+                    if (index > -1) {
                         this.absences.splice(index, 1);
-                        this.remarkIndex.splice(index, 1);
+                        // this.remarks.splice(index,1);
+                        delete this.remarks[i];
                     }
                 }
             },
 
-            checkRemark(id) {
-                return this.remarkIndex.some(q => q == id);
+            checkAbsence(student){
+                if(this.absences.find(q => q == student)){
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }

@@ -13,4 +13,10 @@ class Inquire extends Model
     public function student(){
     	return $this->hasOne('App\Model\Student');
     }
+
+    public function section(){
+        return $this->belongsTo('App\Model\Section');
+    }
+
+ 
 }

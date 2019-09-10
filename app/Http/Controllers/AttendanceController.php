@@ -22,8 +22,9 @@ class AttendanceController extends Controller
                     ->join('courses', 'courses.id', '=', 'durations.course_id')
                     ->join('locations', 'locations.id', '=', 'courses.location_id')
                     ->join('cities', 'cities.id', '=', 'locations.city_id')
+                    ->select('sections.id','sections.title')
                     ->get();
- 
+
         return view('attendances.collect', compact('today', 'sections'));
     }
 

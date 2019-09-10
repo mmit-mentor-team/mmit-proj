@@ -70,3 +70,7 @@ Route::get('/interviewform/{id}','HomeController@interviewform')->name('intervie
 Route::get('/interview/{id}','HomeController@interviewform')->name('interview');
 
 Route::get('/role','HomeController@role')->name('role');
+
+//Report
+Route::get('/export/{month}/{year}', 'ExportController@export');
+Route::get('/report', 'HomeController@report')->name('report');

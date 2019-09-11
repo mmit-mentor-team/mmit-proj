@@ -509,6 +509,7 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         ],200);
     }
 
+
     public function teacherlist($id)
     {
         $teacherlist =  DB::table('sections')
@@ -532,5 +533,14 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         return response()->json([
             'teacherlist'   =>  $teacherlist[0]
         ],200);
+
+    // public function getInquires(Request $request){
+    //    // echo request('courseid')." and ".request('sectionid')." and ".request('durationid');
+    //     $id=request('sectionid');
+    //     $inquires = Inquire::doesntHave('student')
+    //         ->where('section_id',$id)
+    //         ->get();
+    //         dd($inquires);
+
     }
 }

@@ -17,7 +17,7 @@
         <div class="card shadow mb-4">
           <div class="card-header py-3">
             
-            <button @click="addStudent()" class="btn btn-primary float-right" style="padding:8px">
+            <button @click="addStudent()" class="btn btn-primary float-right addstudentBtn" style="padding:8px">
               <i class="fa fa-plus"> </i> Add New Student
             </button>
             <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="noti==1">
@@ -594,12 +594,10 @@
       </div>
 
 
+
+      <!-- adding student start -->
+
      
-
-        <!-- 
-    adding student start
-
-     -->
 
      <div class="modal fade" tabindex="-1" role="dialog" id="add_student_modal">
       <div class="modal-dialog modal-lg" role="document">
@@ -618,7 +616,209 @@
                         </ul>
             </div>
 
-            <!-- selection start -->
+              <!-- course start -->
+                  <div class="form-group">
+                  <label for="course_id">Course:</label>
+                   
+                   <select v-model="course" name="course_id" id="course_id" disabled="disabled" class="form-control" @change="readDurations">
+                      <option value="">Please select one</option>
+                      <option v-for ="(course, index) in courses"   :value="course.id" :data-fee="course.fees">
+                        {{ course.name }} ( {{ course.cityname }} )
+                      </option>
+                    </select>
+
+                    
+                </div>
+              <!-- course end -->
+
+            <!-- durations -->
+                    <div class="row">
+
+                      <div class="form-group  col-md-6 col-sm-12">
+                              <label for="names">Duration:</label>
+                                <select v-model="duration1" name="duration_id" disabled="disabled" id="duration_id" class="form-control" @change="readSections2">
+                                  <option disabled value="">Please select one</option>
+                                  <option v-for ="(duration1, index) in durations2"  :value="duration1.id">
+                                    {{ duration1.days }} ( {{ duration1.time }} )
+                                    [ {{ duration1.during }} ]
+
+                                  </option>
+                                </select>
+                            </div>
+                      
+                    
+                    <!-- durations end -->
+
+                    <!-- seciton start -->
+                    
+                        <div class="form-group  col-md-6 col-sm-12">
+                        <label for="names">Sections:</label>
+                          <select v-model="section1" name="section_id" id="section_id" disabled="disabled" class="form-control" @change="showStudent" >
+                            <option disabled value="">Please select one</option>
+                            <option v-for ="(section, index) in sections2"  :value="section.id">
+                              {{ section.title }} ( {{ section.durations.time }} )
+                              [ {{ section.during }} ]
+
+                            </option>
+                          </select>
+                      </div>
+                    </div>
+                    <!-- seciton end -->
+
+
+
+            <!-- selection start  -->
+            
+
+            <!-- <div class="form-group">
+              <label for="names">Duration:</label>
+                <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
+                  <option disabled value="">Please select one</option>
+                  <option v-for ="(duration1, index) in durations"  :value="duration1.id">
+                    {{ duration1.days }} ( {{ duration1.time }} )
+                    [ {{ duration1.during }} ]
+
+                  </option>
+                </select>
+            </div> -->
+
+             <!-- <div class="form-group">
+              <label for="names">Sections:</label>
+                <select v-model="section" name="section_id" id="section_id" class="form-control" @change="readInquires" >
+                  <option disabled value="">Please select one</option>
+                  <option v-for ="(section, index) in sections"  :value="section.id">
+                    {{ section.title }} ( {{ section.durations.time }} )
+                    [ {{ section.during }} ]
+
+                  </option>
+                </select>
+            </div> -->
+
+            <div class="form-group">
+              <label for="inquire-names">Students</label>
+              <select v-model="student.inquire_id" class="form-control" id="inquire-names" @change="getStudent">
+              <option disabled value="">Please select one</option>
+              <option v-for="inq in inquireArray" :value="inq.id">
+                {{inq.name}}
+              </option>
+              
+            </select>
+            </div>
+
+            <!-- selection end -->
+
+
+
+
+            <div class="form-group">
+              <label for="installmentdate">Installment Date</label>
+              <input type="text" id="addSecInstallDate" name="installmentdate" :required="student.secinstallmentdate < 0" class="form-control" v-model="student.secinstallmentdate"  :placeholder="today" readonly="readonly" >
+            </div>
+
+            <div class="form-group">
+              <label for="addSecInstallAmount">Installment Amount</label>
+              <input  type="number" name="installmentamount" id="addSecInstallAmount" readonly="readonly" :placeholder="amount" class="form-control" v-model="student.secinstallmentamount" >
+            </div>
+
+
+            
+
+            <div class="form-group paidMoney">
+              
+              <label>Going for Full-Paid?</label><br/>
+                   <!-- 0 means not full paid  -->
+              
+                    <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" @change="makeDecision(decision)"  id="decisionTwo" value="Noadd" v-model="decision">
+                      <label class="form-check-label" for="decisionTwo">No</label>
+                  </div>
+
+                   <!-- 1 means full paid -->
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="decisioOne" value="add" v-model="decision">
+                        <label class="form-check-label" for="decisioOne">Yes</label>
+                  </div>
+                     
+              
+           </div>
+
+           <div class="fullpaid d-none">
+               <div class="form-group">
+                <label for="secondinstallmentamount">Remaining amount for second installment</label>
+                <input type="number" name="installmentamount" id="addsecondinstallmentamount" readonly="readonly"  :placeholder="addremain" class="form-control" v-model="student.secondSecinstallmentamount">
+              </div>
+           </div>
+
+
+
+            <div class="form-group">
+              <label for="remark">Remark</label>
+              <textarea name="remark" class="form-control" id="remark" v-model="student.remark"></textarea>
+            </div>
+
+
+            <label>Please find me a job!</label>
+
+            <div class="form-group">
+              
+
+              
+                    <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="one" checked="checked" value="1" v-model="studentstatus">
+                      <label class="form-check-label"  for="one">Yes</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="zero" value="0" v-model="studentstatus">
+                        <label class="form-check-label" for="zero">No</label>
+                  </div>
+                     
+              
+           </div>
+
+           
+      
+
+      
+
+
+           
+
+          </div>
+          
+          <div class="modal-footer mymodal_footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            
+            <button type="button" @click="creatStudent" class="btn btn-primary">Submit</button>
+          </div>
+        </div><!-- .modal-content --> 
+      </div><!-- .modal-dialog  -->
+    </div><!-- .modal  -->
+     <!-- end of add student model   -->
+     
+
+        
+    <!-- adding student start
+
+     
+
+     <div class="modal fade" tabindex="-1" role="dialog" id="add_student_modal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Student</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+
+            
+          <div class="modal-body">
+
+            <div class="alert alert-danger" v-if="errors.length > 0">
+                        <ul>
+                            <li v-for="error in errors">{{ error }}</li>
+                        </ul>
+            </div>
+
+            selection start 
             <div class="form-group">
               <label for="course_id">Course:</label>
                
@@ -667,7 +867,7 @@
             </select>
             </div>
 
-            <!-- selection end -->
+            selection end
 
 
 
@@ -688,13 +888,14 @@
             <div class="form-group">
               
 
-                  <!-- 0 means not full paid -->
+                   0 means not full paid 
               
                     <div class="form-check form-check-inline">
                     <input type="radio" class="form-check-input" @change="makeDecision(decision)"  id="decisionTwo" value="Noadd" v-model="decision">
                       <label class="form-check-label" for="decisionTwo">No</label>
                   </div>
-                  <!-- 1 means full paid -->
+
+                   1 means full paid
                   <div class="form-check form-check-inline">
                     <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="decisioOne" value="add" v-model="decision">
                         <label class="form-check-label" for="decisioOne">Yes</label>
@@ -716,11 +917,7 @@
               <label for="remark">Remark</label>
               <textarea name="remark" class="form-control" id="remark" v-model="student.remark"></textarea>
             </div>
-<!-- 
-            <div class="form-group ">
-              <label for="resume">Resume</label>
-              <input type="file" name="resume"  ref="files" class="form-control">
-            </div> -->
+
 
             <label>Please find me a job!</label>
 
@@ -755,10 +952,10 @@
             
             <button type="button" @click="creatStudent" class="btn btn-primary">Submit</button>
           </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <!-- end of add student model -->
+        </div>.modal-content 
+      </div>.modal-dialog 
+    </div>.modal 
+     end of add student model  -->
 
 
     <!-- 
@@ -1015,19 +1212,22 @@
           amount:0,
           oneinquire:[],
           remain:0,
-          decision:0,
+          decision:"Noadd",
           studentstatus:0,
           addremain:0,
           showremain:1,
           showprint:1,
+          coursechoosenid:0,
           activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
 
           print_Student:{},
           detail_Student:{},
+          inquireCoursefee:0,
           
         }
       },
       mounted(){
+        $('.addstudentBtn').hide();
         this.activetab = this.permissions[0].name;
         this.checktab();
       //  this.readStudent();
@@ -1078,6 +1278,7 @@
           $('.fullpaid').hide();
           this.student.secondSecinstallmentamount=0;
         }
+        // $('.mymodal_footer').show();
           
         },
 
@@ -1138,6 +1339,10 @@
 
         },
         showDuration:function(id){
+          $('.addstudentBtn').hide();
+          this.coursechoosenid=id;
+          this.course=id;
+          console.log("the course id of show is"+this.course);
           this.students1='';
           this.setZero();
           //this.durations2='';
@@ -1204,12 +1409,14 @@
           
           axios.get(`/api/setup/getinquirebyId/${this.student.inquire_id}`)
                    .then(response => {
+                    console.log("this is inqurire student: "+response.data.inquires);
                     this.oneinquire=response.data.inquires;
-                    var t=0;
+                    var t=0;var courseFee=0;
                     $.each(this.oneinquire,function(i,v){
                       t=v.installmentamount;
-                     
+                     courseFee=v.coursefees;
                     })
+                    this.inquireCoursefee=courseFee;
                     this.amount=t;
                     this.student.secinstallmentamount=t;
                      $('#addSecInstallAmount').val(this.amount);
@@ -1230,6 +1437,7 @@
 
                       
                     });
+                   $('.paidMoney').show();
 
         },
 
@@ -1241,10 +1449,11 @@
                        });
                  },
         
-        readInquires(){
-                  axios.get(`/api/setup/inquire/${this.section}`)
+        readInquires(section_id){
+
+                  axios.get(`/api/setup/inquire/${section_id}`)
                   .then(response=>{
-                    console.log(response.data.inquires);
+                    //console.log(response.data.inquires);
                     this.inquireArray=response.data.inquires;
                   })
 
@@ -1260,7 +1469,7 @@
                   })
 
                  
-
+                  $('.addstudentBtn').show();
         },
 
         readDurations()
@@ -1320,6 +1529,17 @@
             addStudent(){
               this.reset();
               this.readCourse();
+              console.log("the course id is "+this.coursechoosenid+"and this duration is "+this.duration1+" and the section id is "+this.section1);
+
+
+             this.readInquires(this.section1);
+
+
+
+
+
+              
+              
               $('#add_student_modal').modal("show");
               this.getDate();
               this.student.secinstallmentdate=this.today;
@@ -1732,9 +1952,14 @@
                 this.student.status='';
                 this.student.inquire_id='';
                 this.student.resume='';
-                this.section='';
-                this.course='';
-                this.duration='';
+                //this.section='';
+                this.decision='Noadd';
+                this.studentstatus=0;
+                this.makeDecision('Noadd');
+                 $('.paidMoney').hide();
+                // $('.mymodal_footer').hide();
+                //this.course='';
+                //this.duration='';
 
               },
               setnoti(){

@@ -508,4 +508,13 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             'message'   =>  'Successfully selected Last Inquired!'
         ],200);
     }
+
+    public function getInquires(Request $request){
+       // echo request('courseid')." and ".request('sectionid')." and ".request('durationid');
+        $id=request('sectionid');
+        $inquires = Inquire::doesntHave('student')
+            ->where('section_id',$id)
+            ->get();
+            dd($inquires);
+    }
 }

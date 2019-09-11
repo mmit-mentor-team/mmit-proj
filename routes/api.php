@@ -43,6 +43,8 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth:api'], function()
 	Route::get('/print/{id}','Api\InquireController@print');
 
 	Route::get('/getinquirebyId/{id}','Api\InquireController@getInquire');
+	Route::post('/getInquires/','Api\InquireController@getInquires');
+
 	Route::get('/showstudent/{id}','Api\StudentController@showstudents');
 
 	Route::patch('/updateamountstudent/{sample}', 'Api\StudentController@updateamount');

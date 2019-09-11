@@ -57,6 +57,8 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth:api'], function()
 	// By Thet Paing Htut
 	Route::resource('/sectionTeacher', 'Api\SectionTeacherController');
 
+	//Report
+	Route::resource('/report','Api\ReportController');
 });
 
 // Student
@@ -75,3 +77,4 @@ Route::resource('/attendance', 'Api\AttendanceController');
 
 //Location
 Route::resource('/location', 'Api\LocationController');
+

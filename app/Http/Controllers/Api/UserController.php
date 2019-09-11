@@ -149,7 +149,7 @@ class UserController extends Controller
                     'staffs.nrc'=>request('nrc'),
                     'staffs.photo'=>$image_name,
                     'staffs.user_id'=>Auth::user()->id
-                    ],
+                    ]
 
                     );
 

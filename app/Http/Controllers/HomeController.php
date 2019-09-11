@@ -208,4 +208,9 @@ class HomeController extends Controller
         return view('profile');
     }
 
+    public function education(Request $require)
+    {
+        return view('education');
+    }
+
 }

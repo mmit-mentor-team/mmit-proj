@@ -32,6 +32,7 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth:api'], function()
 	Route::resource('/role', 'Api\RoleController');
 	Route::resource('/company', 'Api\CompanyController');
 	Route::resource('/inquire','Api\InquireController');
+	Route::resource('/education','Api\EducationController');
 	Route::resource('/role','Api\RoleController');
 	Route::resource('/student', 'Api\StudentController');
 	Route::resource('/jobcareer', 'Api\JobcareerController');

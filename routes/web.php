@@ -58,6 +58,8 @@ Route::get('profile','HomeController@profile')->name('profile');
 // Si Thu Aung
 Route::get('/inquire', 'HomeController@inquire')->name('inquire');
 
+Route::get('/education', 'HomeController@education')->name('education');
+
 // Aye Chan Oo
 Route::get('/student', 'HomeController@student')->name('student');
 

@@ -73,7 +73,12 @@
             <div class="tab-content mt-3" id="nav-tabContent">
 
               <div class="tab-pane fade show" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn" role="tabpanel" aria-labelledby="nav-hr_ygn-tab">
-
+               <div class="col-md-12">
+                    <input type="text" name="" class="my-2 mr-2" v-model="fit" for="hr_ygn_inquire">
+                    <button class="btn-primary mb-2 " @click="fits(1)" >Search </button>
+                    <span id="error" class="text-danger d-block" v-if="noti==0"></span>
+                  </div>
+                
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="hr_ygn_inquires.length>0">
                      <thead class="bg-primary text-white">
@@ -118,7 +123,11 @@
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'show active' : '' ]" id="nav-hr_mdy" role="tabpanel" aria-labelledby="nav-hr_mdy-tab">
-
+                  <div class="col-md-12">
+                    <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="hr_mdy_inquire">
+                    <button class="btn-primary mb-2 " @click="fits(2)" >Search </button>
+                    <span id="error" class="text-danger d-block" ></span>
+                  </div>
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="hr_mdy_inquires.length>0">
                     <thead class="bg-primary text-white">
@@ -162,6 +171,11 @@
                 
               </div>
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" id="nav-php_bootcamp" role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
+                  <div class="col-md-12">
+                    <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="php_inquires">
+                    <button class="btn-primary mb-2 " @click="fits(3)" >Search </button>
+                    <span id="error" class="text-danger d-block" v-if="noti==0"></span>
+                  </div>
                  <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_inquires.length > 0">
                       <thead class="bg-primary text-white">
@@ -207,7 +221,11 @@
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'show active' : '' ]" id="nav-ios" role="tabpanel" aria-labelledby="nav-ios-tab">
-
+                 <div class="col-md-12">
+                    <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="ios_inquire">
+                    <button class="btn-primary mb-2 " @click="fits(4)" >Search </button>
+                    <span id="error" class="text-danger d-block" v-if="noti==0"></span>
+                  </div>
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="ios_inquires.length>0">
                     <thead class="bg-primary text-white">
@@ -261,7 +279,7 @@
     </div>
     
     <div class="modal fade" tabindex="-1" role="dialog" id="add_inquire_model">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Add New Inquire</h4>
@@ -275,167 +293,225 @@
               </ul>
             </div>
 
-            <div class="form-group">
-              <label for="names">Receiveno:</label>
-                <input type="text" name="receiveno" id="receiveno" placeholder="receiveno" class="form-control" v-model="receiveno" readonly>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Receiveno:</label>
+                  <input type="text" name="receiveno" id="receiveno" placeholder="receiveno" class="form-control" v-model="receiveno" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">  
+
+            
+                <div class="form-group">
+                    <label for="names">Name:</label>
+                    <input type="text" name="name" id="name" placeholder="Inquire Name" class="form-control" v-model="inquire.name">
+                </div>
+                
+              </div>
+            </div>  
+            
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Course:</label>
+                   
+                   <select v-model="course" name="course_id" id="course_id" class="form-control"
+                    @change="readDurations" >
+                      <option disabled value="">Please select one</option>
+                      <option v-for ="(course, index) in courses"  :value="course.id">
+                        {{ course.name }} ( {{ course.cityname }} )
+                      </option>
+                    </select>
+                    
+                </div>
+              </div> 
+              
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Duration:</label>
+                    <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
+                      <option disabled value="">Please select one</option>
+                      <option v-for ="(duration, index) in durations"  :value="duration.id">
+                        {{ duration.days }} ( {{ duration.time }} )
+                        [ {{ duration.during }} ]
+
+                      </option>
+                    </select>
+                </div>
+
+              </div>
             </div>
             
-            <div class="form-group">
-              <label for="names">Name:</label>
-                <input type="text" name="name" id="name" placeholder="Inquire Name" class="form-control" v-model="inquire.name">
-            </div>
-
-            <div class="form-group">
-              <label for="names">Course:</label>
-               
-               <select v-model="course" name="course_id" id="course_id" class="form-control"
-                @change="readDurations" >
-                  <option disabled value="">Please select one</option>
-                  <option v-for ="(course, index) in courses"  :value="course.id">
-                    {{ course.name }} ( {{ course.cityname }} )
-                  </option>
-                </select>
-                
-            </div>
-
-            <div class="form-group">
-              <label for="names">Duration:</label>
-                <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
-                  <option disabled value="">Please select one</option>
-                  <option v-for ="(duration, index) in durations"  :value="duration.id">
-                    {{ duration.days }} ( {{ duration.time }} )
-                    [ {{ duration.during }} ]
-
-                  </option>
-                </select>
-            </div>
-
-            <div class="form-group">
-              <label for="names">Sections:</label>
-                <select v-model="section" name="section_id" id="section_id" class="form-control" >
-                  <option disabled value="">Please select one</option>
-                  <option v-for ="(section, index) in sections"  :value="section.id">
-
-                    <div class="row">
-                      <div class="col-md-3">
-                        {{ section.title }}
-                      </div>
-
-                      <div class="col-md-3">
-                        {{ section.durations.time }}
-                      </div> 
-
-                      <div class="col-md-3">
-                        {{ section.during }}
-                      </div>
-
-                      <div class="col-md-3">
-                        {{ section.startdate}} - {{ section.enddate }}
-                      </div> 
-
-                    </div>
-
-                  </option>
-                </select>
-            </div>
-
-             <div class="form-group camphide d-none">
-              <label for="names">Camp:</label>
-              <br>
-
-              <label for="nocamp"  class="mx-2">No Camp:</label>
-              <input type="radio" value="No Camp" id="nocamp"  v-model="inquire.camp">
-
-              <label for="malecamp" class="mx-2">Male Camp:</label>
-              <input type="radio" value="Male Camp"  id="malecamp"  v-model="inquire.camp">
-
-              <label for="femalecamp"  class="mx-2">Female Camp:</label>
-              <input type="radio" value="Female Camp" id="femalecamp" v-model="inquire.camp">
-            </div>
-
-
-             <div class="form-group">
-              <label for="names">Age:</label>
-                <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="inquire.age">
-            </div>
-
-             <div class="form-group">
-              <label for="names">date of Birth:</label>
-                <input type="date" name="status" id="dob" placeholder="Date of Birth" class="form-control" v-model="inquire.dob">
-            </div>
-
-           <div class="form-group">
-             
-              <label for="male" class="mx-2">Male:</label>
-              <input type="radio" value="male"  id="male" placeholder="Male"  v-model="inquire.gender">
-              <label for="female"  class="mx-2">Female:</label>
-              <input type="radio" value="female" id="female" placeholder="Female"  v-model="inquire.gender">
-                
-            </div>
-
-            <div class="form-group">
-              <label for="names">Address:</label>
-                <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="inquire.address">
-            </div>
-
-            <div class="form-group">
-              <label for="names">Township:</label> 
-                <select v-model="township_id" name="township" class="form-control">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Sections:</label>
+                  <select v-model="section" name="section_id" id="section_id" class="form-control" >
                     <option disabled value="">Please select one</option>
-                  <option v-for ="(township, index) in townships" :value="township.id">{{ township.name }}</option>
-                </select>
+                    <option v-for ="(section, index) in sections"  :value="section.id">
+
+                      <div class="row">
+                        <div class="col-md-3">
+                          {{ section.title }}
+                        </div>
+
+                        <div class="col-md-3">
+                          {{ section.durations.time }}
+                        </div> 
+
+                        <div class="col-md-3">
+                          {{ section.during }}
+                        </div>
+
+                        <div class="col-md-3">
+                          {{ section.startdate}} - {{ section.enddate }}
+                        </div> 
+
+                      </div>
+
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group camphide d-none">
+                  <label for="names">Camp:</label>
+                  <br>
+
+                  <label for="nocamp"  class="mx-2">No Camp:</label>
+                  <input type="radio" value="No Camp" id="nocamp"  v-model="inquire.camp">
+
+                  <label for="malecamp" class="mx-2">Male Camp:</label>
+                  <input type="radio" value="Male Camp"  id="malecamp"  v-model="inquire.camp">
+
+                  <label for="femalecamp"  class="mx-2">Female Camp:</label>
+                  <input type="radio" value="Female Camp" id="femalecamp" v-model="inquire.camp">
+                </div>
+              </div>
+              
             </div>
 
-            <div class="form-group">
-              <label for="names">Phone no:</label>
-                <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="inquire.phoneno">
-            </div>
-          
-            <div class="form-group">
-              <label for="names">Email:</label>
-                <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="inquire.email">
-            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Age:</label>
+                  <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="inquire.age">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Position:</label>
+                  <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="inquire.position">
+                </div>
 
-             <div class="form-group">
-              <label for="names">Payment Date:</label>
-                <input type="Date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="inquire.paymentdate">
-            </div>
+              </div>
+              
+              
+            </div>  
 
-             <div class="form-group">
-              <label for="names">Payment Amount:</label>
-                <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="inquire.paymentamount">
-                 
-            </div>
-
-             <div class="form-group">
-              <label for="names">Education:</label>
-                <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="inquire.education">
-            </div>
-
-            <div class="form-group">
-              <label for="names">Accepted Year:</label>
-                <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="inquire.acceptedyear">
-            </div>
-
-           
-           
-
-            <div class="form-group">
-              <label for="names">Position:</label>
-                <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="inquire.position">
-            </div>
-
-            <div class="form-group">
-              <label for="names">Remark:</label>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="gender" class="d-block"> Gender</label>
+             
+                  <label for="male" class="mx-2">Male:</label>
+                  <input type="radio" value="male"  id="male" placeholder="Male"  v-model="inquire.gender">
+                  <label for="female"  class="mx-2">Female:</label>
+                  <input type="radio" value="female" id="female" placeholder="Female"  v-model="inquire.gender">
                 
-                <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="inquire.remark"></textarea>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                <label for="names">Address:</label>
+                <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="inquire.address">
+                </div>
+              </div>
             </div>
 
-            
-            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Township:</label> 
+                  <select v-model="township_id" name="township" class="form-control">
+                  <option disabled value="">Please select one</option>
+                  <option v-for ="(township, index) in townships" :value="township.id">{{ township.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Phone no:</label>
+                  <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="inquire.phoneno">
+                </div>
+          
+              </div>
+            </div>  
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Email:</label>
+                  <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="inquire.email">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Payment Date:</label>
+                 <input type="text" name="paymentdate" id="addpaymentdate" readonly="readonly" :required="inquire.paymentdate < 0"  placeholder="Payment Date" class="form-control" v-model="inquire.paymentdate">
+                </div>
+
+              </div>
+              
+            </div>   
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Payment Amount:</label>
+                  <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="inquire.paymentamount">
+                 
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label for="names">Education:</label>
+                <!--  <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="inquire.education"> -->
+                   
+                    <select v-model="inquire.education_id" name="education" class="form-control">
+                      <option disabled value="">Please select one</option>
+                      <option v-for ="(education, index) in educations" :value="education.id">{{ education.name }}</option>
+                   </select>
+                     
+                      <!-- <vue-select class="vue-select2 form-control" name="select2"
+                        :options="options2" :model="result2"
+                        searchable="true" language="en-US">
+                      </vue-select> -->
+                </div>
+              </div>  
+            </div> 
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Accepted Year:</label>
+                  <input type="month" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="inquire.acceptedyear">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="names">Remark:</label>
+                
+                  <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="inquire.remark"></textarea>
+                </div>
+ 
+              </div>
+
+            </div>
 
           
-
            </div> 
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -451,7 +527,7 @@
     </div><!-- /.modal -->
 
     <div class="modal fade" tabindex="-1" role="dialog" id="update_inquire_model">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Update Inquire</h4>
@@ -466,119 +542,178 @@
             </div>
 
 
-                <input type="hidden" class="form-control" v-model="update_inquire.userid" name="userid" id="userid">
-            
-             <div class="form-group">
-              <label>Name:</label>
-                <input type="text" placeholder="township Name" class="form-control" v-model="update_inquire.name">
-            </div>
-
-             <div class="form-group">
-              <label for="names">Course:</label>
-               
-               <select v-model="course" name="course_id" id="course_id" class="form-control"
-                @change="readDurations" >
-                  <option disabled value="">Please select one</option>
-                  <option v-for ="(course, index) in courses"  :value="course.id">
-                    {{ course.name }} ( {{ course.cityname }} )
-                  </option>
-                </select>
-                
-            </div>
-
-            <div class="form-group">
-              <label for="names">Duration:</label>
-                <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
-                  <option disabled value="">Please select one</option>
-                  <option v-for ="(duration, index) in durations"  :value="duration.id">
-                    {{ duration.days }} ( {{ duration.time }} )
-                    [ {{ duration.during }} ]
-
-                  </option>
-                </select>
-            </div>
-
-             <div class="form-group">
-              <label for="names"> Section :</label>
-                <select class="form-control"  name="section_id" v-model="update_inquire.sectionid" id="cityid">
-                  
-                  <option v-for="(section, index) in sections" :value="section.id" :selected=" section.id == update_inquire.sectionid "> {{ section.title }}  </option>
-                </select>
-            </div>
-
-            <div class="form-group">
-              <label for="names">Age:</label>
-                <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="update_inquire.age">
-            </div>
-
-             <div class="form-group">
-              <label for="names">date of Birth:</label>
-                <input type="date" name="status" id="dob" placeholder="Date of Birth" class="form-control" v-model="update_inquire.dob">
-            </div>
-
-           <div class="form-group">
-             
-              <label for="gender" class="mx-2">Male:</label>
-                <input type="radio" value="male"  id="male" placeholder="Male"  v-model="update_inquire.gender">
-                <label for="gender"  class="mx-2">Female:</label>
-                <input type="radio" value="female" id="female" placeholder="Female"  v-model="update_inquire.gender">
-                <label for="gender"  class="mx-2">Other:</label>
-                <input type="radio" value="other" id="other" placeholder="Other"  v-model="update_inquire.gender">
-            </div>
-
-             <div class="form-group">
-              <label for="names">Address:</label>
-                <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="update_inquire.address">
-            </div>
-             <div class="form-group">
-              <label for="names">Phone no:</label>
-                <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="update_inquire.phno">
-            </div>
-          
-           <div class="form-group">
-              <label for="names">email:</label>
-                <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="update_inquire.email">
-            </div>
-             <div class="form-group">
-              <label for="names">Payment Date:</label>
-                <input type="Date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="update_inquire.installmentdate">
-            </div>
-             <div class="form-group">
-              <label for="names">Payment Amount:</label>
-                <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="update_inquire.installmentamount">
+            <input type="hidden" class="form-control" v-model="update_inquire.userid" name="userid" id="userid">
+            <input type="hidden" class="form-control" v-model="update_inquire.receiveno" name="receiveno" id="receiveno">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Name:</label>
+                    <input type="text" placeholder="township Name" class="form-control" v-model="update_inquire.name">
+                </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Course:</label>
                  
-            </div>
-             <div class="form-group">
-              <label for="names">Remark:</label>
+                    <select v-model="course" name="course_id" id="course_id" class="form-control"
+                      @change="readDurations" >
+                        <option disabled value="">Please select one</option>
+                        <option v-for ="(course, index) in courses"  :value="course.id">
+                          {{ course.name }} ( {{ course.cityname }} )
+                        </option>
+                    </select>
                 
-                <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="update_inquire.remark"></textarea>
-            </div>
-             <div class="form-group">
-              <label for="names">Position:</label>
-                <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="update_inquire.position">
-            </div>
-             <div class="form-group">
-              <label for="names">Camp:</label>
-                <input type="text" name="camp" id="camp" placeholder="Camp" class="form-control" v-model="update_inquire.camp">
-            </div>
-             <div class="form-group">
-              <label for="names">Education:</label>
-                <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="update_inquire.education">
-            </div>
-             <div class="form-group">
-              <label for="names">Accepted Year:</label>
-                <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="update_inquire.acceptedyear">
-            </div>
-
-           
-
-             <div class="form-group">
-              <label for="names"> Township :</label>
-                <select class="form-control"  name="township_id" v-model="update_inquire.townshipid" id="townshipid">
+                  </div>
                   
-                  <option v-for="(township, index) in townships" :value="township.id" :selected="township.id == update_inquire.townshipid"> {{ township.name }}  </option>
-                </select>
-            </div>
+                </div>
+                
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Duration:</label>
+                    <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
+                      <option disabled value="">Please select one</option>
+                      <option v-for ="(duration, index) in durations"  :value="duration.id">
+                        {{ duration.days }} ( {{ duration.time }} )
+                        [ {{ duration.during }} ]
+
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names"> Section :</label>
+                    <select class="form-control"  name="section_id" v-model="update_inquire.sectionid" id="cityid">
+                  
+                      <option v-for="(section, index) in sections" :value="section.id" :selected=" section.id == update_inquire.sectionid "> {{ section.title }}  </option>
+                    </select>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Age:</label>
+                    <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="update_inquire.age">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+             
+                    <label for="gender" class="mx-2">Male:</label>
+                      <input type="radio" value="male"  id="male" placeholder="Male"  v-model="update_inquire.gender">
+                      <label for="gender"  class="mx-2">Female:</label>
+                      <input type="radio" value="female" id="female" placeholder="Female"  v-model="update_inquire.gender">
+                      <label for="gender"  class="mx-2">Other:</label>
+                      <input type="radio" value="other" id="other" placeholder="Other"  v-model="update_inquire.gender">
+                  </div>
+                  
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Address:</label>
+                    <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="update_inquire.address">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="names">Phone no:</label>
+                      <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="update_inquire.phno">
+                    </div>
+                  
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">email:</label>
+                    <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="update_inquire.email">
+                  </div>
+                  
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Payment Date:</label>
+                    <input type="Date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="update_inquire.installmentdate">
+                  </div>
+                  
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Payment Amount:</label>
+                    <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="update_inquire.installmentamount">
+                  </div> 
+                  
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Remark:</label>
+                    <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="update_inquire.remark"></textarea>
+                  </div>
+                  
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="names">Position:</label>
+                      <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="update_inquire.position">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="names">Camp:</label>
+                      <input type="text" name="camp" id="camp" placeholder="Camp" class="form-control" v-model="update_inquire.camp">
+                    </div>
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Education:</label>
+                     <!-- <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="update_inquire.education"> -->
+                    <select v-model="update_inquire.educationid" name="education" class="form-control">
+                      <option disabled value="">Please select one</option>
+                      <option v-for ="(education, index) in educations" :value="education.id" :selected="education.id == update_inquire.educationid">
+                      {{ education.name }}</option>
+                    </select>
+
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names">Accepted Year:</label>
+                    <input type="month" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="update_inquire.acceptedyear">
+                  </div>
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="names"> Township :</label>
+                    <select class="form-control"  name="township_id" v-model="update_inquire.townshipid" id="townshipid">
+                  
+                      <option v-for="(township, index) in townships" :value="township.id" :selected="township.id == update_inquire.townshipid"> {{ township.name }}  </option>
+                    </select>
+                  </div>
+                </div>
+                
+              </div>
+          
           </div>
               
           <div class="modal-footer">
@@ -619,10 +754,10 @@
                 <div class="col-md-6"> {{detail_inquire.age}} </div>
               </div>
 
-              <div class="row mt-3">
+              <!-- <div class="row mt-3">
                 <div class="col-md-6"> Date of Birth </div>
                 <div class="col-md-6"> {{detail_inquire.dob}} </div>
-              </div>
+              </div> -->
 
               <div class="row mt-3">
                 <div class="col-md-6"> Gender </div>
@@ -753,11 +888,16 @@
                section_id:'',
                section:'',
                course_id:'',
+               education_id:'',
+               education:'',
                course:'',
+               fit:'',
                duration:'',
                inquires: [],
+               educations:[],
                sections1:[],
                courses:[],
+
                
                receiveno:'',
                lastinquire:{},
@@ -766,6 +906,7 @@
                print_inquire:{},
                teacherlist : [],
                activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
+               
            }
        },
        mounted()
@@ -778,13 +919,14 @@
            this.readCourses();
            this.readDurations();
            this.callFunction();
+           this.readEducation();
            this.getDate();
-
        },
        methods: {
            deleteInquire(index, courseid)
            {
-              let conf = confirm("Do you ready want to delete this city?");
+          
+              let conf = confirm("Do you ready want to delete this Inquire?");
               if (conf === true) 
               {
                 var inquire_data;
@@ -816,9 +958,63 @@
                        });
               }
            },
+           fits(courseid){
+
+          // this.readInquire();
+              var fit='';
+             // console.log(courseid);
+              fit = this.fit;
+              // console.log(fit);
+              var inquire_data;
+              if (courseid == 1)  // hr_ygn_sections
+                {
+                  inquire_data = this.hr_ygn_inquires;
+                 
+                }else if(courseid == 2)
+
+                {
+                  inquire_data = this.hr_ygn_inquires;
+
+                }else if(courseid == 3)
+                { 
+                   
+                  inquire_data = this.php_inquires;
+
+                }else{
+                  inquire_data = this.ios_inquires;
+                }
+                // console.log(inquire_data);
+                let myarr = [];
+                let myarr1 = [];
+               
+                $.each(inquire_data,function(i,v){
+                  var rec=v.receiveno;
+                   if(fit==rec){
+
+                      if (v.courseid == 1 ) {
+                        
+                        myarr.push(v);
+                        
+                      }else if (v.courseid == 3) {
+                        myarr1.push(v);
+                      }
+                      
+
+                  }else{
+                    console.log('doit');
+                      $('#error').html("Receive number not found");
+                    }
+
+
+                })
+
+                this.hr_ygn_inquires = myarr;
+                this.php_inquires = myarr1;
+                console.log(this.php_inquires);
+           },
            initAddInquire()
            {
-               $("#add_inquire_model").modal("show");
+              $("#add_inquire_model").modal("show");
            },
             getDate()
             {
@@ -830,7 +1026,6 @@
             },
 
            createInquire()
-
            {
                axios.post('/api/setup/inquire', {
                    name: this.inquire.name,
@@ -839,7 +1034,6 @@
                    section_id: this.section,
                    camp: this.inquire.camp,
                    age: this.inquire.age,
-                   dob: this.inquire.dob,
                    gender: this.inquire.gender,
                    address: this.inquire.address,
                    township_id: this.township_id,
@@ -847,7 +1041,7 @@
                    email: this.inquire.email,
                    paymentdate: this.inquire.paymentdate,
                    paymentamount: this.inquire.paymentamount,
-                   education: this.inquire.education,
+                   education: this.inquire.education_id,
                    acceptedyear: this.inquire.acceptedyear,
                    position: this.inquire.position, 
                    remark: this.inquire.remark,
@@ -934,20 +1128,28 @@
                        //console.log(response.data.teachers);
                    });
            },
+           readEducation()
+           {
+             axios.get(`/api/setup/education`)
+                    .then(response => {
+                      console.log(response.data.educations);
+                      this.educations = response.data.educations;
+                      
+
+                    })
+           },
 
           readSection(){
-      
-
             axios.get(`/api/setup/section`)
                    .then(response => {
                        //console.log(response.data.sections);
-                       this.sections=response.data.sections
+                       this.sections=response.data.sections;
 
                    });
                   this.setZero();
                  
           
-        },
+          },
 
         printInquire(index, courseid)
         {
@@ -1196,10 +1398,11 @@
                this.errors = [];
 
                 var inquire_data;
-               console.log(courseid);
+               //console.log(courseid);
               if (courseid == 1)  // hr_ygn_sections
               {
                 inquire_data = this.hr_ygn_inquires[index]
+                //console.log(inquire_data);
               }
               else if (courseid == 2 ) // hr_mdy_sections
               {
@@ -1226,7 +1429,8 @@
            initDetail(index, c_id, s_id)
            {
               var inquire_data;
-              console.log(index);
+              //console.log(index);
+
                this.errors = [];
 
                axios.get(`/api/setup/inquire/teacherlist/${s_id}`)
@@ -1263,7 +1467,8 @@
            updateInquire()
            {
                axios.patch('/api/setup/inquire/' + this.update_inquire.id, {
-                 userid: this.update_inquire.userid,
+                  userid: this.update_inquire.userid,
+                  receiveno: this.update_inquire.receiveno,
                   name: this.update_inquire.name,
                    gender: this.update_inquire.gender,
                    dob: this.update_inquire.dob,
@@ -1276,7 +1481,7 @@
                    remark: this.update_inquire.remark,
                    position: this.update_inquire.position,
                    camp: this.update_inquire.camp,
-                   education: this.update_inquire.education,
+                   education: this.update_inquire.educationid,
                    acceptedyear: this.update_inquire.acceptedyear,
                    section_id: this.update_inquire.sectionid, 
                    township_id: this.update_inquire.townshipid,
@@ -1304,27 +1509,17 @@
                    });
            },
 
-        callFunction() {
-            /*var currentDate = new Date();
-            console.log(currentDate);*/
-            
-
-            // this.readInquire();
-
+          callFunction() {
              axios.get('/api/setup/lastinquire')
                 .then(response => {
-                  /*console.log(response.data.inquire);*/
-                   this.lastinquire = response.data.inquire;
-                   console.log(this.lastinquire.receiveno);
-                    
+                    this.lastinquire = response.data.inquire;
+                    //console.log(this.lastinquire.receiveno);
                     this.caculatedate(this.lastinquire.receiveno);
                 });
           },
+
           caculatedate(receiveno){
-
             var currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-
-
             var datearray=currentDateWithFormat.split("/");
             var day=datearray[2];
             var month=datearray[1];
@@ -1332,9 +1527,18 @@
             var date=day+month+year;
             var output='';
             //console.log(typeof(receiveno));
-            var currentreceiveno=receiveno.substring(0,8);
 
-            console.log(currentreceiveno+'=='+date);
+
+            if(receiveno == 0 ){
+              this.receiveno = date+'0001';
+
+            }else{
+               var currentreceiveno=receiveno.substring(0,8);
+
+                console.log(currentreceiveno+'=='+date);
+
+            }
+           
 
             if(currentreceiveno==date){ // 04092019 == 04092019
 

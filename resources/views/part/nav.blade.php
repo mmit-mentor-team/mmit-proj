@@ -120,6 +120,10 @@
                   Inquire
                 </a>
               @endcanany
+
+               <a class="collapse-item" href="{{ route('education') }}">
+                  Education
+                </a>
               
             </div>
           </div>

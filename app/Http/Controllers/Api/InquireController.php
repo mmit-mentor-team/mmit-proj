@@ -10,6 +10,7 @@ use App\Model\Section;
 use App\Model\Township;
 use App\Model\Course;
 use App\Model\Student;
+use App\Model\Education;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\InquireResource;
@@ -47,7 +48,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -79,7 +80,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -111,7 +112,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -147,7 +148,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -165,11 +166,14 @@ class InquireController extends Controller
             // $titles = DB::table('inquires')->pluck('name');
 
         // dd($titles);
-
+        
         $hr_ygn_inquires =  InquireResource::collection($hr_ygn_inquires);
         $hr_mdy_inquires =  InquireResource::collection($hr_mdy_inquires);
         $php_inquires =  InquireResource::collection($php_inquires);
         $ios_inquires =  InquireResource::collection($ios_inquires);
+
+
+
 
         return response()->json([
             'hr_ygn_inquires' => $hr_ygn_inquires,
@@ -246,16 +250,24 @@ class InquireController extends Controller
         ]);
 
         $course_id = request('course');
+        
+
 
         $course = Course::find($course_id);
 
+
+
         $course_fees = $course->fees;
+
+
         $payment = request('paymentamount');
 
+        $education = request('education');
+        // dd($education);
         $inquire = Inquire::create([
             'name'  =>  request('name'),
             'receiveno' =>  request('receiveno'),
-            'dob' => request('dob'),    
+            // 'dob' => request('dob'),    
             'age'  =>  request('age'),
             'gender'  =>  request('gender'),
             'address' => request('address'),
@@ -316,7 +328,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -407,12 +419,14 @@ class InquireController extends Controller
         //
 
          $inquire = Inquire::find($id);
+
+         // dd(request('education'));
         
 
         
         $inquire->name = request('name');
         $inquire->receiveno = request('receiveno');
-        $inquire->dob = request('dob');
+        // $inquire->dob = request('dob');
         $inquire->age = request('age');        
         $inquire->gender = request('gender');
         $inquire->address = request('address');        
@@ -472,7 +486,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -495,55 +509,29 @@ class InquireController extends Controller
     }
 
     public function lastinquire(){
+
         $inquire=Inquire::orderBy('id','desc')
                 ->first();
                 
-        // dd($inquire);
-
-        $inquire = new InquireResource($inquire);
-
-        if (empty($inquire)) {
+        //dd($inquire->receiveno);
+        if($inquire == null){
+            $inquire = [
+                "receiveno" => 0 ,
+            ];
             return response()->json([
-                'inquire'  =>  $inquire['receiveno'=>date('dmY').'0001'],
-                'message'   =>  'Successfully selected Last Inquired!'
-            ],200);
+            'inquire'  =>  $inquire,
+            'message'   =>  'Successfully selected Last Inquired!'
+        ],200);
         }else{
-            return response()->json([
-                'inquire'  =>  $inquire,
-                'message'   =>  'Successfully selected Last Inquired!'
-            ],200);
-        }
+            $inquire = new InquireResource($inquire);
+
+        return response()->json([
+            'inquire'  =>  $inquire,
+            'message'   =>  'Successfully selected Last Inquired!'
+        ],200);
+        } 
+
+        
         
     }
-
-    public function teacherlist($id)
-    {
-        $teacherlist =  DB::table('sections')
-            ->select(
-                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
-                )
-            ->distinct()
-            ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
-            ->join('teachers', 'section_teacher.teacher_id', '=', 'teachers.id')
-            ->join('staffs','teachers.staff_id', '=', 'staffs.id')
-            ->join('users','staffs.user_id', '=', 'users.id')
-            ->join('durations', 'durations.id', '=', 'sections.duration_id')
-            ->join('courses','courses.id','=','durations.course_id')
-            ->join('locations','locations.id','=','courses.location_id')
-            ->join('cities','cities.id','=','locations.city_id')
-            ->groupBy('section_teacher.section_id')
-            ->where('sections.id','=',$id)
-            ->orderBy('sections.id', 'desc')
-            ->get();
-
-        // dd($teacherlist);
-        return response()->json([
-            'teacherlist'   =>  $teacherlist[0]
-        ],200);
-    }
-
-
-
-
-
 }

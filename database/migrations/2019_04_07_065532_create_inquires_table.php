@@ -17,7 +17,7 @@ class CreateInquiresTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('gender');
-            $table->date('dob');
+           
             $table->string('age');
             $table->longText('address');
             $table->string('phno');
@@ -27,7 +27,7 @@ class CreateInquiresTable extends Migration
             $table->longText('remark');
             $table->string('position');
             $table->string('camp');
-            $table->string('education');
+            $table->unsignedBigInteger('education');
             $table->string('acceptedyear');
 
             //section

@@ -46,7 +46,7 @@ class StudentController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -85,7 +85,7 @@ class StudentController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -124,7 +124,7 @@ class StudentController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -163,7 +163,7 @@ class StudentController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -364,7 +364,7 @@ class StudentController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
+                'cities.name as city_name'
             )
             ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')

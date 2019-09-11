@@ -36,6 +36,10 @@
                 PHP Bootcamp 
               </a>
 
+              <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'active' : '' ]" id="nav-php_mdy_bootcamp-tab" data-toggle="tab" href="#nav-php_mdy_bootcamp" role="tab" aria-controls="nav-php_mdy_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - MDY )'">
+                PHP Bootcamp (MDY)
+              </a>
+
               <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'">
                 iOS 
               </a>
@@ -144,6 +148,47 @@
                   </thead>
                   <tbody>
                     <tr v-for="(section, index) in php_sections">
+                      <td> {{ index + 1 }} </td>
+                      <td> {{ section.title  }} </td>
+                      <td> {{ section.startdate  }} </td>
+                      <td> {{ section.enddate  }} </td>
+                      <td> {{ section.durations.days }} | {{section.durations.time}} </td>
+                      <td> {{ section.teachers }} </td>
+                      <td> 
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                          <i class="fa fa-edit"></i> Edit
+                        </button>
+                        
+                        <button @click="deleteSection(index)" class="btn btn-danger">
+                          <i class="fa fa-trash"></i> Delete
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  
+                </table>
+              </div>
+              
+            </div>
+
+            <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" id="nav-php_mdy_bootcamp" role="tabpanel" aria-labelledby="nav-php_mdy_bootcamp-tab">
+
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_mdy_sections.length>0">
+                  <thead class="bg-primary text-white">
+                    <tr>
+                      <th> No </th>
+                      <th> Title  </th>
+                      <th> Start_Date   </th>
+                      <th> End_Date   </th>
+                      <th> Duration  </th>
+                      <th> Teacher  </th>
+                      <th> Action  </th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(section, index) in php_mdy_sections">
                       <td> {{ index + 1 }} </td>
                       <td> {{ section.title  }} </td>
                       <td> {{ section.startdate  }} </td>
@@ -387,6 +432,7 @@
                sections: [],
                hr_mdy_sections: [],
                php_sections:[],
+               php_mdy_sections:[],
                ios_sections:[],
                durations:[],
                courses:[],
@@ -472,10 +518,10 @@
                        this.notiMsg = "Data Inserted Successfully!!!";
                        $("#add_section_model").modal("hide");
                        this.activetab = this.permissions[0].name;
-          this.readSections();
-          this.readDurations();
-          this.readTeachers();
-          this.readCourses();
+                        this.readSections();
+                        this.readDurations();
+                        this.readTeachers();
+                        this.readCourses();
 
                    })
                    .catch(error => {
@@ -517,6 +563,7 @@
                        this.sections = response.data.sections;
                        this.hr_mdy_sections = response.data.hr_mdy;
                        this.php_sections = response.data.php_sections;
+                       this.php_mdy_sections = response.data.php_mdy_sections;
                        this.ios_sections = response.data.ios_sections;
 
                        this.noti=false;

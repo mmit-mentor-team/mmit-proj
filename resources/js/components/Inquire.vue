@@ -63,6 +63,10 @@
                   PHP Bootcamp 
                 </a>
 
+                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'active' : '' ]" id="nav-php_mdy_bootcamp-tab" data-toggle="tab" href="#nav-php_mdy_bootcamp" role="tab" aria-controls="nav-php_mdy_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - MDY )'">
+                  PHP Bootcamp (MDY)
+                </a>
+
                 <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'">
                   iOS 
                 </a>
@@ -161,6 +165,7 @@
                 </div>
                 
               </div>
+
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" id="nav-php_bootcamp" role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
                  <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_inquires.length > 0">
@@ -175,6 +180,51 @@
                       </thead>
                       <tbody>
                         <tr v-for="(php_inquire, index) in php_inquires">
+                          <td> {{ index + 1 }} </td>
+                          <td> {{ php_inquire.receiveno}}</td>
+                          <td> {{ php_inquire.name }} </td>
+                          <td>  {{ php_inquire.phno}}</td>
+                          
+                         
+                          <td> 
+                            <button @click="printInquire(index, php_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                              <i class="fa fa-print"></i> Print
+                            </button> 
+
+                            <button @click="initDetail(index, php_inquire.courseid, php_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                                <i class="fa fa-eye"></i> Detail
+                            </button>
+
+                            <button @click="initUpdate(index,php_inquire.courseid)" class="btn btn-warning btn-xs">
+                              <i class="fas fa-edit"></i> Edit
+                            </button>
+                            
+                            <button @click="deleteInquire(index,php_inquire.courseid)" class="btn btn-danger btn-xs">
+                              <i class="fas fa-trash-alt"></i>  Delete
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      
+                    </table>
+                 </div>
+                   
+              </div>
+
+              <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" id="nav-php_mdy_bootcamp" role="tabpanel" aria-labelledby="nav-php_mdy_bootcamp-tab">
+                 <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_mdy_inquires.length > 0">
+                      <thead class="bg-primary text-white">
+                        <tr class="text-center">
+                          <th> No </th>
+                          <th> Receive No </th>
+                          <th> Name </th>
+                          <th> Phone No:</th>
+                          <th> Action </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(php_inquire, index) in php_mdy_inquires">
                           <td> {{ index + 1 }} </td>
                           <td> {{ php_inquire.receiveno}}</td>
                           <td> {{ php_inquire.name }} </td>
@@ -734,6 +784,7 @@
                hr_ygn_inquires: [],
                hr_mdy_inquires: [],
                php_inquires:[],
+               php_mdy_inquires:[],
                ios_inquires:[],
                
                durations:[],
@@ -910,7 +961,7 @@
                        this.hr_mdy_inquires = response.data.hr_mdy_inquires;
                        this.php_inquires = response.data.php_inquires;
                        this.ios_inquires = response.data.ios_inquires;
-
+                       this.php_mdy_inquires = response.data.php_mdy_inquires;
                        // console.log("php section =>",this.php_sections);
                        
                        this.noti=false;
@@ -956,9 +1007,12 @@
           {
             inquire_data = this.php_inquires[index]
           }
-          else
+          else if (courseid == 4)
           {
             inquire_data = this.ios_inquires[index]
+          }else
+          {
+            inquire_data = this.php_mdy_inquires[index]
           }
           console.log(inquire_data);
           this.print(inquire_data);
@@ -1241,9 +1295,12 @@
                 inquire_data = this.php_inquires[index]
                 
               }
-              else
+              else if (c_id == 4)
               {
                 inquire_data = this.ios_inquires[index]
+              }else
+              {
+                inquire_data = this.php_mdy_inquires[index]
               }
 
               console.log(inquire_data);

@@ -561,7 +561,8 @@
                axios.get('/api/setup/section')
                    .then(response => {
                        this.sections = response.data.sections;
-                       this.hr_mdy_sections = response.data.hr_mdy;
+                       this.hr_ygn_sections = response.data.hr_ygn_sections;
+                       this.hr_mdy_sections = response.data.hr_mdy_sections;
                        this.php_sections = response.data.php_sections;
                        this.php_mdy_sections = response.data.php_mdy_sections;
                        this.ios_sections = response.data.ios_sections;

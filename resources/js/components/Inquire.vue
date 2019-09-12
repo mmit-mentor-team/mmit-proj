@@ -221,27 +221,27 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(php_inquire, index) in php_mdy_inquires">
+                        <tr v-for="(php_mdy_inquire, index) in php_mdy_inquires">
                           <td> {{ index + 1 }} </td>
-                          <td> {{ php_inquire.receiveno}}</td>
-                          <td> {{ php_inquire.name }} </td>
-                          <td>  {{ php_inquire.phno}}</td>
+                          <td> {{ php_mdy_inquire.receiveno}}</td>
+                          <td> {{ php_mdy_inquire.name }} </td>
+                          <td>  {{ php_mdy_inquire.phno}}</td>
                           
                          
                           <td> 
-                            <button @click="printInquire(index, php_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(index, php_mdy_inquire.courseid)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
-                            <button @click="initDetail(index, php_inquire.courseid, php_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(index, php_mdy_inquire.courseid, php_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
                                 <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(index,php_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(index,php_mdy_inquire.courseid)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(index,php_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(index,php_mdy_inquire.courseid)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -552,12 +552,10 @@
                   <option v-for ="(duration, index) in durations"  :value="duration.id" :selected="duration.id == update_inquire.durationid">
                     {{ duration.days }} ( {{ duration.time }} )
                     [ {{ duration.during }} ]
-
                   </option>
                 </select>
               </div>
             </div>
-
 
             <div class="form-row form-group">
               <div class="col-md-12">
@@ -887,7 +885,7 @@
            this.activetab = this.permissions[0].name;
            this.readInquire();
            this.readTownship();
-           this.readSections();
+           // this.readSections();
            this.readSection();
            this.readCourses();
            this.readDurations();
@@ -1056,9 +1054,9 @@
 
             readSection()
             {
-              axios.get(`/api/setup/section`)
+              axios.get('/api/setup/section')
                .then(response => {
-                   //console.log(response.data.sections);
+                   console.log(response.data.sections);
                    this.sections=response.data.sections
 
                });
@@ -1312,10 +1310,10 @@
             },
            initUpdate(index,courseid)
            {
-               this.errors = [];
+              this.errors = [];
 
-                var inquire_data;
-               console.log(courseid);
+              var inquire_data;
+              console.log(courseid);
               if (courseid == 1)  // hr_ygn_sections
               {
                 inquire_data = this.hr_ygn_inquires[index]
@@ -1327,20 +1325,22 @@
               else if (courseid == 3) // php_sections
               {
                 inquire_data = this.php_inquires[index]
-                
               }
-              else
+              else if (courseid == 4) // ios_sections
               {
                 inquire_data = this.ios_inquires[index]
               }
-
+              else 
+              {
+                inquire_data = this.php_mdy_inquires[index]
+                
+              }
              
 
                $("#update_inquire_model").modal("show");
                
-               
                this.update_inquire = inquire_data;
-               //console.log(this.update_inquire.section);
+               console.log(this.update_inquire);
            },
            initDetail(index, c_id, s_id)
            {

@@ -35,6 +35,7 @@ Vue.component('income', require('./components/Income.vue').default);
 Vue.component('sectionkg', require('./components/Sectionkg.vue').default);
 Vue.component('company',require('./components/Company.vue').default);
 Vue.component('inquire', require('./components/Inquire.vue').default);
+Vue.component('education', require('./components/Education.vue').default);
 Vue.component('student', require('./components/Student1.vue').default);
 Vue.component('jobcareer', require('./components/Jobcareer.vue').default);
 Vue.component('interview', require('./components/Interview.vue').default);

@@ -177,6 +177,11 @@ class HomeController extends Controller
         return view('inquire');
     }
 
+    public function education()
+    {
+        return view('education');
+    }
+
     public function student()
     {
         return view('student');

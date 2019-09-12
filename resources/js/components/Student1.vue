@@ -712,7 +712,7 @@
 
             <div class="form-group">
               <label for="installmentdate">Installment Date</label>
-              <input type="text" id="addSecInstallDate" name="installmentdate" :required="student.secinstallmentdate < 0" class="form-control" v-model="student.secinstallmentdate"  :placeholder="today" readonly="readonly" >
+              <input type="date" id="addSecInstallDate" name="installmentdate" :required="student.secinstallmentdate < 0" class="form-control" v-model="student.secinstallmentdate"  :placeholder="today" readonly="readonly" >
             </div>
 
             <div class="form-group">
@@ -1077,7 +1077,7 @@
 
             <div class="form-group">
               <label id="installmentdate">Installment Date</label>
-              <input  type="text" name="installmentdate" id="updateStudentdate" :placeholder="today" readonly="readonly" class="form-control"  v-model="update_Student.secinstallmentdate">
+              <input  type="date" name="installmentdate" id="updateStudentdate" :placeholder="today" readonly="readonly" class="form-control"  v-model="update_Student.secinstallmentdate">
             </div>
 
             <div class="form-group">
@@ -1235,7 +1235,7 @@
     //    this.readSections();
         
         this.readInquire();
-        // this.getDate();
+         this.getDate();
        //  this.getStudent();
        // this.getCourse();
 
@@ -1360,9 +1360,15 @@
         },
 
         getDate(){
-          var d=new Date();
+          var m = new Date();
+          var dateString =
+              m.getUTCFullYear() + "-" +
+              ("0" + (m.getUTCMonth()+1)).slice(-2) + "-" +
+              ("0" + m.getUTCDate()).slice(-2) ;
+              this.today=dateString;
+          // var d=new Date();
           //this.today=d.getDate()+"-"+d.getMonth()+"-"+d.getFullYear();
-          this.today=d.toLocaleDateString();
+          // this.today=d.toLocaleDateString();
           
         },
         setZero(){
@@ -1371,7 +1377,7 @@
           this.section1='';
         },
         settimeout(){
-          setTimeout(function(){ $('.alert').fadeOut() },6000 );
+          setTimeout(function(){ $('.alert').fadeOut() },2000 );
           console.log(this.noti);
           
           

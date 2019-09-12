@@ -515,6 +515,6 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         $inquires = Inquire::doesntHave('student')
             ->where('section_id',$id)
             ->get();
-            dd($inquires);
+            
     }
 }

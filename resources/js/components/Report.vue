@@ -99,7 +99,7 @@
                           	<th colspan="4" class="resultid">Balance</th>
                           	<td class="resultid">{{SubItem}}</td>
                           </tr>
-                          <tr>
+                          <tr v-if="result.length > 0">
                           	<td colspan="5" align="center"><input type="button" value="Report" class="btn btn-primary" @click="report(month,year)"></td>
                           </tr>
                         </tbody>

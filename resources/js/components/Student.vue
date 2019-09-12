@@ -9,17 +9,14 @@
 
       <!-- ayechanoo start-->
       <div class="col-md-12">
-
-      
         <h1 class="h3 mb-2 text-gray-800"> Student List </h1>
-        
-        
         <div class="card shadow mb-4">
           <div class="card-header py-3">
             
             <button @click="addStudent()" class="btn btn-primary float-right" style="padding:8px">
               <i class="fa fa-plus"> </i> Add New Student
             </button>
+            
             <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="noti==1">
             
             <strong>{{ message }}</strong> 

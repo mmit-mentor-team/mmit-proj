@@ -199,6 +199,7 @@
                        this.reset();
                        this.incomes.push(response.data.income);
                        $("#add_income_model").modal("hide");
+                       this.readIncomes();
                    })
                    .catch(error => {
                        this.errors = [];
@@ -251,6 +252,7 @@
                })
                    .then(response => {
                        $("#update_income_model").modal("hide");
+                       this.readIncomes();
                    })
                    .catch(error => {
                        this.errors = [];

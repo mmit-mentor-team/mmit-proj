@@ -10,18 +10,21 @@ class EducationController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         //
         {
-            $educations = Education::all();
+            $educationarray = Education::all();
+            $educations=Education::orderBy('id','DESC')->paginate(10);
             $educations =  EducationResource::collection($educations);
+            $educationarray =  EducationResource::collection($educationarray);
             // dd($educations);
             return response()->json([
-                'educations' => $educations,
+                'educations' => $educationarray,
+                'pagination' => $educations->resource,
             ],200);
         }
     }

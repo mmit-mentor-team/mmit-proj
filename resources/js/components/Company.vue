@@ -25,7 +25,7 @@
 					<div class="card-body">
 
 						<div class="table-responsive">
-							<table class="table table-hover table-bordered" v-if="company.length>0">
+							<table class="table table-hover table-bordered" >
 								<thead class="bg-primary text-white">
 									<tr class="text-center">
 										<th>No.</th>
@@ -40,13 +40,13 @@
 								</thead>
 
 								<tbody>
-									<tr v-for="(company,index) in company">
-										<td>{{index + 1}}</td>
-										<td><img :src="getImage(company.logo)" class="img-responsive" width="50" height="50"></td>
-										<td>{{company.name}}</td>
-										<td>{{company.hrname}}</td>
-										<td>{{company.email}}</td>
-										<td>{{company.phno}}</td>
+									<tr v-for="(companys,index) in company.data">
+										<td>{{company.from + index}}</td>
+										<td><img :src="getImage(companys.logo)" class="img-responsive" width="50" height="50"></td>
+										<td>{{companys.name}}</td>
+										<td>{{companys.hrname}}</td>
+										<td>{{companys.email}}</td>
+										<td>{{companys.phno}}</td>
 
 										<td>
 											<button type="button" class="btn btn-info text-white" @click="detailCompany(index)">
@@ -69,7 +69,9 @@
 								</tbody>
 
 							</table>
+							 <vue-pagination :data='company' @pagination-change-page="readCompany"></vue-pagination>
 						</div>
+
 					</div>
 					<!-- card end -->
 
@@ -386,7 +388,7 @@
 
 		data(){
 			return {
-				company:{
+				companys:{
 					
 					name:'',
 				},
@@ -396,7 +398,7 @@
 				message:'',
 				emialerror:'',
 				noti:false,
-				company:[],
+				company:{},
 				township_id:'',
 				detail_company:{},
 				update_company:{},
@@ -455,14 +457,12 @@
                 console.log(reader);
             },
 
-            readCompany()
+            readCompany(page=1)
 				{
-					axios.get('/api/setup/company')
-					.then(response=>{
-						this.company=response.data.company;
+					axios.get('/api/setup/company?page=' + page)
+					.then(({data})=>(this.company = data.pagination));
 						this.alertmessage();
 						
-					});
 				},
 
             
@@ -493,7 +493,7 @@
 
 				.then(response=>{
 					
-					this.company.push(response.data.company);
+					this.company.data.push(response.data.company);
 					this.noti=true;
 					this.message="Company has been successfully added";
 					$("#add-company").modal('hide');
@@ -556,7 +556,7 @@
 			detailCompany(index)
 				{
 					$("#detail_company").modal("show");
-					this.detail_company=this.company[index];
+					this.detail_company=this.company.data[index];
 				},
 
 			deleteCompany(index)
@@ -565,11 +565,11 @@
 					let conf = confirm("Are U sure To Delete??");
 					if(conf === true)
 					{
-						axios.delete('/api/setup/company/'+this.company[index].id)
+						axios.delete('/api/setup/company/'+this.company.data[index].id)
 							.then(response=>{
 								this.noti=true;
 								this.message="Successfully Delete";
-								this.company.splice(index,1);
+								this.company.data.splice(index,1);
 								this.readCompany();
 							})
 							.catch(error=>{
@@ -585,9 +585,9 @@
 				{
 					this.errors = [];
 					$("#update_Company").modal("show");
-					this.update_company=this.company[index];
+					this.update_company=this.company.data[index];
 					// var clonedata=this.company.slice(index);
-					this.update_company=JSON.parse(JSON.stringify(this.company[index]));
+					this.update_company=JSON.parse(JSON.stringify(this.company.data[index]));
 				},
 
 			Update_Company_detail()

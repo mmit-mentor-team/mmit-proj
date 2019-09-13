@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-12">
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
+        <div class="alert alertbox alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -13,7 +13,7 @@
             </button>
         </div>
 
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
+        <div class="alert alertbox alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -22,7 +22,7 @@
             </button>
         </div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
+        <div class="alert alertbox alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -48,7 +48,7 @@
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" v-if="educations.length > 0">
+              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" >
                 <thead class="bg-primary text-white">
                   <tr class="text-center">
                     <th> No </th>
@@ -57,8 +57,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(education, index) in educations">
-                    <td> {{ index + 1 }} </td>
+                  <tr v-for="(education, index) in educations.data">
+                    <td> {{educations.from + index }} </td>
                     <td> {{ education.name }} </td>
                     <td> 
                       <button @click="initUpdate(education.id, education.name)" class="btn btn-warning btn-xs">
@@ -73,7 +73,9 @@
                 </tbody>
                 
               </table>
+               <vue-pagination :data="educations"  @pagination-change-page="readEducations"></vue-pagination>
             </div>
+
           </div>
 
         </div>
@@ -166,23 +168,25 @@
                update_noti:false,
                delete_noti:false,
                message:'',
-               educations: [],
+               educations: {},
                update_education: {}
            }
        },
        mounted()
        {
-          $('#dataTable').DataTable(this.readEducations());
+          // $('#dataTable').DataTable(this.readEducations());
+          this.readEducations();
+          this.alertmessage();
        },
        methods: {
            deleteEducation(index)
-           {
+           {  this.delete_noti=false;
               let conf = confirm("Do you ready want to delete this education?");
               if (conf === true) 
               {
-                axios.delete('/api/setup/education/' + this.educations[index].id)
+                axios.delete('/api/setup/education/' + this.educations.data[index].id)
                        .then(response => {
-                           this.educations.splice(index, 1);
+                           this.educations.data.splice(index, 1);
                            this.delete_noti=true;
                            this.message="Existing education has been sucessfully deleted!!";
                        })
@@ -190,18 +194,26 @@
                        });
               }
            },
+
+          alertmessage()
+            { 
+              setTimeout(function(){
+                $(".alertbox").hide()},1500);
+              
+            },
+
            initAddEducation()
            {
                $("#add_education_model").modal("show");
            },
            createEducation()
-           {
+           {   this.add_noti=false;
                axios.post('/api/setup/education', {
                    name: this.education.name,
                })
                    .then(response => {
                        this.reset();
-                       this.educations.push(response.data.education);
+                       this.educations.data.push(response.data.education);
                        this.add_noti=true;
                        this.message="New education has been sucessfully added!!";
                        $("#add_education_model").modal("hide");
@@ -218,12 +230,13 @@
            {
                this.education.name = '';
            },
-           readEducations()
+           readEducations(page=1)
            {
-               axios.get('/api/setup/education')
-                   .then(response => {
-                       this.educations = response.data.educations;
-                   });
+               axios.get('/api/setup/education?page='+page)
+                   // .then(response => {
+                   //     this.educations = response.data.educations;
+                   // });
+                   .then(({data})=>(this.educations = data.pagination));
            },
            initUpdate(val_id, val_name)
            {
@@ -233,7 +246,7 @@
                this.update_education.name = val_name;
            },
            updateEducation()
-           {
+           {   this.update_noti=false;
                axios.patch('/api/setup/education/' + this.update_education.id, {
                    name: this.update_education.name,
                })

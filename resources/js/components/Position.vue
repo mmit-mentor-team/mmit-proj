@@ -33,8 +33,8 @@
 							</thead>
 
 							<tbody>
-								<tr v-for="(position , index) in positions">
-									<td>{{index+1}}</td>
+								<tr v-for="(position , index) in positions.data">
+									<td>{{positions.from + index}}</td>
 									<td>{{position.name}}</td>
 									<td>
 										<button @click="initUpdate(index)" class="btn btn-warning btn-xs">
@@ -48,6 +48,7 @@
 								</tr>
 							</tbody>
 						</table>
+						<vue-pagination :data="positions"  @pagination-change-page="readPosition"></vue-pagination>
 					</div>
 
 				</div>
@@ -144,7 +145,7 @@
 				},
 				errors:[],
 				message:'',
-				positions:[],
+				positions:{},
 				noti:false,
 				update_position:{},
 
@@ -157,12 +158,14 @@
 
 		methods:{
 
-			readPosition(){
-				axios.get('/api/setup/position')
-					 .then(response=>{
-					 	this.positions=response.data.positions;
-					 	this.alertmessage();
-					 });
+			readPosition(page=1){
+				axios.get('/api/setup/position?page='+page)
+					 // .then(response=>{
+					 // 	this.positions=response.data.positions;
+					 // 	this.alertmessage();
+					 // });
+					 .then(({data})=>(this.positions=data.pagination));
+					 this.alertmessage();
 			},
 
 			deletePosition(index){
@@ -170,10 +173,10 @@
 				let conf = confirm('Are you sure to delete??');
 				if(conf===true)
 				{
-					axios.delete('/api/setup/position/'+this.positions[index].id)
+					axios.delete('/api/setup/position/'+this.positions.data[index].id)
 					.then(response=>{
 						this.noti=true;
-						this.positions.splice(index,1);
+						this.positions.data.splice(index,1);
 						this.message="Successfully deleted";
 						this.readPosition();
 					})
@@ -204,7 +207,7 @@
 				})
 				.then(response=>{
 					this.reset();
-					this.positions.push(response.data.positions);
+					this.positions.data.push(response.data.positions);
 					this.noti=true;
 					this.message="New position has been successfully added";
 					$('#addmodalposition').modal('hide');
@@ -221,8 +224,8 @@
 
 			initUpdate(index){
 				$('#update_position_model').modal('show');
-				this.update_position=this.positions[index];
-					this.update_position=JSON.parse(JSON.stringify(this.positions[index]));
+				this.update_position=this.positions.data[index];
+				this.update_position=JSON.parse(JSON.stringify(this.positions.data[index]));
 			},
 
 			updatePosition(){

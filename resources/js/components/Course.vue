@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-12">
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
+        <div class="alert alertbox alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -13,7 +13,7 @@
             </button>
         </div>
 
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
+        <div class="alert alertbox alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -22,7 +22,7 @@
             </button>
         </div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
+        <div class="alert alertbox alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -47,7 +47,7 @@
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="courses.length>0">
+              <table class="table table-bordered table-hover" id="table_id" cellspacing="0" >
                 <thead class="bg-primary text-white">
                   <tr class="text-center">
                     <th> No </th>
@@ -57,8 +57,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(course, index) in courses">
-                    <td> {{ index + 1 }} </td>
+                  <tr v-for="(course, index) in courses.data">
+                    <td> {{ courses.from + index }} </td>
                     <td> 
                       {{ course.name }}
                       ( {{ course.location.city.name }} )
@@ -79,6 +79,7 @@
                 </tbody>
                 
               </table>
+              <vue-pagination :data="courses"  @pagination-change-page="readCourses"></vue-pagination>
             </div>
           </div>
 
@@ -197,7 +198,7 @@
                update_noti:false,
                delete_noti:false,
                message:'',
-               courses: [],
+               courses: {},
                update_course: {}
            }
        },
@@ -205,6 +206,7 @@
        {
            this.readCourses();
            this.readLocations();
+           this.alertmessage();
 
        },
        methods: {
@@ -212,16 +214,26 @@
            {
                let conf = confirm("Do you ready want to delete this Course?");
                if (conf === true) {
-                   axios.delete('api/setup/course/' + this.courses[index].id)
+                   axios.delete('api/setup/course/' + this.courses.data[index].id)
                        .then(response => {
-                           this.courses.splice(index, 1);
+                           this.courses.data.splice(index, 1);
                            this.delete_noti=true;
                            this.message="Existing course has been sucessfully deleted!!";
+                           this.readCourses();
                        })
                        .catch(error => {
                        });
                }
            },
+
+           alertmessage()
+            { 
+              setTimeout(function(){
+                $(".alertbox").hide()},2000);
+              
+            },
+
+
            initAddCourse()
            {
                $("#add_course_model").modal("show");
@@ -236,7 +248,7 @@
                })
                    .then(response => {
                        this.reset();
-                       this.courses.push(response.data.course);
+                       this.courses.data.push(response.data.course);
                        this.add_noti=true;
                        this.message="New course has been sucessfully added!!";
                        $("#add_course_model").modal("hide");
@@ -255,12 +267,13 @@
            {
                this.course.name = '';
            },
-           readCourses()
+           readCourses(page=1)
            {
-               axios.get('api/setup/course')
-                   .then(response => {
-                       this.courses = response.data.courses;
-                   });
+               axios.get('api/setup/course?page='+page)
+                   // .then(response => {
+                   //     this.courses = response.data.courses;
+                   // });
+                   .then(({data})=>(this.courses=data.pagination));
            },
            readLocations()
            {
@@ -273,7 +286,7 @@
            {
                this.errors = [];
                $("#update_course_model").modal("show");
-               this.update_course = this.courses[index];
+               this.update_course = this.courses.data[index];
            },
            updateCourse()
            {

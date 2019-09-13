@@ -22,15 +22,28 @@ class CompanyController extends Controller
     {
         //
         $townships =  Township::all();
-        $company=DB::table('companies')
+
+         $companyarray=DB::table('companies')
                 ->join('townships','townships.id','=','companies.township_id')
                 ->join('users','users.id','=','companies.user_id')
                 ->select('companies.*','townships.name as township_name','users.name as user_name')
                 ->get();
+
+        $company=DB::table('companies')
+                ->join('townships','townships.id','=','companies.township_id')
+                ->join('users','users.id','=','companies.user_id')
+                ->select('companies.*','townships.name as township_name','users.name as user_name')
+                ->orderBY("id","DESC")
+                ->paginate(10);
+
+       
+
         $company=CompanyResource::collection($company);
+        $companyarrays=CompanyResource::collection($companyarray);
 
         return response()->json([
-            'company' => $company
+            'company' => $companyarrays,
+            'pagination'=>$company->resource,
         ],200); 
     }
 

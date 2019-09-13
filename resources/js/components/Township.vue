@@ -1,10 +1,10 @@
 <template>
 
-  <div class="container">
+  <div class="container"> 
     <div class="row">
       <div class="col-md-12">
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
+        <div class="alert alert-success alert-dismissible fade show alertbox" role="alert" v-if="add_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -13,7 +13,7 @@
             </button>
         </div>
 
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
+        <div class="alert alert-warning alert-dismissible fade show alertbox" role="alert" v-if="update_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -22,7 +22,7 @@
             </button>
         </div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
+        <div class="alert alert-danger alert-dismissible fade show alertbox" role="alert" v-if="delete_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -48,7 +48,7 @@
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" v-if="townships.length > 0">
+              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" >
                 <thead class="bg-primary text-white">
                   <tr class="text-center">
                     <th> No </th>
@@ -58,9 +58,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(township, index) in townships">
-                    
-                    <td> {{ index + 1 }} </td>
+                  <tr v-for="(township,index) in townships.data">
+                  
+                    <td>{{townships.from + index}}</td>
                     <td> {{ township.name }} </td>
                     <td> {{ township.city.name }} </td>
 
@@ -75,8 +75,12 @@
                     </td>
                   </tr>
                 </tbody>
-                
+              
               </table>
+
+              <vue-pagination :data="townships"  @pagination-change-page="readTownships"></vue-pagination>
+
+              
             </div>
           </div>
 
@@ -107,7 +111,7 @@
 
             <div class="form-group">
               <label for="names"> City :</label>
-                <select class="form-control"  name="city_id" v-model="city_id" id="cityid">
+                <select class="form-control"  name="city_id" v-model="township.city" id="cityid">
                   <option disabled value="">Please select one</option>
                   <option v-for="(city, index) in cities" :value="city.id" > {{ city.name }}  </option>
                 </select>
@@ -180,18 +184,23 @@
        data(){
            return {
                township: {
-                   name: ''
+                   name: '',
+                   city:''
                },
+
+               
                cities:[],
                city_id: '',
                errors: [],
-               townships: [],
+               townships: {},
+               // pagination:{},
                add_noti:false,
                update_noti:false,
                delete_noti:false,
                message:'',
                update_township: {},
-               clone_update_township: {}
+               clone_update_township: {},
+              
            }
        },
        mounted()
@@ -199,17 +208,47 @@
 
           this.readTownships();
           this.readCities();
+          this.alertmessage();
+          // this.getResults();
+          
        },
+
+
+
        methods: {
-           deletetownship(index)
+       
+           readTownships(page=1)
            {
+             
+               axios.get('/api/setup/township?page=' + page)
+                    .then(({data}) => (this.townships = data.pagination))
+                    // .then(({data}) => (this.townships = data.paginate));
+                    // console.log(response.data.pagination);
+                   
+                   // .then(({data})=>(response));
+                   this.alertmessage();
+           },
+
+          alertmessage()
+            { 
+              setTimeout(function(){
+                $(".alertbox").hide()},1500);
+              
+            },
+
+          
+
+           deletetownship(index)
+           {    this.delete_noti=false;
                let conf = confirm("Do you ready want to delete this township?");
                if (conf === true) {
-                   axios.delete('/api/setup/township/' + this.townships[index].id)
+                   axios.delete('/api/setup/township/' + this.townships.data[index].id)
                        .then(response => {
-                           this.townships.splice(index, 1);
+                          this.readTownships();
+                           this.townships.data.splice(index, 1);
                            this.delete_noti=true;
                            this.message="Existing township has been sucessfully deleted!!";
+                           this.readTownships();
                        })
                        .catch(error => {
                        });
@@ -219,15 +258,18 @@
            {
                $("#add_township_model").modal("show");
            },
+
+
            createTownship()
-           {
+           {  
                axios.post('/api/setup/township', {
                    name: this.township.name,
-                   city_id : this.city_id,
+                   city_id : this.township.city,
                })
                    .then(response => {
                        this.reset();
-                       this.townships.push(response.data.township);
+                       // console.log(response);
+                       this.townships.data.push(response.data.township);
                        this.add_noti=true;
                        this.message="New township has been sucessfully added!!";
                        $("#add_township_model").modal("hide");
@@ -245,14 +287,9 @@
            reset()
            {
                this.township.name = '';
+               this.township.city='';
            },
-           readTownships()
-           {
-               axios.get('/api/setup/township')
-                   .then(response => {
-                       this.townships = response.data.townships;
-                   });
-           },
+
 
            readCities()
            {
@@ -266,14 +303,14 @@
            {
                this.errors = [];
                $("#update_township_model").modal("show");
-               this.update_township = this.townships[index];
-               var clonedata = this.townships.slice(index);
+               this.update_township = this.townships.data[index];
+               var clonedata = this.townships.data.slice(index);
                this.clone_update_township = clonedata[0];
 
            },
 
            updateTownship()
-           {
+           {  this.update_noti=false;
                axios.patch('/api/setup/township/' + this.clone_update_township.id, {
                    name: this.clone_update_township.name,
                    city_id : this.clone_update_township.city_id,

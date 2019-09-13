@@ -22,7 +22,7 @@ class DurationController extends Controller
     {
         //
         $courses = Course::all();
-        $durations =  DB::table('durations')
+        $durationarray =  DB::table('durations')
             ->join('courses', 'courses.id', '=', 'durations.course_id')
             ->join('users', 'users.id', '=', 'durations.user_id')
             ->select('durations.*', 'courses.name as coursename', 'users.name as username')
@@ -30,10 +30,23 @@ class DurationController extends Controller
 
             ->get();
 
+
+        $durations =  DB::table('durations')
+            ->join('courses', 'courses.id', '=', 'durations.course_id')
+            ->join('users', 'users.id', '=', 'durations.user_id')
+            ->select('durations.*', 'courses.name as coursename', 'users.name as username')
+            ->orderby('durations.id','DESC')
+
+            ->paginate(10);
+
+
+
         $durations =  DurationResource::collection($durations);
+        $durationarray =  DurationResource::collection($durationarray);
 
         return response()->json([
-            'durations' => $durations,
+            'durations' => $durationarray,
+            'pagination' => $durations->resource
         ],200);
     }
 

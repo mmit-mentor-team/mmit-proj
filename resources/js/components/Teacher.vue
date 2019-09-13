@@ -4,6 +4,15 @@
     <div class="row">
       <div class="col-md-12">
 
+         <div class="alert alert-success alert-dismissible fade show alertbox" role="alert" v-if="noti">
+            
+            <strong>SUCCESS!</strong> {{ message }}
+            
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
         <div class="card shadow mb-4">
           <div class="card-header py-3">
 
@@ -20,7 +29,7 @@
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" v-if="teachers.length>0">
+              <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" >
                 <thead class="bg-primary text-white">
                   <tr class="text-center">
                     <th> No </th>
@@ -30,8 +39,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(teacher, index) in teachers">
-                    <td> {{ index + 1 }} </td>
+                  <tr v-for="(teacher, index) in teachers.data">
+                    <td> {{ teachers.from + index }} </td>
                     <td> {{ teacher.username }} </td>
                     <td> 
                       {{ teacher.courses.name }} 
@@ -50,6 +59,7 @@
                 </tbody>
                 
               </table>
+              <vue-pagination :data="teachers"  @pagination-change-page="readTeachers"></vue-pagination>
             </div>
           </div>
 
@@ -171,8 +181,10 @@
                user_id: '',
                staffs: [],
                staff_id: '',
-               teachers: [],
-               update_teacher: {}
+               teachers: {},
+               update_teacher: {},
+               noti:false,
+               message:'',
            }
        },
        mounted()
@@ -180,26 +192,38 @@
            this.readTeachers();
            this.readCourses();
            this.readStaffs();
+           this.alertmessage();
        },
        methods: {
            deleteTeacher(index)
-           {
+           {  this.noti=false;
                let conf = confirm("Do you ready want to delete this Teacher?");
                if (conf === true) {
-                   axios.delete('api/setup/teacher/' + this.teachers[index].id)
+                   axios.delete('api/setup/teacher/' + this.teachers.data[index].id)
                        .then(response => {
-                           this.teachers.splice(index, 1);
+                           this.teachers.data.splice(index, 1);
+                           this.noti=true;
+                           this.message="Successfully Delete";
+                           this.readTeachers();
                        })
                        .catch(error => {
                        });
                }
            },
+
+            alertmessage()
+            { 
+              setTimeout(function(){
+                $(".alertbox").hide()},2000);
+              
+            },
+
            initAddTeacher()
            {
                $("#add_teacher_model").modal("show");
            },
            createTeacher()
-           {
+           {  this.noti=false;
                axios.post('api/setup/teacher', {
                    staff_id: this.staff_id,
                    course_id: this.course_id,
@@ -207,8 +231,10 @@
                })
                    .then(response => {
                        this.reset();
-                       this.teachers.push(response.data.teachers);
+                       this.teachers.data.push(response.data.teachers);
                        $("#add_teacher_model").modal("hide");
+                       this.noti=true;
+                       this.message="Successfully Added";
                        this.readTeachers();
                        this.readCourses();
                        this.readStaffs();
@@ -225,12 +251,15 @@
                this.teacher.staff_id = '';
                this.teacher.course_id = '';
            },
-           readTeachers()
+           readTeachers(page=1)
            {
-               axios.get('/api/setup/teacher')
-                   .then(response => {
-                       this.teachers = response.data.teachers;
-                   });
+               axios.get('/api/setup/teacher?page='+page)
+                   // .then(response => {
+                   //     this.teachers = response.data.teachers;
+                   // });
+
+                   .then(({data})=>(this.teachers=data.pagination));
+                   this.alertmessage();
            },
            readCourses()
            {
@@ -251,10 +280,10 @@
                this.errors = [];
                $("#update_teacher_model").modal("show");
 
-               this.update_teacher = this.teachers[index];
+               this.update_teacher = this.teachers.data[index];
            },
            updateTeacher()
-           {
+           {  this.noti=false;
                axios.patch('api/setup/teacher/' + this.update_teacher.id, {
                    staff_id : this.update_teacher.teacher_staffid,
                    course_id : this.update_teacher.teacher_courseid,
@@ -262,6 +291,8 @@
                })
                    .then(response => {
                        $("#update_teacher_model").modal("hide");
+                       this.noti=true;
+                       this.message="Successfully Update";
                        this.readTeachers();
                        this.readCourses();
                        this.readStaffs();

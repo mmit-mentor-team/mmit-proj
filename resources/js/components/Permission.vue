@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-12">
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
+        <div class="alert alertbox alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -13,7 +13,7 @@
             </button>
         </div>
 
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
+        <div class="alert alertbox alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -22,7 +22,7 @@
             </button>
         </div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
+        <div class="alert alertbox alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -46,7 +46,7 @@
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" v-if="permissions.length > 0">
+              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" >
                 <thead class="bg-primary text-white">
                   <tr class="text-center">
                     <th> No </th>
@@ -55,8 +55,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(permission, index) in permissions">
-                    <td> {{ index + 1 }} </td>
+                  <tr v-for="(permission, index) in permissions.data">
+                    <td> {{ permissions.from + index}} </td>
                     <td> {{ permission.name }} </td>
                     <td> 
                       <button @click="initUpdate(permission.id, permission.name)" class="btn btn-warning btn-xs">
@@ -71,6 +71,8 @@
                 </tbody>
                 
               </table>
+              <vue-pagination :data="permissions"  @pagination-change-page="readPermissions"></vue-pagination>
+              
             </div>
           </div>
 
@@ -164,13 +166,15 @@
                update_noti:false,
                delete_noti:false,
                message:'',
-               permissions: [],
+               permissions: {},
                update_permission: {}
            }
        },
        mounted()
        {
-          $('#dataTable').DataTable(this.readPermissions());
+          // $('#dataTable').DataTable(this.readPermissions());
+          this.readPermissions();
+          this.alertmessage();
        },
        methods: {
            deletePermission(index)
@@ -178,16 +182,26 @@
               let conf = confirm("Do you ready want to delete this permission?");
               if (conf === true) 
               {
-                axios.delete('/api/setup/permission/' + this.permissions[index].id)
+                axios.delete('/api/setup/permission/' + this.permissions.data[index].id)
                        .then(response => {
-                           this.permissions.splice(index, 1);
+                           this.permissions.data.splice(index, 1);
                            this.delete_noti=true;
                            this.message="Existing permission has been sucessfully deleted!!";
+                           this.readPermissions();
                        })
                        .catch(error => {
                        });
               }
            },
+
+           alertmessage()
+            { 
+              setTimeout(function(){
+                $(".alertbox").hide()},2000);
+              
+            },
+
+
            initAddPermission()
            {
                $("#add_permission_model").modal("show");
@@ -199,7 +213,7 @@
                })
                    .then(response => {
                        this.reset();
-                       this.permissions.push(response.data.permission);
+                       this.permissions.data.push(response.data.permission);
                        this.add_noti=true;
                        this.message="New permission has been sucessfully added!!";
                        $("#add_permission_model").modal("hide");
@@ -216,13 +230,16 @@
            {
                this.permission.name = '';
            },
-           readPermissions()
+           readPermissions(page=1)
            {
-               axios.get('/api/setup/permission')
-                   .then(response => {
-                       this.permissions = response.data.permissions;
-                       console.log(this.permissions);
-                   });
+               axios.get('/api/setup/permission?page='+page)
+                   // .then(response => {
+                   //     this.permissions = response.data.permissions;
+                   //     console.log(this.permissions);
+                   // });
+                   .then(({data})=>(this.permissions = data.pagination));
+                   this.alertmessage();
+
            },
            initUpdate(val_id, val_name)
            {

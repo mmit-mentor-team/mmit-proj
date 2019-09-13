@@ -19,7 +19,7 @@
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" v-if="locations.length > 0">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
                 <thead>
                   <tr>
                     <th> No </th>
@@ -29,8 +29,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(location, index) in locations">
-                    <td> {{ index + 1 }} </td>
+                  <tr v-for="(location, index) in locations.data">
+                    <td> {{ locations.from + index }} </td>
                     <td> {{ location.name }} </td>
                     <td> {{ location.city.name }} </td>
 
@@ -47,6 +47,7 @@
                 </tbody>
                 
               </table>
+              <vue-pagination :data="locations"  @pagination-change-page="readLocations"></vue-pagination>
             </div>
           </div>
 
@@ -145,7 +146,7 @@
                cities:[],
                city_id: '',
                errors: [],
-               locations: [],
+               locations: {},
                update_location: {}
            }
        },
@@ -161,9 +162,10 @@
            {
                let conf = confirm("Do you ready want to delete this Location?");
                if (conf === true) {
-                   axios.delete('api/setup/location/' + this.locations[index].id)
+                   axios.delete('api/setup/location/' + this.locations.data[index].id)
                        .then(response => {
-                           this.locations.splice(index, 1);
+                           this.locations.data.splice(index, 1);
+                           this.readLocations();
                        })
                        .catch(error => {
                        });
@@ -182,8 +184,9 @@
                })
                    .then(response => {
                        this.reset();
-                       this.locations.push(response.data.location);
+                       this.locations.data.push(response.data.location);
                        $("#add_location_model").modal("hide");
+                       this.readLocations();
                    })
                    .catch(error => {
                        this.errors = [];
@@ -196,12 +199,14 @@
            {
                this.location.name = '';
            },
-           readLocations()
+
+           readLocations(page=1)
            {
-               axios.get('api/setup/location')
-                   .then(response => {
-                       this.locations = response.data.locations;
-                   });
+               axios.get('api/setup/location?page='+page)
+                   // .then(response => {
+                   //     this.locations = response.data.locations;
+                   // });
+                   .then(({data})=>(this.locations=data.pagination));
            },
            readCities()
            {
@@ -214,7 +219,7 @@
            {
                this.errors = [];
                $("#update_location_model").modal("show");
-               this.update_location = this.locations[index];
+               this.update_location = this.locations.data[index];
            },
            updateLocation()
            {
@@ -225,6 +230,7 @@
                })
                    .then(response => {
                        $("#update_location_model").modal("hide");
+                       this.readLocations();
                    })
                    .catch(error => {
                        this.errors = [];

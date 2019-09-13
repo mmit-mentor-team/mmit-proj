@@ -24,7 +24,7 @@ class TeacherController extends Controller
         inner join teachers on users.id = teachers.user_id
         inner join courses on courses.user_id = teachers.id*/
         $courses = Course::all();
-        $teachers = DB::table('teachers')
+        $teacherarray = DB::table('teachers')
             ->join('courses', 'courses.id', '=', 'teachers.course_id')
            ->join('staffs', 'staffs.id', '=', 'teachers.staff_id')
            ->join('users', 'users.id', '=', 'staffs.user_id')
@@ -32,10 +32,24 @@ class TeacherController extends Controller
            ->join('cities', 'cities.id', '=', 'locations.city_id')
             ->select('teachers.*', 'courses.name as coursename', 'users.name as username','cities.name as cityname')
             ->get();
+
+
+        $teachers = DB::table('teachers')
+            ->join('courses', 'courses.id', '=', 'teachers.course_id')
+           ->join('staffs', 'staffs.id', '=', 'teachers.staff_id')
+           ->join('users', 'users.id', '=', 'staffs.user_id')
+           ->join('locations', 'locations.id', '=', 'courses.location_id')
+           ->join('cities', 'cities.id', '=', 'locations.city_id')
+            ->select('teachers.*', 'courses.name as coursename', 'users.name as username','cities.name as cityname')
+            ->orderBy('id','DESC')
+            ->paginate(10);
+
         $teachers =  TeacherResource::collection($teachers);
+        $teacherarray =  TeacherResource::collection($teacherarray);
 
         return response()->json([
-            'teachers' => $teachers,
+            'teachers' => $teacherarray,
+            'pagination'=>$teachers->resource,
         ],200);
 
         

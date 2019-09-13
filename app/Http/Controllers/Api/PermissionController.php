@@ -20,15 +20,23 @@ class PermissionController extends Controller
     public function index()
     {
         // $roles =  Role::all();
-        $permissions = DB::table('permissions')
+        $permissionarray = DB::table('permissions')
                  ->select('permissions.*')
                  // ->whereNotIn('id', [1])
                  ->get();
 
+        $permissions = DB::table('permissions')
+                 ->select('permissions.*')
+                 // ->whereNotIn('id', [1])
+                 ->orderBy('id','DESC')
+                 ->paginate(10);
+
         $permissions =  PermissionResource::collection($permissions);
+        $permissionarray =  PermissionResource::collection($permissionarray);
 
         return response()->json([
-            'permissions' => $permissions,
+            'permissions' => $permissionarray,
+            'pagination' => $permissions->resource,
         ],200);
     }
 

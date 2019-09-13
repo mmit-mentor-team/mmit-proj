@@ -23,12 +23,15 @@ class TownshipController extends Controller
     public function index()
     {
         $cities = City::all();
-        $townships =  Township::all();
+        $townshiparray=Township::all();
+        $townships =  DB::table('townships')->orderBy('id',"DESC")->paginate(10);
 
         $townships =  TownshipResource::collection($townships);
+        $townshiparrays =  TownshipResource::collection($townshiparray);
 
         return response()->json([
-            'townships' => $townships,
+            'townships' => $townshiparrays,
+            'pagination'=> $townships->resource,
         ],200);
     }
     public function index_datatable()

@@ -13,21 +13,29 @@ class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         // $roles =  Role::all();
-        $roles = DB::table('roles')
+        $rolearray = DB::table('roles')
                  ->select('roles.*')
                  ->whereNotIn('id', [1])
                  ->get();
 
+        $roles = DB::table('roles')
+                 ->select('roles.*')
+                 ->whereNotIn('id', [1])
+                 ->orderBy('id','DESC')
+                 ->paginate(10);
+
         $roles =  RoleResource::collection($roles);
+        $rolearray =  RoleResource::collection($rolearray);
 
         return response()->json([
-            'roles' => $roles,
+            'roles' => $rolearray,
+            'pagination' => $roles->resource,
         ],200);
     }
 

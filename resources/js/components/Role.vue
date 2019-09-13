@@ -1,10 +1,10 @@
 <template>
 
   <div class="container">
-    <div class="row">
+    <div class="row"> 
       <div class="col-md-12">
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
+        <div class="alert alertbox alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -13,7 +13,7 @@
             </button>
         </div>
 
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
+        <div class="alert alertbox alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -22,7 +22,7 @@
             </button>
         </div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
+        <div class="alert alertbox alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -46,7 +46,7 @@
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" v-if="roles.length > 0">
+              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" >
                 <thead class="bg-primary text-white">
                   <tr class="text-center">
                     <th> No </th>
@@ -55,8 +55,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(role, index) in roles">
-                    <td> {{ index + 1 }} </td>
+                  <tr v-for="(role, index) in roles.data">
+                    <td> {{ roles.from + index }} </td>
                     <td> {{ role.name }} </td>
                     <td> 
                       <button @click="initUpdate(role.id, role.name)" class="btn btn-warning btn-xs">
@@ -71,6 +71,7 @@
                 </tbody>
                 
               </table>
+              <vue-pagination :data="roles"  @pagination-change-page="readRoles"></vue-pagination>
             </div>
           </div>
 
@@ -164,25 +165,36 @@
                update_noti:false,
                delete_noti:false,
                message:'',
-               roles: [],
+               roles: {},
                update_role: {}
            }
        },
        mounted()
        {
-          $('#dataTable').DataTable(this.readRoles());
+          // $('#dataTable').DataTable(this.readRoles());
+          this.readRoles()
        },
        methods: {
+
+          alertmessage()
+          { 
+            setTimeout(function(){
+              $(".alertbox").hide()},2000);
+            
+          },
+
+
            deleteRole(index)
            {
               let conf = confirm("Do you ready want to delete this role?");
               if (conf === true) 
               {
-                axios.delete('/api/setup/role/' + this.roles[index].id)
+                axios.delete('/api/setup/role/' + this.roles.data[index].id)
                        .then(response => {
-                           this.roles.splice(index, 1);
+                           this.roles.data.splice(index, 1);
                            this.delete_noti=true;
                            this.message="Existing role has been sucessfully deleted!!";
+                           this.readRoles();
                        })
                        .catch(error => {
                        });
@@ -199,7 +211,7 @@
                })
                    .then(response => {
                        this.reset();
-                       this.roles.push(response.data.role);
+                       this.roles.data.push(response.data.role);
                        this.add_noti=true;
                        this.message="New role has been sucessfully added!!";
                        $("#add_role_model").modal("hide");
@@ -216,13 +228,15 @@
            {
                this.role.name = '';
            },
-           readRoles()
+           readRoles(page=1)
            {
-               axios.get('/api/setup/role')
-                   .then(response => {
-                       this.roles = response.data.roles;
-                       console.log(this.roles);
-                   });
+               axios.get('/api/setup/role?page='+page)
+                   // .then(response => {
+                   //     this.roles = response.data.roles;
+                   //     console.log(this.roles);
+                   // });
+                   .then(({data})=>(this.roles=data.pagination));
+                   this.alertmessage();
            },
            initUpdate(val_id, val_name)
            {

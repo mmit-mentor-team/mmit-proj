@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller; 
 use App\Model\Course;
 use App\Model\Location;
 use App\User;
@@ -23,17 +23,27 @@ class CourseController extends Controller
         //
         
         $locations = Location::all();
-        $courses =  DB::table('courses')
+        $coursearray =  DB::table('courses')
             ->join('locations', 'locations.id', '=', 'courses.location_id')
             ->join('users', 'users.id', '=', 'courses.user_id')
             ->join('cities', 'cities.id', '=', 'locations.city_id')
             ->select('courses.*', 'locations.name as locationname', 'users.name as username','cities.name as cityname')
             ->get();
 
+        $courses =  DB::table('courses')
+            ->join('locations', 'locations.id', '=', 'courses.location_id')
+            ->join('users', 'users.id', '=', 'courses.user_id')
+            ->join('cities', 'cities.id', '=', 'locations.city_id')
+            ->select('courses.*', 'locations.name as locationname', 'users.name as username','cities.name as cityname')
+            ->orderBy('id','DESC')
+            ->paginate(10);
+
         $courses =  CourseResource::collection($courses);
+        $coursearray =  CourseResource::collection($coursearray);
 
         return response()->json([
-            'courses' => $courses,
+            'courses' => $coursearray,
+            'pagination' => $courses->resource,
         ],200);
     }
 

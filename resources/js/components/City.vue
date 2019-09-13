@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-12">
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
+        <div class="alert alertbox alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -13,7 +13,7 @@
             </button>
         </div>
 
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
+        <div class="alert alertbox alert-warning alert-dismissible fade show" role="alert" v-if="update_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -22,7 +22,7 @@
             </button>
         </div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
+        <div class="alert alertbox alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -48,7 +48,7 @@
 
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0" v-if="cities.length > 0">
+              <table class="table table-bordered table-hover" id="dataTable" cellspacing="0">
                 <thead class="bg-primary text-white">
                   <tr class="text-center">
                     <th> No </th>
@@ -57,8 +57,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(city, index) in cities">
-                    <td> {{ index + 1 }} </td>
+                  <tr v-for="(city, index) in cities.data">
+                    <td> {{ cities.from + index }} </td>
                     <td> {{ city.name }} </td>
                     <td> 
                       <button @click="initUpdate(city.id, city.name)" class="btn btn-warning btn-xs">
@@ -73,6 +73,7 @@
                 </tbody>
                 
               </table>
+               <vue-pagination :data='cities' @pagination-change-page="readCities"></vue-pagination>
             </div>
           </div>
 
@@ -166,42 +167,53 @@
                update_noti:false,
                delete_noti:false,
                message:'',
-               cities: [],
+               cities: {},
                update_city: {}
            }
        },
        mounted()
        {
-          $('#dataTable').DataTable(this.readCities());
+           // $('#dataTable').DataTable(this.readCities());
+           this.readCities();
+           this.alertmessage();
        },
        methods: {
            deleteCity(index)
-           {
+           {  this.delete_noti=false;
               let conf = confirm("Do you ready want to delete this city?");
               if (conf === true) 
               {
-                axios.delete('/api/setup/city/' + this.cities[index].id)
+                axios.delete('/api/setup/city/' + this.cities.data[index].id)
                        .then(response => {
-                           this.cities.splice(index, 1);
+                           this.cities.data.splice(index, 1);
                            this.delete_noti=true;
                            this.message="Existing city has been sucessfully deleted!!";
+                           this.readCities();
                        })
                        .catch(error => {
                        });
               }
            },
+
+            alertmessage()
+            { 
+              setTimeout(function(){
+                $(".alertbox").hide()},1500);
+              
+            },
+
            initAddCity()
            {
                $("#add_city_model").modal("show");
            },
            createCity()
-           {
+           {  this.add_noti=false;
                axios.post('/api/setup/city', {
                    name: this.city.name,
                })
                    .then(response => {
                        this.reset();
-                       this.cities.push(response.data.city);
+                       this.cities.data.push(response.data.city);
                        this.add_noti=true;
                        this.message="New city has been sucessfully added!!";
                        $("#add_city_model").modal("hide");
@@ -218,12 +230,12 @@
            {
                this.city.name = '';
            },
-           readCities()
+           readCities(page=1)
            {
-               axios.get('/api/setup/city')
-                   .then(response => {
-                       this.cities = response.data.cities;
-                   });
+               axios.get('/api/setup/city?page='+page)
+                   .then(({data})=>(this.cities=data.pagination));
+                   this.alertmessage();
+
            },
            initUpdate(val_id, val_name)
            {
@@ -233,7 +245,7 @@
                this.update_city.name = val_name;
            },
            updateCity()
-           {
+           {    this.update_noti=false;
                axios.patch('/api/setup/city/' + this.update_city.id, {
                    name: this.update_city.name,
                })

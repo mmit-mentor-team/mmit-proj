@@ -118,10 +118,39 @@ class InquireController extends Controller
             ->join('cities','cities.id','=','locations.city_id')
             ->join('users', 'users.id', '=', 'inquires.user_id')
             ->orderBy('inquires.id','desc')
-            ->where('durations.course_id','=',3)
+            ->where('durations.course_id','=',5)
             ->get();
 
-
+            $php_inquires =  DB::table('inquires')
+            ->select(
+                'inquires.*', 
+                'townships.name as townshipname', 
+                'sections.title as sectiontitle', 
+                'sections.codeno as codeno', 
+                'courses.name as course', 
+                'courses.fees as fees', 
+                'courses.id as courseid',
+                'sections.startdate as startdate',
+                'sections.id as s_id', 
+                'sections.codeno as s_codeno', 
+                'sections.title as s_title', 
+                'sections.startdate as s_startdate', 
+                'sections.enddate as s_enddate', 
+                'durations.time as d_time', 
+                'durations.days as d_days', 
+                'durations.during as d_during', 
+                'courses.name as c_name', 
+                'cities.name as city_name')
+            ->join('townships', 'townships.id', '=', 'inquires.township_id')
+            ->join('sections', 'sections.id', '=', 'inquires.section_id')
+            ->join('durations', 'durations.id', '=', 'sections.duration_id')
+            ->join('courses','courses.id','=','durations.course_id')
+            ->join('locations','locations.id','=','courses.location_id')
+            ->join('cities','cities.id','=','locations.city_id')
+            ->join('users', 'users.id', '=', 'inquires.user_id')
+            ->orderBy('inquires.id','desc')
+            ->where('durations.course_id','=',5)
+            ->paginate(2);
 
             // $titles = DB::table('inquires')->pluck('name');
 

@@ -11,7 +11,7 @@ use App\Http\Resources\PositionResource;
 use Auth;
 
 class PositionController extends Controller
-{
+{ 
     /**
      * Display a listing of the resource.
      *
@@ -20,10 +20,15 @@ class PositionController extends Controller
     public function index()
     {
         //
-        $positions=Position::all();
+        $positionarray=Position::all();
+        $positions=Position::orderBy('id','DESC')->paginate(10);
+
         $positions=PositionResource::collection($positions);
+        $positionarray=PositionResource::collection($positionarray);
+
         return response()->json([
-            'positions'=>$positions
+            'positions'=>$positionarray,
+            'pagination'=>$positions->resource
         ],200);
     }
 

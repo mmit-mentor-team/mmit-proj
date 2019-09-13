@@ -416,7 +416,6 @@
 <script>
    export default {
       props: ["permissions","active_tab"],
-
       data(){
            return {
                section: {
@@ -470,7 +469,6 @@
             this.options.push(tag)
             this.value.push(tag)
           },
-
           updateTag (newTag) {
             const tag = {
               name: newTag,
@@ -479,7 +477,6 @@
             this.options.push(tag)
             this.update_section.value.push(tag)
           },
-
          deleteSection(index)
            {
                let conf = confirm("Do you ready want to delete this section?");
@@ -502,7 +499,6 @@
               for (var i = 0; i < this.value.length; i++) {
                 this.teachers[i] = this.value[i].id;
               }
-
               axios.post('/api/setup/section', {
                    title: this.section.title,
                    startdate: this.section.startdate,
@@ -522,34 +518,26 @@
                         this.readDurations();
                         this.readTeachers();
                         this.readCourses();
-
                    })
                    .catch(error => {
                        this.errors = [];
                        
-
                        if (error.response.data.errors && error.response.data.errors.title) {
                            this.errors.push(error.response.data.errors.title[0]);
                        }
-
                        if (error.response.data.errors && error.response.data.errors.startdate) {
                            this.errors.push(error.response.data.errors.startdate[0]);
                        }
                        if (error.response.data.errors && error.response.data.errors.enddate) {
                            this.errors.push(error.response.data.errors.enddate[0]);
                        }
-
                        if (error.response.data.errors && error.response.data.errors.duration_id) {
                            this.errors.push(error.response.data.errors.duration_id[0]);
                        }
-
                        if (error.response.data.errors && error.response.data.errors.teacher_id) {
                            this.errors.push(error.response.data.errors.teacher_id[0]);
                        }
                    });
-
-
-
            },
            reset()
            {
@@ -566,7 +554,6 @@
                        this.php_sections = response.data.php_sections;
                        this.php_mdy_sections = response.data.php_mdy_sections;
                        this.ios_sections = response.data.ios_sections;
-
                        this.noti=false;
                        this.notiup=false;
                        this.notidel=false;
@@ -589,18 +576,15 @@
                        for (var i = 0; i < response.data.teachers.length; i++) 
                        {
                        console.log(response.data.teachers[i].username);
-
                           teachersArr.push({
                             name:response.data.teachers[i].staffs.users.name, 
                             id: response.data.teachers[i].id
                           });
                        }
-
                        this.options = teachersArr;
                        teachersArr = [];
                    });
            },
-
            readCourses()
            {
                axios.get('/api/setup/course')
@@ -609,11 +593,9 @@
                        //console.log(response.data.teachers);
                    });
            },
-
           initUpdate(val_id,val_title,val_startdate,val_enddate,val_duration_id,val_course_id)
            {
               console.log(val_id);
-
                 axios.get(`/api/setup/sectionTeacher/${val_id}`)
                   .then(response => {
                     console.log(response.data.teachers);
@@ -622,10 +604,8 @@
                     }
                     this.update_section.value= this.teachersOptions;
                     this.teachersOptions = [];
-
                   });
               console.log(val_course_id);
-
                this.errors = [];
                $("#update_section_model").modal("show");
                this.update_section.id = val_id;
@@ -640,7 +620,6 @@
               for (var i = 0; i < this.update_section.value.length; i++) {
                 this.teachers[i] = this.update_section.value[i].id;
               }
-
                axios.patch('/api/setup/section/' + this.update_section.id, {
                    title: this.update_section.title,
                    startdate: this.update_section.startdate,

@@ -19,11 +19,14 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities = City::all();
+        $citiearray = City::all();
+        $cities = City::orderBy('id','DESC')->paginate(10);
+        $citiearray =  CityResource::collection($citiearray);
         $cities =  CityResource::collection($cities);
 
         return response()->json([
-            'cities' => $cities,
+            'cities' => $citiearray,
+            'pagination'=>$cities->resource,
         ],200);
     }
 

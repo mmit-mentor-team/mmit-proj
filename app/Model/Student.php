@@ -13,4 +13,14 @@ class Student extends Model
     public function inquire(){
     	return $this->belongsTo('App\Model\Inquire');
     }
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User');
+    }
+
+    public function jobcareer()
+    {
+        return $this->belongsTo('App\Model\Jobcareer');
+    }
 }

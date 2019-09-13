@@ -15,4 +15,19 @@ class Township extends Model
     	return $this->belongsTo('App\Model\City');
     }
 
+    public function user()
+    {
+    	return $this->belongsTo('App\User');
+    }
+
+    public function companies()
+    {
+        return $this->hasMany('App\Model\Company');
+    }
+
+    public function inquires()
+    {
+        return $this->hasMany('App\Model\Inquire');
+    }
+
 }

@@ -43,7 +43,7 @@ class InquireResource extends JsonResource
             'sectionid' => $this->section_id,
             'user' => new UserResource(User::find($this->user_id)),
             'township' => new TownshipResource(Township::find($this->township_id)),
-             'section' => new SectionResource(Section::find($this->section_id)),
+            'section' => new SectionResource(Section::find($this->section_id)),
 
             'townshipname' => $this->townshipname,
             'sectiontitle' => $this->sectiontitle,

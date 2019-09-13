@@ -48,4 +48,90 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Model\Staff');
     }
+
+    public function cities()
+    {
+        return $this->hasMany('App\Model\City');
+    }
+
+    public function companies()
+    {
+        return $this->hasMany('App\Model\Company');
+    }
+
+    public function courses()
+    {
+        return $this->hasMany('App\Model\Course');
+    }
+
+    public function dismisses()
+    {
+        return $this->hasMany('App\Model\Dismiss');
+    }
+
+    public function durations()
+    {
+        return $this->hasMany('App\Model\Duration');
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany('App\Model\Duration');
+    }
+
+    public function hires()
+    {
+        return $this->hasMany('App\Model\Hire');
+    }
+
+    public function incomes()
+    {
+        return $this->hasMany('App\Model\Income');
+    }
+
+    public function inquires()
+    {
+        return $this->hasMany('App\Model\Inquire');
+    }
+
+    public function interviews()
+    {
+        return $this->hasMany('App\Model\Interview');
+    }
+
+    public function jobcareers()
+    {
+        return $this->hasMany('App\Model\Jobcareer');
+    }
+
+    public function locations()
+    {
+        return $this->belongsTo('App\Model\Location');
+    }
+
+    public function positions()
+    {
+        return $this->belongsTo('App\Model\Positions');
+    }
+
+    public function sections()
+    {
+        return $this->belongsTo('App\Model\Section');
+    }
+
+    public function students()
+    {
+        return $this->belongsTo('App\Model\Student');
+    }
+
+    public function teachers()
+    {
+        return $this->belongsTo('App\Model\Teacher');
+    }
+
+    public function townships()
+    {
+        return $this->belongsTo('App\Model\Township');
+    }
+
 }

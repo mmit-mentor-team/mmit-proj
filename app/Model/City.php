@@ -14,4 +14,14 @@ class City extends Model
     {
         return $this->hasMany('App\Model\Township');
     }
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User');
+    }
+
+    public function locations()
+    {
+        return $this->hasMany('App\Model\City');
+    }
 }

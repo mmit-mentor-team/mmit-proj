@@ -9,4 +9,14 @@ class Position extends Model
     protected $fillable = [
         'name', 'user_id'
     ];
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User');
+    }
+
+    public function jobcareer()
+    {
+    	return $this->hasOne('App\Model\Jobcareer');
+    }
 }

@@ -164,7 +164,9 @@ class InquireController extends Controller
 
             // $titles = DB::table('inquires')->pluck('name');
 
-        // dd($titles);
+
+        // $php_inquires_new = Inquire::with('section', 'section.duration', 'section.duration.course')->where('section.duration.courseid','=',3)->get();
+        // dd($php_inquires_new);
 
         $hr_ygn_inquires =  InquireResource::collection($hr_ygn_inquires);
         $hr_mdy_inquires =  InquireResource::collection($hr_mdy_inquires);

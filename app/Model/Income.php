@@ -9,4 +9,14 @@ class Income extends Model
     protected $fillable = [
         'amount','description','date','location_id', 'user_id'
     ];
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User');
+    }
+
+    public function location()
+    {
+    	return $this->belongsTo('App\Model\location');
+    }
 }

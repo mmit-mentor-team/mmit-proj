@@ -2,12 +2,12 @@
     <div>
         <h4>{{currentDate}}</h4>
         <p>{{now}}</p>
-        <select class="custom-select" v-model="selected_section" @change="getStudents(selected_section)">
+        <select class="custom-select" v-model="selected_section" @change="getStudents()">
             <option disabled value="">Select Course</option>
             <option v-for="section in sections" :key="section.key" :value="section.id">{{section.title}}</option>
         </select>
-        <div>
-            <table class="table table-striped">
+        <div v-if="student_data">
+            <table class="table table-striped" v-if="student_data">
                 <thead>
                     <tr>
                         <th class="col-1">No</th>
@@ -17,24 +17,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(student,index) in students" :key="student.key">
+                    <tr v-for="(student,index) in students.data" :key="student.key">
                         <td>{{index+1}}</td>
-                        <td>{{student.name}}</td>
+                        <td>{{student.name.name}}</td>
                         <td>
                             <div class="form-check">
-                                <input type="checkbox" :value="student.id" v-model="presentStudents"
+                                <input type="checkbox" :value="student.id" :checked="status[index]"
                                     @change="changeStatus(student, index, $event)">
                             </div>
                         </td>
                         <td class="p-0">
-                            <input v-if="checkAbsence(student)" class="form-control my-1" type="text" placeholder="Fill remark"
+                            <input v-if="!status[index]" class="form-control my-1" type="text" placeholder="Fill remark"
                                 v-model="remarks[index]" />
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <pagination :data="students" @pagination-change-page="getStudents"></pagination>
 
-            <button class="btn btn-primary">Submit</button>
+            <button class="btn btn-primary" @click="submitAttendance()">Submit</button>
+        </div>
+        <div v-else>
+            <p>No Data</p>
         </div>
     </div>
 </template>
@@ -44,17 +48,28 @@
 
         data() {
             return {
+                //I want to show current Date and Time, so attendance collection will be easy I think.
                 currentDate: '',
                 now: '',
-                selected_section: '',
-                students: [],
-                presentStudents: [],
-                absences: [],
+                selected_section: '', //Selected Section
+                students: {}, //Database Data
+                status: [],
                 remarks: [],
             };
         },
 
+        computed: {
+            student_data:function() {
+                if(_.isEmpty(this.students.data)){
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        },
+
         mounted() {
+            //Setting the Date and Time
             let today = new Date(this.today);
             this.currentDate = today.toDateString();
             this.updateClock(today);
@@ -74,12 +89,13 @@
                 return (time < 10 ? '0' : '') + time;
             },
 
-            getStudents(section_id) {
-                axios.get('/api/attendances/students/' + section_id)
+            //Getting Database Data
+            getStudents(page = 1) {
+                axios.get('/api/attendances/students/' + this.selected_section + '?page=' + page)
                     .then(response => {
                         this.students = response.data;
-                        this.students.forEach((student, index) => {
-                            this.presentStudents.push(student.id);
+                        this.students.data.forEach((student, index) => {
+                            this.status.push(true);
                         });
                     })
                     .catch(error => {
@@ -87,26 +103,36 @@
                     });
             },
 
+            //Change the state of Present and Absence
             changeStatus(student, i, event) {
                 if (!event.target.checked) {
-                    this.absences.push(student);
-                    // this.remarks[i] = student.id;
+                    this.status[i] = false;
                 } else {
-                    let index = this.absences.indexOf(student);
-                    if (index > -1) {
-                        this.absences.splice(index, 1);
-                        // this.remarks.splice(index,1);
-                        delete this.remarks[i];
-                    }
+                    // delete this.remarks[i];
+                    this.remarks[i] = '';
+                    this.status[i] = true;
                 }
             },
 
-            checkAbsence(student){
-                if(this.absences.find(q => q == student)){
-                    return true;
-                } else {
-                    return false;
-                }
+            //Save attendance records
+            submitAttendance() {
+                let data = [];
+                this.students.data.forEach((student, index) => {
+                    data.push({
+                        'student_id': student.id,
+                        'status': this.status[index],
+                        'remark': this.remarks[index] || ''
+                    });
+                });
+                axios.post('/api/attendances/store', {
+                        data: data
+                    })
+                    .then(response => {
+                        this.getStudents();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             }
         }
     }

@@ -17,4 +17,8 @@ class Student extends Model
     public function section(){
         return $this->hasOneThrough('App\Model\Inquire','App\Model\Section');
     }
+
+    public function attendances(){
+        return $this->hasMany('App\Model\Attendance');
+    }
 }

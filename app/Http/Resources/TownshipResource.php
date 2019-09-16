@@ -25,7 +25,6 @@ class TownshipResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'city_id' => $this->city_id,
             'city' => new CityResource(City::find($this->city_id)),
             'user' => new UserResource(User::find($this->user_id))
         ];

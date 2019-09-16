@@ -23,13 +23,8 @@ class CourseController extends Controller
         //
         
         $locations = Location::all();
-        $courses =  DB::table('courses')
-            ->join('locations', 'locations.id', '=', 'courses.location_id')
-            ->join('users', 'users.id', '=', 'courses.user_id')
-            ->join('cities', 'cities.id', '=', 'locations.city_id')
-            ->select('courses.*', 'locations.name as locationname', 'users.name as username','cities.name as cityname')
-            ->get();
-
+        
+        $courses = Course::all();
         $courses =  CourseResource::collection($courses);
 
         return response()->json([

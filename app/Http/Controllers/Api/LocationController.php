@@ -23,11 +23,13 @@ class LocationController extends Controller
     {
         //
         $cities = City::all();
-       $locations =  DB::table('locations')
+        $locations =  DB::table('locations')
             ->join('cities', 'cities.id', '=', 'locations.city_id')
             ->join('users', 'users.id', '=', 'locations.user_id')
             ->select('locations.*', 'cities.name as cityname', 'users.name as username')
             ->get();
+
+        $locations = Location::orderBy('id','DESC')->get();
         $locations =  LocationResource::collection($locations);
 
         return response()->json([

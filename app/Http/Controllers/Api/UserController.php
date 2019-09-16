@@ -30,14 +30,7 @@ class UserController extends Controller
         $staffs=Staff::all();
         $locations=Location::all();
         $cities=City::all();
-        $profile=DB::table('users')
-                ->join('staffs','staffs.user_id','=','users.id')
-                ->join('roles','roles.id','=','users.role_id')
-                ->join('locations','locations.id','=','staffs.location_id')
-                ->join('cities','cities.id','=','locations.city_id')
-                ->select('users.*','roles.id as role_id','roles.name as role_name','roles.guard_name as role_guard_name','staffs.id as staff_id','staffs.dob as staff_dob','staffs.fathername as staff_fathername','staffs.nrc as staff_nrc','staffs.photo as staff_photo','staffs.user_id as staff_user_id','locations.id as location_id','locations.name as location_name','cities.name as city_name','cities.id as city_id')
-                ->where('users.id','=',Auth::user()->id)
-                ->get();
+        $profile=User::where('users.id','=',Auth::user()->id)->get();
 
         // $user=$profile->staff_nrc;
         // dd($user);

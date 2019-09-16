@@ -12,16 +12,16 @@ class Company extends Model
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User','user_id');
     }
 
     public function township()
     {
-    	return $this->belongsTo('App\Model\Township');
+    	return $this->belongsTo('App\Model\Township','township_id');
     }
 
     public function jobcareers()
     {
-        return $this->hasMany('App\Model\Jobcareer');
+        return $this->hasMany('App\Model\Jobcareer','jobcareer');
     }
 }

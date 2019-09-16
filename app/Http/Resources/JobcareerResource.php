@@ -25,6 +25,7 @@ class JobcareerResource extends JsonResource
             'id'=>$this->id,
             'gender' => $this->gender,
             'senddate' => $this->senddate,
+            'nos' => $this->nos,
             'remark' => $this->remark,
              'status' => $this->status,
             'company_id' => $this->company_id,

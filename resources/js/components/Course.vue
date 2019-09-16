@@ -160,9 +160,9 @@
             </div>
             <div class="form-group">
               <label for="names">Location:</label>
-                <select class="form-control"  name="location_id" v-model="update_course.locationid" id="locationid">
+                <select class="form-control"  name="location_id" v-model="update_course.location && update_course.location.id" id="locationid">
                   
-                  <option v-for="(location, index) in locations" :value="location.id" :selected="location.id == update_course.locationid"> {{ location.name }}  </option>
+                  <option v-for="(location, index) in locations" :value="location.id" :selected="location.id == update_course.location && update_course.location.id"> {{ location.name }}  </option>
                 </select>
             </div>
             
@@ -280,7 +280,7 @@
                axios.patch('api/setup/course/' + this.update_course.id, {
                    name: this.update_course.name,
                    fees: this.update_course.fees,
-                   location: this.update_course.locationid,
+                   location: this.update_course.location.id,
 
                })
                    .then(response => {

@@ -7,6 +7,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -39,9 +41,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function role()
+    public function roles()
     {
-        return $this->belongsTo('App\Model\Role');
+        return $this->belongsToMany('Spatie\Permission\Models\Role', 'model_has_roles','model_id');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany('Spatie\Permission\Models\Permission', 'model_has_permissions','model_id');
     }
 
     public function staff()
@@ -132,6 +139,11 @@ class User extends Authenticatable
     public function townships()
     {
         return $this->belongsTo('App\Model\Township');
+    }
+
+    public function educations()
+    {
+        return $this->belongsTo('App\Model\Education');
     }
 
 }

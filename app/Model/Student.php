@@ -11,12 +11,12 @@ class Student extends Model
     ];
 
     public function inquire(){
-    	return $this->belongsTo('App\Model\Inquire');
+    	return $this->belongsTo('App\Model\Inquire', 'inquire_id');
     }
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User', 'user_id');
     }
 
     public function jobcareer()

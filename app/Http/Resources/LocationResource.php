@@ -20,11 +20,8 @@ class LocationResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'cityid' => $this->city_id,
             'city' =>new CityResource(City::find($this->city_id)),
-            'cityname' => $this->cityname,
-            // 'cityid'   => $this->cityid,
-            'username' => $this->username
+            'user' => new UserResource(User::find($this->user_id))
         ];
     }
 }

@@ -22,14 +22,8 @@ class DurationController extends Controller
     {
         //
         $courses = Course::all();
-        $durations =  DB::table('durations')
-            ->join('courses', 'courses.id', '=', 'durations.course_id')
-            ->join('users', 'users.id', '=', 'durations.user_id')
-            ->select('durations.*', 'courses.name as coursename', 'users.name as username')
-            ->orderby('durations.id','ASC')
 
-            ->get();
-
+        $durations = Duration::orderBy('durations.id','ASC')->get();
         $durations =  DurationResource::collection($durations);
 
         return response()->json([

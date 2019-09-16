@@ -9,17 +9,14 @@
 
       <!-- ayechanoo start-->
       <div class="col-md-12">
-
-      
         <h1 class="h3 mb-2 text-gray-800"> Student List </h1>
-        
-        
         <div class="card shadow mb-4">
           <div class="card-header py-3">
             
             <button @click="addStudent()" class="btn btn-primary float-right" style="padding:8px">
               <i class="fa fa-plus"> </i> Add New Student
             </button>
+            
             <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="noti==1">
             
             <strong>{{ message }}</strong> 
@@ -43,7 +40,11 @@
               </a>
 
               <a class="nav-item nav-link " v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'active' : '' ]" data-id="3" v-on:click="showDuration(3)" id="nav-php_bootcamp-tab" data-toggle="tab" href="#nav-php_bootcamp" role="tab" aria-controls="nav-php_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'">
-                PHP Bootcamp 
+                PHP Bootcamp(YGN) 
+              </a>
+
+              <a class="nav-item nav-link " v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'active' : '' ]" data-id="5" v-on:click="showDuration(5)" id="nav-php_bootcamp_mdy-tab" data-toggle="tab" href="#nav-php_bootcamp_mdy" role="tab" aria-controls="nav-php_bootcamp_mdy" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'">
+                PHP Bootcamp(MDY) 
               </a>
 
               <a class="nav-item nav-link " v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" data-id="4" v-on:click="showDuration(4)" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'">
@@ -131,7 +132,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if=" student.secinstallmentamount != 0" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -234,7 +235,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if=" student.secinstallmentamount != 0" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -265,7 +266,7 @@
               <!-- for mdy hr batch end -->
 
 
-              <!-- for php bootcamp batch start -->
+              <!-- for php bootcamp ygn batch start -->
 
                 <div class="tab-pane bootcamp-ygn fade " v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" data-id="3" id="nav-php_bootcamp"   role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
 
@@ -339,7 +340,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if=" student.secinstallmentamount != 0" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -366,7 +367,112 @@
                     <!-- tabel end -->
                 
                 </div>
-              <!-- for php bootcamp batch end -->
+              <!-- for php bootcamp ygn batch end -->
+
+               <!-- for php bootcamp mdy batch start -->
+
+                <div class="tab-pane bootcamp-mdy fade " v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" data-id="5" id="nav-php_bootcamp_mdy"   role="tabpanel" aria-labelledby="nav-php_bootcamp_mdy-tab">
+
+                  <h1>helo  i am mdy bootcamp</h1>
+
+                  <!-- durations -->
+                    <div class="row">
+
+                      <div class="form-group  col-md-6 col-sm-12">
+                              <label for="names">Duration:</label>
+                                <select v-model="duration1" name="duration_id" id="duration_id" class="form-control" @change="readSections2">
+                                  <option disabled value="">Please select one</option>
+                                  <option v-for ="(duration1, index) in durations2"  :value="duration1.id">
+                                    {{ duration1.days }} ( {{ duration1.time }} )
+                                    [ {{ duration1.during }} ]
+
+                                  </option>
+                                </select>
+                            </div>
+                      
+                    
+                    <!-- durations end -->
+
+                    <!-- seciton start -->
+                    
+                        <div class="form-group  col-md-6 col-sm-12">
+                        <label for="names">Sections:</label>
+                          <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
+                            <option disabled value="">Please select one</option>
+                            <option v-for ="(section, index) in sections2"  :value="section.id">
+                              {{ section.title }} ( {{ section.durations.time }} )
+                              [ {{ section.during }} ]
+
+                            </option>
+                          </select>
+                      </div>
+                    </div>
+                    <!-- seciton end -->
+
+                    <!-- tabel start -->
+                      <div class="table-responsive">
+                        <!-- <h1>i am php bootcamp</h1> -->
+                        <table class="table table-bordered table-hover" id="table_id" cellspacing="0" >
+                          <thead class="bg-primary text-white">
+                            <tr>
+                              <th> No </th>
+                              <th> Invoice No </th>
+                              <th> Name </th>
+                              <th> job-Hunting </th>
+                              <th> Resume </th>
+                              <th colspan="2">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="(student, index) in students1">
+                              <td>{{index+1}}</td>
+                              <td> {{ student.i_receiveno }} </td>
+                              <td>{{student.inquire_name}}</td>
+
+                              <td v-if="student.status==1">Yes</td>
+                              <td v-else="student.status==0">No</td>
+
+                              <td v-if="student.resume!='no resume'" >
+                                <a :href="gotopubic(student.resume)"  class="btn btn-outline-info" target="__blank">resume</a>
+                              </td>
+                              <td v-else>
+                                <p class="text-danger">no resume</p>
+                              </td>
+
+                              <td>
+                                <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
+                                  <i class="fas fa-hand-holding-usd"></i>
+                                  Pay
+                                </button>
+
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                  <i class="fa fa-print"></i>
+                                  Print
+                                </button>
+
+                                <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
+                                  <i class="fas fa-eye"></i>
+                                </button> -->
+
+                                <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
+                                  <i class="fas fa-pen"></i>
+                                  Edit
+                                </button>
+                                  
+                                <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
+                                  <i class="fas fa-trash"></i>
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                          
+                        </table>
+                      </div>
+                    <!-- tabel end -->
+                
+                </div>
+              <!-- for php bootcamp mdy batch end -->
 
 
               <!-- for ios batch start -->
@@ -443,7 +549,7 @@
                                   Pay
                                 </button>
 
-                                <button @click="printStudent(index)" v-if=" student.secinstallmentamount != 0" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
                                   <i class="fa fa-print"></i>
                                   Print
                                 </button>
@@ -582,13 +688,13 @@
                   <!-- 0 means not full paid -->
               
                     <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="two" value="0" v-model="decision">
-                      <label class="form-check-label" for="two">No</label>
+                    <input type="radio" class="form-check-input" @change="makeDecision(decision)"  id="decisionTwo" value="Noadd" v-model="decision">
+                      <label class="form-check-label" for="decisionTwo">No</label>
                   </div>
                   <!-- 1 means full paid -->
                   <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="one" value="1" v-model="decision">
-                        <label class="form-check-label" for="one">Yes</label>
+                    <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="decisioOne" value="add" v-model="decision">
+                        <label class="form-check-label" for="decisioOne">Yes</label>
                   </div>
                      
               
@@ -910,6 +1016,7 @@
           studentstatus:0,
           addremain:0,
           showremain:1,
+          showprint:1,
           activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
 
           print_Student:{},
@@ -932,6 +1039,15 @@
       
       },
       methods:{
+        showPrint(inq,sec,fee){
+          var v=parseInt(inq)+parseInt(sec);
+          console.log("this value is "+ v+ " and the fee is "+ fee);
+          if(v==fee){
+            return this.showprint==1;
+          }else{
+            return this.showprint!=1;
+          }
+        },
         check(first,last,fee){
           console.log(fee);
 
@@ -943,8 +1059,8 @@
           }
         },
          makeDecision(index){
-        console.log(index);
-          if(index==1){
+        console.log("decision is "+index);
+          if(index=='add'){
             var d=0;var addremain1=0;
             $('.fullpaid').removeClass('d-none');
           $('.fullpaid').show();
@@ -957,6 +1073,7 @@
 
         }else{
           $('.fullpaid').hide();
+          this.student.secondSecinstallmentamount=0;
         }
           
         },
@@ -982,6 +1099,11 @@
          else if($('.active.tab-pane').hasClass('bootcamp-ygn')){
           console.log('this is muse is active');
           var d=$('.active.tab-pane').data('id');
+          this.showDuration(d);
+         }else if($('.active.tab-pane').hasClass('bootcamp-mdy')){
+          
+          var d=$('.active.tab-pane').data('id');
+          console.log('this is muse is active '+d);
           this.showDuration(d);
          } else{
           console.log('nothig');
@@ -1167,8 +1289,9 @@
         }
            ,
            readSections2(){
-            console.log('reach1');
+            //console.log('reach1');
           this.duration_id=this.duration1;
+          console.log("duration id is "+ this.duration_id);
           if(this.duration_id){
 
             axios.get(`/api/setup/section/${this.duration_id}`)
@@ -1395,7 +1518,7 @@
 
             creatStudent(){
               this.noti=0;var dbSectionInstallmentamount=0;
-              console.log(this.student.secondSecinstallmentamount);
+              console.log("the amount is"+this.student.secondSecinstallmentamount);
                 //console.log(this.files);
                // console.log(this.amount);
 

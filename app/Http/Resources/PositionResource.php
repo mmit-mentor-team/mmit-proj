@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Model;
 
 class PositionResource extends JsonResource
 {
@@ -18,6 +19,7 @@ class PositionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'user' => new UserResource(User::find($this->user_id))
         ];
     }
 }

@@ -6,7 +6,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\User;
 use App\Model\Course;
 
-
 class DurationResource extends JsonResource
 {
     /**
@@ -19,13 +18,14 @@ class DurationResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id' => $this->id,
-            'time' => $this->time,
-            'days' => $this->days,
-            'during' => $this->during,
-
-            'courseid' => $this->course_id,
-            'course' =>new CourseResource(Course::find($this->course_id)),
+            'id'        =>  $this->id,
+            'time'      =>  $this->time,
+            'days'      =>  $this->days,
+            'during'    =>  $this->during,
+            'course_id' =>  $this->course_id,
+            'user_id'   =>  $this->user_id,
+            'course'    =>  new CourseResource(Course::find($this->course_id)),
+            'user'      =>  new UserResource(User::find($this->user_id)),
         ];
     }
 }

@@ -12,11 +12,11 @@ class Income extends Model
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User','user_id');
     }
 
     public function location()
     {
-    	return $this->belongsTo('App\Model\location');
+    	return $this->belongsTo('App\Model\location','location_id');
     }
 }

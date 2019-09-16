@@ -17,12 +17,12 @@ class Section extends Model
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User','user_id');
     }
 
     public function duration()
     {
-        return $this->belongsTo('App\Model\Duration');
+        return $this->belongsTo('App\Model\Duration', 'duration_id');
     }
 
     public function inquires()

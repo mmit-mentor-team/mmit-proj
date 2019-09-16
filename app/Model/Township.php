@@ -12,12 +12,12 @@ class Township extends Model
 
     public function cities()
     {
-    	return $this->belongsTo('App\Model\City');
+    	return $this->belongsTo('App\Model\City', 'city_id');
     }
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User', 'user_id');
     }
 
     public function companies()

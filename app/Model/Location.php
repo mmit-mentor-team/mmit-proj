@@ -12,7 +12,12 @@ class Location extends Model
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User','user_id');
+    }
+
+    public function staff()
+    {
+        return $this->hasOne('App\Model\Staff');
     }
 
     public function income()
@@ -27,6 +32,6 @@ class Location extends Model
 
     public function city()
     {
-        return $this->belongsTo('App\Model\City');
+        return $this->belongsTo('App\Model\City','city_id');
     }
 }

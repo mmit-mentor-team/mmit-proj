@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model\City;
+use App\User;
 
 class CityResource extends JsonResource
 {
@@ -18,8 +19,9 @@ class CityResource extends JsonResource
         // return parent::toArray($request);
 
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'    => $this->id,
+            'name'  => $this->name,
+            'user' => new UserResource(User::find($this->user_id))
         ];
     }
 }

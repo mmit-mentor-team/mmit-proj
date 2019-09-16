@@ -35,7 +35,8 @@ Vue.component('income', require('./components/Income.vue').default);
 Vue.component('sectionkg', require('./components/Sectionkg.vue').default);
 Vue.component('company',require('./components/Company.vue').default);
 Vue.component('inquire', require('./components/Inquire.vue').default);
-Vue.component('student', require('./components/Student.vue').default);
+Vue.component('education', require('./components/Education.vue').default);
+Vue.component('student', require('./components/Student1.vue').default);
 Vue.component('jobcareer', require('./components/Jobcareer.vue').default);
 Vue.component('interview', require('./components/Interview.vue').default);
 Vue.component('position',require('./components/Position.vue').default);
@@ -61,6 +62,11 @@ Vue.use(Multiselect);
 
 Vue.component('multiselect', Multiselect);
 
+
+import Select2 from 'v-select2-component';
+Vue.component('Select2', Select2);
+
+
 require('./backend/vendor/fontawesome-free/css/all.min.css');
 require('./backend/css/sb-admin-2.min.css');
 require('./backend/vendor/jquery/jquery.min.js');
@@ -72,6 +78,7 @@ require('./backend/vendor/datatables/jquery.dataTables.min.js');
 require('./backend/vendor/datatables/dataTables.bootstrap4.min.js');
 // require('./backend/js/demo/datatables-demo.js');
 require('./backend/js/sb-admin-2.min.js');
+require('./backend/js/vuejs-datatable.js');
 
 
 

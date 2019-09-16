@@ -16,16 +16,16 @@ class Inquire extends Model
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User', 'user_id');
     }
 
     public function section()
     {
-        return $this->belongsTo('App\Model\Section');
+        return $this->belongsTo('App\Model\Section', 'section_id');
     }
 
     public function township()
     {
-        return $this->belongsTo('App\Model\Township');
+        return $this->belongsTo('App\Model\Township', 'township_id');
     }
 }

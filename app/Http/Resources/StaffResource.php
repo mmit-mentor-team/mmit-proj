@@ -8,6 +8,10 @@ use App\Model\Location;
 use App\Model\Staff;
 use App\Model\Role;
 
+use App\Http\Resources\UserResource;
+use App\Http\Resources\LocationResource;
+
+
 class StaffResource extends JsonResource
 {
     /**
@@ -21,26 +25,20 @@ class StaffResource extends JsonResource
 
         /*return parent::toArray($request);*/
         return[
-            'id' => $this->id,
-            'dob' => $this->dob,
-            'fathername' => $this->fathername,
-            'nrc' => $this->nrc,
-            'photo' => $this->photo,
-            'joineddate' => $this->joineddate,
-            'leavedate' => $this->leavedate,
-            'status' => $this->status,
-            'staff_locationid' => $this->location_id,
-            'locationname' => $this->locationname,
-            'username' => $this->username,
-            'userid'    =>  $this->userid,
-            'useremail' =>  $this->useremail,
-            'userroleid' => $this->userroleid,
-            'userpassword'  => $this->userpassword,
-            'locations' => new LocationResource(Location::find($this->location_id)),
-            'users' => new UserResource(User::find($this->user_id)),
-            'rolename' => $this->rolename,
-            'roleid' => $this->roleid,
-            // 'roles' =>  new RoleResource(Role::find($this->userid->role_id))
+            'id'            => $this->id,
+            'dob'           => $this->dob,
+            'fathername'    => $this->fathername,
+            'nrc'           => $this->nrc,
+            'phone'         => $this->phone,
+            'photo'         => $this->photo,
+            'joineddate'    => $this->joineddate,
+            'leavedate'     => $this->leavedate,
+            'status'        => $this->status,
+            'location_id'   => $this->location_id,
+            'user_id'       => $this->user_id,
+
+            'location'     => new LocationResource(Location::find($this->location_id)),
+            'user'         => new UserResource(User::find($this->user_id)),
         ];
     }
 }

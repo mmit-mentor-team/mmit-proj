@@ -57,6 +57,7 @@ Route::get('profile','HomeController@profile')->name('profile');
 
 // Si Thu Aung
 Route::get('/inquire', 'HomeController@inquire')->name('inquire');
+Route::get('/education', 'HomeController@education')->name('education');
 
 // Aye Chan Oo
 Route::get('/student', 'HomeController@student')->name('student');
@@ -70,3 +71,7 @@ Route::get('/interviewform/{id}','HomeController@interviewform')->name('intervie
 Route::get('/interview/{id}','HomeController@interviewform')->name('interview');
 
 Route::get('/role','HomeController@role')->name('role');
+
+//Report
+Route::get('/export/{month}/{year}', 'ExportController@export');
+Route::get('/report', 'HomeController@report')->name('report');

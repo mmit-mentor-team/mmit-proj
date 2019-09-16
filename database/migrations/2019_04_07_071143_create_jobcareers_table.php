@@ -17,6 +17,7 @@ class CreateJobcareersTable extends Migration
             $table->bigIncrements('id');
             $table->string('gender');
             $table->date('senddate');
+            $table->integer('nos');
             $table->longText('remark');
             $table->integer('status');
 

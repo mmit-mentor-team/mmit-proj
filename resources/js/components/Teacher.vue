@@ -32,10 +32,10 @@
                 <tbody>
                   <tr v-for="(teacher, index) in teachers">
                     <td> {{ index + 1 }} </td>
-                    <td> {{ teacher.username }} </td>
+                    <td> {{ teacher.staff.user.name }} </td>
                     <td> 
-                      {{ teacher.courses.name }} 
-                      ( {{ teacher.cityname }} )
+                      {{ teacher.course.name }} 
+                      ( {{ teacher.course.location.city.name }} )
                     </td>
                     <td> 
                       <button @click="initUpdate(index)" class="btn btn-warning btn-xs">
@@ -77,7 +77,7 @@
                <label for="loc">Staff:</label>
                <select v-model="staff_id" class="form-control" id="staffid" name="staff_id">
                  <option disabled value="">Please chooose one</option>
-                 <option v-for="(staff, index) in staffs" :value="staff.id" > {{ staff.username }} </option>
+                 <option v-for="(staff, index) in staffs" :value="staff.id" > {{ staff.user.name }} </option>
                </select>
                
            </div>
@@ -87,7 +87,7 @@
                 <select v-model="course_id" class="form-control" id="courseid" name="course_id">
                   <option disabled value="">Please chooose one</option>
                   <option v-for="(course, index) in courses" :value="course.id">
-                    {{course.name}} ( {{ course.cityname }} )
+                    {{course.name}} ( {{ course.location.city.name  }} )
                   </option>
                 </select>
             </div>
@@ -125,16 +125,16 @@
             
             <div class="form-group">
               <label for="names"> Staff :</label>
-                <select class="form-control"  name="staff_id" v-model="update_teacher.teacher_staffid" id="staffid">
-                <option v-for="(staff, index) in staffs" :value="staff.id" :selected="staff.id == update_teacher.teacher_staffid"> {{ staff.username }}  </option>
+                <select class="form-control"  name="staff_id" v-model="update_teacher.staff && update_teacher.staff.id" id="staffid">
+                <option v-for="(staff, index) in staffs" :value="staff.id" :selected="staff.user.id == update_teacher.staff && update_teacher.staff.id"> {{ staff.user.name }}  </option>
                </select>
           </div>
             <div class="form-group">
               <label for="names"> Course :</label>
-                <select class="form-control"  name="course_id" v-model="update_teacher.teacher_courseid" id="courseid">
+                <select class="form-control"  name="course_id" v-model="update_teacher.course && update_teacher.course.id" id="courseid">
     
-                <option v-for="(course, index) in courses" :value="course.id" :selected="course.id == update_teacher.teacher_courseid"> 
-                  {{ course.name }}  ( {{ course.cityname }} )
+                <option v-for="(course, index) in courses" :value="course.id" :selected="course.id == update_teacher.course && update_teacher.course.id"> 
+                  {{ course.name }}  ( {{ course.location.city.name }} )
                  </option>
                </select>
           </div>
@@ -256,8 +256,8 @@
            updateTeacher()
            {
                axios.patch('api/setup/teacher/' + this.update_teacher.id, {
-                   staff_id : this.update_teacher.teacher_staffid,
-                   course_id : this.update_teacher.teacher_courseid,
+                   staff_id : this.update_teacher.staffs.id,
+                   course_id : this.update_teacher.courses.id,
 
                })
                    .then(response => {

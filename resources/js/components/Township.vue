@@ -150,9 +150,10 @@
 
             <div class="form-group">
               <label for="names"> City :</label>
-                <select class="form-control"  name="city_id" v-model="clone_update_township.city_id" id="cityid">
+
+                <select class="form-control"  name="city_id" v-model="clone_update_township.city && clone_update_township.city.id" id="cityid">
                   
-                  <option v-for="(city, index) in cities" :value="city.id" :selected="city.id == clone_update_township.city_id"> {{ city.name }}  </option>
+                  <option v-for="(city, index) in cities" :value="city.id" :selected="city.id == clone_update_township.city && clone_update_township.city.id "> {{ city.name }}  </option>
                 </select>
             </div>
             
@@ -276,7 +277,7 @@
            {
                axios.patch('/api/setup/township/' + this.clone_update_township.id, {
                    name: this.clone_update_township.name,
-                   city_id : this.clone_update_township.city_id,
+                   city_id : this.clone_update_township.city.id,
                })
                    .then(response => {
                         this.update_noti=true;

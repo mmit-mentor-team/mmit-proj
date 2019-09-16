@@ -12,12 +12,12 @@ class Interview extends Model
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User', 'user_id');
     }
 
     public function jobcareer()
     {
-    	return $this->belongsTo('App\Model\Jobcareer');
+    	return $this->belongsTo('App\Model\Jobcareer', 'jobcareer_id');
     }
 
     public function hire()

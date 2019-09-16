@@ -12,16 +12,16 @@ class City extends Model
 
     public function townships()
     {
-        return $this->hasMany('App\Model\Township');
+        return $this->hasMany('App\Model\Township','township_id');
     }
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User','user_id');
     }
 
     public function locations()
     {
-        return $this->hasMany('App\Model\City');
+        return $this->hasMany('App\Model\Location','location_id');
     }
 }

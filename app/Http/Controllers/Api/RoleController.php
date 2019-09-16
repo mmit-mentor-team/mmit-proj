@@ -19,10 +19,12 @@ class RoleController extends Controller
     public function index()
     {
         // $roles =  Role::all();
-        $roles = DB::table('roles')
-                 ->select('roles.*')
-                 ->whereNotIn('id', [1])
-                 ->get();
+        // $roles = DB::table('roles')
+        //          ->select('roles.*')
+        //          ->whereNotIn('id', [1])
+        //          ->get();
+
+        $roles = Role::whereNotIn('id', [1])->get();
 
         $roles =  RoleResource::collection($roles);
 

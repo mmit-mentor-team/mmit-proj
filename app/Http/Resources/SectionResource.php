@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model\Teacher;
 use App\Model\Staff;
 use App\Model\Duration;
+use App\Model\Section;
 
 use App\User;
 
@@ -34,28 +35,17 @@ class SectionResource extends JsonResource
         $teachersid_array = explode(',', $teachersid_string);
 
         return [
-            'id' => $this->id,
-            'codeno' => $this->codeno,
-            'title' => $this->title,
-            'startdate' => $this->startdate,
-            'enddate' => $this->enddate,
-            'duration_id' => $this->duration_id,
+            'id'            => $this->id,
+            'codeno'        => $this->codeno,
+            'title'         => $this->title,
+            'startdate'     => $this->startdate,
+            'enddate'       => $this->enddate,
+            'duration_id'   => $this->duration_id,
+            'user_id'       => $this->user_id,
 
-            'durations' =>new DurationResource(Duration::find($this->duration_id)),
-            'coursename' => $this->coursename,
-            'courseid'  => $this->courseid,
-            'teachers'  =>  $this->teachers,
-            'teachers_id'   =>  $this->teachers_id,
-
-            'time'      => $this->time,
-            'days'      => $this->day,
-            'during'    =>  $this->during,
-            'location'  =>  $this->location,
-            'city'      =>  $this->city
-
-
-            // 'cityid'   => $this->cityid,
-            //'username' => $this->username
+            'duration'      => new DurationResource(Duration::find($this->duration_id)),
+            'user'          => new UserResource(User::find($this->user_id)),
+            "teachers"      =>  TeacherResource::collection(Section::find($this->id)->teachers),
         ];
     }
 }

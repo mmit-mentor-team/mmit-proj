@@ -26,34 +26,20 @@ class StaffController extends Controller
     {
         //
         $locations = Location::all();
-        $staffs = DB::table('staffs')
-            ->join('locations', 'locations.id', '=', 'staffs.location_id')
-            ->join('users', 'users.id', '=', 'staffs.user_id')
-            ->join('roles','roles.id', '=', 'users.role_id')
-            /*->join('model_has_roles', 'model_has_roles.role_id','=', 'users.role_id')
-            ->join('model_has_permissions', 'model_has_permissions.model_id','=','model_has_roles.model_id')
-            ->join('permissions', 'permissions.id', '=', 'model_has_permissions.permission_id')*/
-            ->select('staffs.*', 'locations.name as locationname', 'users.name as username', 'users.id as userid', 'users.email as useremail', 'users.role_id as userroleid', 'users.password as userpassword', 'roles.name as rolename', 'roles.id as roleid')
-            ->where('staffs.status','=',0)
-            ->get();
+
+        
+        $staffs = Staff::where('status', '=', 0)->get();
         $staffs =  StaffResource::collection($staffs);
 
-        $leavestaffs = DB::table('staffs')
-            ->join('locations', 'locations.id', '=', 'staffs.location_id')
-            ->join('users', 'users.id', '=', 'staffs.user_id')
-            ->join('roles','roles.id', '=', 'users.role_id')
-            ->select('staffs.*', 'locations.name as locationname', 'users.name as username', 'users.id as userid', 'users.email as useremail', 'users.role_id as userroleid', 'users.password as userpassword', 'roles.name as rolename', 'roles.id as roleid')
-            ->where('staffs.status','=',1)
-            ->get();
+
+        $leavestaffs = Staff::where('status', '=', 1)->get();
         $leavestaffs =  StaffResource::collection($leavestaffs);
 
-        $teacherstaffs = DB::table('staffs')
-            ->join('locations', 'locations.id', '=', 'staffs.location_id')
-            ->join('users', 'users.id', '=', 'staffs.user_id')
-            ->join('roles','roles.id', '=', 'users.role_id')
-            ->select('staffs.*', 'locations.name as locationname', 'users.name as username', 'users.id as userid', 'users.email as useremail', 'users.role_id as userroleid', 'users.password as userpassword', 'roles.name as rolename', 'roles.id as roleid')
-            ->where('roles.name','=','Teacher')
-            ->get();
+        $teacherstaffs = Staff::whereHas('user', function($q1){
+            $q1->whereHas('roles', function($q2){
+                $q2->where('name', "Teacher");
+            });
+        })->get();
         $teacherstaffs =  StaffResource::collection($teacherstaffs);
 
 
@@ -186,6 +172,8 @@ class StaffController extends Controller
             'ldate'  => 'required',
             'location_id'  => 'required',
         ]);
+
+        // dd(request('location_id'));
         
         if($request->get('image'))
        {

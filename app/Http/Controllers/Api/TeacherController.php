@@ -24,14 +24,8 @@ class TeacherController extends Controller
         inner join teachers on users.id = teachers.user_id
         inner join courses on courses.user_id = teachers.id*/
         $courses = Course::all();
-        $teachers = DB::table('teachers')
-            ->join('courses', 'courses.id', '=', 'teachers.course_id')
-           ->join('staffs', 'staffs.id', '=', 'teachers.staff_id')
-           ->join('users', 'users.id', '=', 'staffs.user_id')
-           ->join('locations', 'locations.id', '=', 'courses.location_id')
-           ->join('cities', 'cities.id', '=', 'locations.city_id')
-            ->select('teachers.*', 'courses.name as coursename', 'users.name as username','cities.name as cityname')
-            ->get();
+
+        $teachers = Teacher::all();
         $teachers =  TeacherResource::collection($teachers);
 
         return response()->json([
@@ -77,18 +71,22 @@ class TeacherController extends Controller
     public function show($id)
     {
         // dd($id);
-        $teachers = DB::table('teachers')
-            ->join('courses', 'courses.id', '=', 'teachers.course_id')
-            ->join('staffs', 'staffs.id', '=', 'teachers.staff_id')
-            ->join('users', 'users.id', '=', 'staffs.user_id')
-            ->join('locations', 'locations.id', '=', 'courses.location_id')
-            ->join('cities', 'cities.id', '=', 'locations.city_id')
-            ->where('courses.id',$id)
-            ->select('teachers.*', 'courses.name as coursename', 'users.name as username','cities.name as cityname')
-            ->get();
+        // $teachers = DB::table('teachers')
+        //     ->join('courses', 'courses.id', '=', 'teachers.course_id')
+        //     ->join('staffs', 'staffs.id', '=', 'teachers.staff_id')
+        //     ->join('users', 'users.id', '=', 'staffs.user_id')
+        //     ->join('locations', 'locations.id', '=', 'courses.location_id')
+        //     ->join('cities', 'cities.id', '=', 'locations.city_id')
+        //     ->where('courses.id',$id)
+        //     ->select('teachers.*', 'courses.name as coursename', 'users.name as username','cities.name as cityname')
+        //     ->get();
             // dd($teachers);
 
-            $teachers =  TeacherResource::collection($teachers);
+        $teachers = Teacher::whereHas('course', function($q1)  use($id) {
+            $q1->where('id', $id);
+        })->get();
+
+        $teachers =  TeacherResource::collection($teachers);
 
             // dd($teachers);
 

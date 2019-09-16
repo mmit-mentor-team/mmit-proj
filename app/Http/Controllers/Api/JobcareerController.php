@@ -55,6 +55,8 @@ class JobcareerController extends Controller
 
         $gender = request('gender');
         $senddate = request('senddate');
+        $nos=request('nos');
+
          $remark = request('remark');
          $status=1;
           $company_id = request('company_id');
@@ -64,6 +66,7 @@ class JobcareerController extends Controller
         $jobcareer = Jobcareer::create([
             'gender'       =>  $gender,
             'senddate'    =>  $senddate,
+            'nos'=>$nos,
             'remark'    =>  $remark,
              'status'    =>  $status,
             'company_id'    =>  $company_id,
@@ -115,6 +118,7 @@ class JobcareerController extends Controller
          $jobcareer->gender = request('gender');
            $jobcareer->senddate = request('senddate');
              $jobcareer->remark = request('remark');
+              $jobcareer->nos = request('nos');
                $jobcareer->status = 1;
                $jobcareer->company_id = request('company_id');
        $jobcareer->position_id = request('position_id');

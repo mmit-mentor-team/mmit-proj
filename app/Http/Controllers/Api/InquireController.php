@@ -47,8 +47,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -79,8 +78,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -111,8 +109,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -147,8 +144,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -158,6 +154,37 @@ class InquireController extends Controller
             ->join('users', 'users.id', '=', 'inquires.user_id')
             ->orderBy('inquires.id','desc')
             ->where('durations.course_id','=',4)
+            ->get();
+
+        $php_mdy_inquires =  DB::table('inquires')
+            ->select(
+                'inquires.*', 
+                'townships.name as townshipname', 
+                'sections.title as sectiontitle', 
+                'sections.codeno as codeno', 
+                'courses.name as course', 
+                'courses.fees as fees', 
+                'courses.id as courseid',
+                'sections.startdate as startdate',
+                'sections.id as s_id', 
+                'sections.codeno as s_codeno', 
+                'sections.title as s_title', 
+                'sections.startdate as s_startdate', 
+                'sections.enddate as s_enddate', 
+                'durations.time as d_time', 
+                'durations.days as d_days', 
+                'durations.during as d_during', 
+                'courses.name as c_name', 
+                'cities.name as city_name')
+            ->join('townships', 'townships.id', '=', 'inquires.township_id')
+            ->join('sections', 'sections.id', '=', 'inquires.section_id')
+            ->join('durations', 'durations.id', '=', 'sections.duration_id')
+            ->join('courses','courses.id','=','durations.course_id')
+            ->join('locations','locations.id','=','courses.location_id')
+            ->join('cities','cities.id','=','locations.city_id')
+            ->join('users', 'users.id', '=', 'inquires.user_id')
+            ->orderBy('inquires.id','desc')
+            ->where('durations.course_id','=',5)
             ->get();
 
 
@@ -172,12 +199,14 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         $hr_mdy_inquires =  InquireResource::collection($hr_mdy_inquires);
         $php_inquires =  InquireResource::collection($php_inquires);
         $ios_inquires =  InquireResource::collection($ios_inquires);
+        $php_mdy_inquires = InquireResource::collection($php_mdy_inquires);
 
         return response()->json([
             'hr_ygn_inquires' => $hr_ygn_inquires,
             'hr_mdy_inquires'   => $hr_mdy_inquires,
             'php_inquires'  =>  $php_inquires,
             'ios_inquires'  =>  $ios_inquires,
+            'php_mdy_inquires' => $php_mdy_inquires,
             'inquires'=>$inquiresAlls
         ],200);
 
@@ -319,8 +348,7 @@ $inquiresAlls=InquireResource::collection($inquireAll);
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -475,8 +503,7 @@ $inquiresAlls=InquireResource::collection($inquireAll);
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-                'cities.name as city_name',
-            )
+                'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -501,11 +528,59 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         $inquire=Inquire::orderBy('id','desc')
                 ->first();     
         // dd($inquire);
-        $inquire = new InquireResource($inquire);
 
+
+        if ($inquire == null) {
+            $inquire = [
+                "receiveno" => 0
+            ];
+            return response()->json([
+                'inquire'  =>  $inquire,
+                'message'   =>  'Successfully selected Last Inquired!'
+            ],200);
+        }else{
+            $inquire = new InquireResource($inquire);
+
+            return response()->json([
+                'inquire'  =>  $inquire,
+                'message'   =>  'Successfully selected Last Inquired!'
+            ],200);
+        }
+        
+    }
+
+
+    public function teacherlist($id)
+    {
+        $teacherlist =  DB::table('sections')
+            ->select(
+                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
+                )
+            ->distinct()
+            ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
+            ->join('teachers', 'section_teacher.teacher_id', '=', 'teachers.id')
+            ->join('staffs','teachers.staff_id', '=', 'staffs.id')
+            ->join('users','staffs.user_id', '=', 'users.id')
+            ->join('durations', 'durations.id', '=', 'sections.duration_id')
+            ->join('courses','courses.id','=','durations.course_id')
+            ->join('locations','locations.id','=','courses.location_id')
+            ->join('cities','cities.id','=','locations.city_id')
+            ->groupBy('section_teacher.section_id')
+            ->where('sections.id','=',$id)
+            ->orderBy('sections.id', 'desc')
+            ->get();
+        // dd($teacherlist);
         return response()->json([
-            'inquire'  =>  $inquire,
-            'message'   =>  'Successfully selected Last Inquired!'
+            'teacherlist'   =>  $teacherlist[0]
         ],200);
+
+    // public function getInquires(Request $request){
+    //    // echo request('courseid')." and ".request('sectionid')." and ".request('durationid');
+    //     $id=request('sectionid');
+    //     $inquires = Inquire::doesntHave('student')
+    //         ->where('section_id',$id)
+    //         ->get();
+    //         dd($inquires);
+
     }
 }

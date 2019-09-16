@@ -48,6 +48,7 @@
                   <tr class="text-center">
                     <th> No </th>
                     <th> Senddate </th>
+                     <th>Number of staff</th>
                     <th> Company </th>
                     <th> Position </th>
                     <th> Gender </th>
@@ -59,6 +60,7 @@
                   <tr v-for="(jobcareer, index) in Jobcarrers">
                     <td> {{ index + 1 }} </td>
                     <td> {{ jobcareer.senddate }} </td>
+                     <th> {{ jobcareer.nos }} </th>
                     <td> {{ jobcareer.company.name }} </td>
                     <td> {{ jobcareer.position.name}} </td>
                     <td> {{ jobcareer.gender }}</td>
@@ -148,6 +150,12 @@
               <label>SendDate:</label>
                 <input type="date" placeholder="Send Date" class="form-control" v-model="Jobcarrer.senddate">
             </div>
+
+            <div class="form-group">
+              <label>NOS:</label>
+                <input type="number" placeholder="Number of staff" class="form-control" v-model="Jobcarrer.nos">
+            </div>
+
             <div class="form-group">
               <label>remark:</label>
                 <textarea class="form-control" v-model="Jobcarrer.remark" name="remark" id="remark"></textarea>
@@ -205,6 +213,12 @@
               <label>SendDate:</label>
                 <input type="date" placeholder="Send Date" id="updatesenddate" class="form-control" name="senddate" v-model="clone_update_jobcareer.senddate" >
             </div>
+
+             <div class="form-group">
+              <label>NOS:</label>
+                <input type="number" placeholder="Number of staff" id="updatenos" class="form-control" name="nos" v-model="clone_update_jobcareer.nos" >
+            </div>
+
             <div class="form-group">
               <label>remark:</label>
                 <textarea class="form-control" name="remark" v-model="clone_update_jobcareer.remark" id="updateremark"></textarea>
@@ -256,7 +270,8 @@
   data(){
            return {
                Jobcarrer: {
-                     gender: ''
+                     gender: '',
+                     nos:0
                },
                positions:[],
                companys:[],
@@ -318,6 +333,7 @@
                axios.post('/api/setup/jobcareer', {
                    gender: this.Jobcarrer.gender,
                    senddate : this.Jobcarrer.senddate,
+                   nos: this.Jobcarrer.nos,
                    remark : this.Jobcarrer.remark,
                    company_id : this.company_id,
                    position_id : this.position_id,
@@ -372,6 +388,7 @@
             axios.patch('/api/setup/jobcareer/' + this.clone_update_jobcareer.id, {
                    gender: this.clone_update_jobcareer.gender,
                    senddate : this.clone_update_jobcareer.senddate,
+                    nos: this.clone_update_jobcareer.nos,
                    remark :this.clone_update_jobcareer.remark,
                    company_id : this.clone_update_jobcareer.company_id,
                    position_id : this.clone_update_jobcareer.position_id,

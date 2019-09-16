@@ -66,6 +66,10 @@
                 Position (For Student)
               </a>
 
+               <a class="collapse-item" href="{{ route("education") }}">
+                Education (For Student)
+              </a>
+
               <a class="collapse-item" href="{{ route('location') }}">
                 Department
               </a>
@@ -405,5 +409,6 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
-});
+  });
+
 </script>

@@ -64,10 +64,6 @@
                     <td> {{ jobcareer.gender }}</td>
                     <td> {{ jobcareer.remark }} </td>
                     <td>
-                      <button class="btn btn-warning btn-xs" @click="interview(jobcareer.id)">
-                        <i class="far fa-handshake"></i> Interview
-                      </button>
-
                       <button class="btn btn-warning btn-xs" @click="initUpdate(index)">
                         <i class="fas fa-edit" ></i> Edit
                       </button>
@@ -75,6 +71,10 @@
                       <button class="btn btn-danger btn-xs"  @click="deletejobcareer(index)">
                         <i class="fas fa-trash-alt"></i>  Delete
                       </button>
+                      <!-- honeyhtun -->
+                      <router-link :to="{name:'interview',params:{id:jobcareer.id}}" v-if="jobcareer.status==0 && jobcareer.interviews.length>0" @click.native="reload" class="btn btn-success">Show interview list</router-link>
+
+                      <router-link :to="{name:'interviewform',params: {id:jobcareer.id} }" v-else class="btn btn-primary " id="interview" @click.native="reload" >To change interview</router-link>
                     </td>
                   </tr>
                 </tbody>
@@ -279,6 +279,12 @@
           this.readCompanys()
        },
         methods: {
+          //honeyhtun
+          reload()
+           {
+            location.reload();
+           },
+
           deletejobcareer(index)
            {
                let conf = confirm("Do you ready want to delete this jobcareer?");

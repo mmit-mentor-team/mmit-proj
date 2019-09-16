@@ -81,7 +81,7 @@ class InterviewController extends Controller
         $interview = new InterviewResource($interview);
 
         return response()->json([
-            'interview' => $interview,
+            'interviews' => $interview,
             'message'   => 'Successfully added!'
         ],200);
     }

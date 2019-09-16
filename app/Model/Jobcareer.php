@@ -9,4 +9,9 @@ class Jobcareer extends Model
     protected $fillable = [
         'gender', 'senddate', 'remark', 'status', 'company_id', 'position_id', 'user_id'
     ];
+
+    public function interviews()
+    {
+    	return $this->hasMany('App\Model\Interview');
+    }
 }

@@ -194,15 +194,11 @@
                 Job Appointment :
               </h6>
               
-              <a class="collapse-item" href="">
-                Interview List
-              </a>
-
-              <a class="collapse-item" href="">
+              <a class="collapse-item" href="{{route('hire')}}">
                 Hire List
               </a>
 
-              <a class="collapse-item" href="">
+              <a class="collapse-item" href="{{route('dismiss')}}">
                 Dimiss List
               </a>
 

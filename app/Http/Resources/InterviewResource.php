@@ -6,7 +6,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model\Student;
 use App\Model\Jobcareer;
 use App\Model\Inquire;
-use App\User;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\JobcareerResource;
@@ -25,15 +24,13 @@ class InterviewResource extends JsonResource
         return [
             'id' => $this->id,
             'appointment' => $this->appointment,
-                 'remark' => $this->remark,
-                 'status' => $this->status,
-             'student_id' => $this->student_id,
+            'remark' => $this->remark,
+            'status' => $this->status,
+            'student_id' => $this->student_id,
             'jobcareer_id' => $this->jobcareer_id,
-                 'student' => new StudentResource(Student::find($this->student_id)),
-            'jobcareer' => new JobcareerResource(Jobcareer::find($this->jobcareer_id)),
-            
-                 'user' => new UserResource(User::find($this->user_id))
-
+            'inquires' => $this->inquirename,
+            'courses' => $this->coursename,
+            'sections' => $this->sectionname
         ];
     }
 }

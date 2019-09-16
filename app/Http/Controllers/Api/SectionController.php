@@ -153,12 +153,14 @@ class SectionController extends Controller
         $php_sections =  SectionResource::collection($php_sections);
         $ios_sections =  SectionResource::collection($ios_sections);
 
+        $sections = Section::all();
 
         return response()->json([
             'sections' => $hr_ygn_sections,
             'hr_mdy'   => $hr_mdy_sections,
             'php_sections'  =>  $php_sections,
-            'ios_sections'  =>  $ios_sections
+            'ios_sections'  =>  $ios_sections,
+            'interviewsection' =>$sections
         ],200);
     }
 

@@ -39,7 +39,7 @@
                             <td>{{expense.date}}</td>
                             <td>
                                 <div v-if="expense.attachment">
-                                    <img :src="myImage" v-for="myImage in expense.attachment.split(',')" width="50" height="50">
+                                    <img :src="myImage" v-for="myImage in expense.attachment.split(',')" width="50" height="50" @click="initClick(myImage)">
                                 </div>
                             </td>
                             <td> 
@@ -58,6 +58,12 @@
                     </div>
                   </div>
 
+                </div>
+                <!-- Detail Image-->
+                <div id="detail_staff_model" class="modal">
+                  
+                  <img class="modal-content" :src="detailimage">
+                     
                 </div>
 
                 <!-- Add Modal -->
@@ -181,6 +187,7 @@ export default {
                 files: []
             },
             updateData: {},
+            detailimage:'',
             
         }
     },
@@ -203,7 +210,14 @@ export default {
                        });
             }
         },
-
+        initClick(myImage)
+           {
+           //console.log(myImage);
+               this.errors = [];
+               $("#detail_staff_model").modal("show");
+                this.detailimage = myImage;
+                 //console.log(this.detailimage);
+           },
         getImage(attachment){
               return "img/" + attachment;
             },
@@ -302,3 +316,25 @@ export default {
 };
 
 </script>
+
+<style type="text/css">
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1;
+  padding-top: 50px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto;
+  vertical-align: middle;
+}
+.modal-content{
+    width: 80%;
+    max-width: 700px; 
+    height:500; 
+    margin: auto;
+    display: block;
+}
+</style>

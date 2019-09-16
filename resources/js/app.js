@@ -57,10 +57,6 @@ Vue.use(VueResource);
 import BootstrapVue from 'bootstrap-vue';
 Vue.use(BootstrapVue);
 
-// import Multiselect from 'vue-multiselect';
-// Vue.use(Multiselect);
-// Vue.component('multiselect', Multiselect);
-
 import vSelect from 'vue-select';
 Vue.component('v-select', vSelect);
 

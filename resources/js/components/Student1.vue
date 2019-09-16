@@ -376,7 +376,7 @@
 
                 <div class="tab-pane bootcamp-mdy fade " v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" data-id="5" id="nav-php_bootcamp_mdy"   role="tabpanel" aria-labelledby="nav-php_bootcamp_mdy-tab">
 
-                  <h1>helo  i am mdy bootcamp</h1>
+                  <!-- <h1>helo  i am mdy bootcamp</h1> -->
 
                   <!-- durations -->
                     <div class="row">

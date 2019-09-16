@@ -49,9 +49,9 @@ class StudentResource extends JsonResource
             "d_days"        =>  $this->d_days,
             "d_during"      =>  $this->d_during,
             "c_name"        =>  $this->c_name,
-            "city_name"     =>  $this->city_name
+            "city_name"     =>  $this->city_name,
 
-
+            'inquires' => new InquireResource(Inquire::find($this->inquire_id)),
 
                  ];
     }

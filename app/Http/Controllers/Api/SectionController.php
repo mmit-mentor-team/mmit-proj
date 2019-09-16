@@ -212,6 +212,7 @@ class SectionController extends Controller
         $php_sections =  SectionResource::collection($php_sections);
         $ios_sections =  SectionResource::collection($ios_sections);
         $php_mdy_sections =  SectionResource::collection($php_mdy_sections);
+        
         $sections =  SectionResource::collection($sections);
 
         return response()->json([
@@ -220,7 +221,8 @@ class SectionController extends Controller
             'hr_mdy_sections'   => $hr_mdy_sections,
             'php_sections'  =>  $php_sections,
             'ios_sections'  =>  $ios_sections,
-            'php_mdy_sections'  =>  $php_mdy_sections
+            'php_mdy_sections'  =>  $php_mdy_sections,
+            'interviewsection' =>$sections
         ],200);
     }
 

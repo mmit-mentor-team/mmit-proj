@@ -197,12 +197,26 @@ class HomeController extends Controller
         return view('interview');
     }
 
-    public function interviewform($id)
+    public function interviewform()
     {
-        $jobcarrer_id = $id;
-        return view('interview',compact('jobcarrer_id'));
+        return view('interviewform');
     }
 
+    public function interviewformlist()
+    {
+        return view('interviewform');
+    }
+
+    public function hire()
+    {
+        return view('hire');
+    }
+
+    public function dismiss() 
+    {
+        return view('dismiss');
+    }
+    
     public function position()
     {
         return view('position');

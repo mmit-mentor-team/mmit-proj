@@ -51,7 +51,7 @@ class CompanyController extends Controller
             'phno' => 'required',
             // 'remark' => 'required',
             'township_id' => 'required',
-            'fblink' => 'required',
+            // 'fblink' => 'required',
             'email'=>'email|unique:companies',
         ]);
 

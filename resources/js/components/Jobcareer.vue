@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-         <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -19,7 +19,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
         </div>
-         <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -38,7 +38,6 @@
               </button>
 
             </h3>
-
           </div>
 
           <div class="card-body">
@@ -66,10 +65,6 @@
                     <td> {{ jobcareer.gender }}</td>
                     <td> {{ jobcareer.remark }} </td>
                     <td>
-                      <button class="btn btn-warning btn-xs" @click="interview(jobcareer.id)">
-                        <i class="far fa-handshake"></i> Interview
-                      </button>
-
                       <button class="btn btn-warning btn-xs" @click="initUpdate(index)">
                         <i class="fas fa-edit" ></i> Edit
                       </button>
@@ -77,6 +72,10 @@
                       <button class="btn btn-danger btn-xs"  @click="deletejobcareer(index)">
                         <i class="fas fa-trash-alt"></i>  Delete
                       </button>
+                      <!-- honeyhtun -->
+                      <router-link :to="{name:'interview',params:{id:jobcareer.id}}" v-if="jobcareer.status==0 && jobcareer.interviews.length>0" @click.native="reload" class="btn btn-success">Show interview list</router-link>
+
+                      <router-link :to="{name:'interviewform',params: {id:jobcareer.id} }" v-else class="btn btn-primary " id="interview" @click.native="reload" >To change interview</router-link>
                     </td>
                   </tr>
                 </tbody>
@@ -294,6 +293,12 @@
           this.readCompanys()
        },
         methods: {
+          //honeyhtun
+          reload()
+           {
+            location.reload();
+           },
+
           deletejobcareer(index)
            {
                let conf = confirm("Do you ready want to delete this jobcareer?");

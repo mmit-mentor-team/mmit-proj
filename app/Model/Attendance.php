@@ -13,4 +13,9 @@ class Attendance extends Model
     public function student(){
         return $this->belongsTo('App\Model\Student');
     }
+
+    public function inquire(){
+        return $this->belongsTo('App\Model\Inquire');
+    }
+
 }

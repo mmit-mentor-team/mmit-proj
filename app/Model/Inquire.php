@@ -18,5 +18,9 @@ class Inquire extends Model
         return $this->belongsTo('App\Model\Section');
     }
 
+    public function attendances(){
+        return $this->hasManyThrough('App\Model\Attendance', 'App\Model\Student');
+    }
+
  
 }

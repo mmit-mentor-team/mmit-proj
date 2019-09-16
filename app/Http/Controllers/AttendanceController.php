@@ -2,33 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Section;
+use App\Model\Teacher;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
-    public function attendanceCollect(){
-        $today = Carbon::now();
-        $sections = DB::table('sections')
-                    ->join('section_teacher', 'sections.id', '=', 'section_teacher.section_id')
-                    ->where('sections.enddate', '>=', $today)
-                    ->join('teachers', 'teachers.id', '=', 'section_teacher.teacher_id')
-                    ->join('staffs', 'staffs.id', '=', 'teachers.staff_id')
-                    ->join('users', 'users.id', '=', 'staffs.user_id')
-                    ->where('users.id', '=', Auth::user()->id)
-                    ->join('durations', 'durations.id', '=', 'sections.duration_id')
-                    ->join('courses', 'courses.id', '=', 'durations.course_id')
-                    ->join('locations', 'locations.id', '=', 'courses.location_id')
-                    ->join('cities', 'cities.id', '=', 'locations.city_id')
-                    ->select('sections.id','sections.title')
-                    ->get();
+    protected $sections;
 
-        return view('attendances.collect', compact('today', 'sections'));
+    public function __construct(){
+        $this->middleware('auth');
+    }
+
+    public function attendanceCollect(){
+
+        $sections = $this->getSections();        
+        return view('attendances.collect')->with(['sections' => $sections, 'today' => Carbon::now()]);
     }
 
     public function attendanceReport(){
-        return true;
+        $sections = $this->getSections();
+        return view('attendances.reports')->with(['sections' => $sections]);
+    }
+
+    private function getSections(){
+        $teacher = Teacher::whereHas('staff', function($q){
+            $q->where('user_id', Auth::user()->id);
+        })->first();
+        return $teacher->sections()->where('enddate', '>=', Carbon::now())->get();
     }
 }

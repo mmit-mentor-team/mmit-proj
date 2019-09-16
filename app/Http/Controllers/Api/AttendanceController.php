@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\attendances\AttendanceResource;
 use App\Http\Resources\attendances\MyStudentResource;
 use App\Model\Attendance;
+use App\Model\Inquire;
+use App\Model\Section;
 use App\Model\Student;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
@@ -51,9 +54,26 @@ class AttendanceController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Something is wrong. Please try again']);
         }
-        
-        
-       
+    }
+
+    public function getAttendances($section_id){
+
+    //    $attendances = DB::table('attendances')
+    //    ->join('students', 'students.id', '=', 'attendances.student_id')
+    //    ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
+    //    ->where('inquires.section_id', $section_id)
+    //    ->select('attendances.id', 'inquires.name')
+    //    ->get();
+
+       $attendances = Section::with('inquires.student.attendances')->where('id', $section_id)->get();
+    //    $att = [];
+
+    //    foreach($attendances as $attendance){
+    //        $att[] = $attendance->inquires;
+    //    }
+    //    dd($att);
+
+        return response()->json($attendances);
     }
 }
     

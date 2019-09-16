@@ -50,13 +50,13 @@
 								<td class="table-dark">Email:</td>
 								<td>yinmin@gmail.com</td>
 								<td class="table-dark">Month:</td>
-								<td>August</td>
+								<td>{{month}}</td>
 							</tr>
 							<tr>
 								<td class="table-dark">Phone No:</td>
 								<td>09876543</td>
 								<td class="table-dark">Year:</td>
-								<td>2019</td>
+								<td>{{year}}</td>
 							</tr>
 						</tbody>
 					</table>

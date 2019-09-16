@@ -17,7 +17,7 @@ class CreateInterviewsTable extends Migration
             $table->bigIncrements('id');
             $table->date('appointment');
             $table->longText('remark');
-            $table->string('status');
+            $table->boolean('status')->default(true);
 
             //student
             $table->unsignedBigInteger('student_id');

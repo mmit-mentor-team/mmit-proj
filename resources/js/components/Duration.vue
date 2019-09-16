@@ -115,7 +115,7 @@
             </div>
             <div class="form-group">
               <label for="names">During:</label>
-                <input type="text" name="during" id="during" placeholder="During" class="form-control" v-model="duration.during">
+                <input type="number" name="during" id="during" placeholder="During" class="form-control" v-model="duration.during">
             </div>
             <div class="form-group">
               <label for="names">Course:</label>
@@ -172,7 +172,7 @@
             </div>
             <div class="form-group">
               <label for="names">During:</label>
-                <input type="text" name="during" id="during" placeholder="During" class="form-control" v-model="update_duration.during">
+                <input type="number" name="during" id="during" placeholder="During" class="form-control" v-model="update_duration.during">
             </div>
             <div class="form-group">
               <label for="names">Course:</label>

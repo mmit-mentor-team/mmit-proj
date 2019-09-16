@@ -57,15 +57,14 @@ Vue.use(VueResource);
 import BootstrapVue from 'bootstrap-vue';
 Vue.use(BootstrapVue);
 
-import Multiselect from 'vue-multiselect';
-Vue.use(Multiselect);
+// import Multiselect from 'vue-multiselect';
+// Vue.use(Multiselect);
+// Vue.component('multiselect', Multiselect);
 
-Vue.component('multiselect', Multiselect);
+import vSelect from 'vue-select';
+Vue.component('v-select', vSelect);
 
-
-import Select2 from 'v-select2-component';
-Vue.component('Select2', Select2);
-
+import 'vue-select/dist/vue-select.css';
 require('./backend/vendor/fontawesome-free/css/all.min.css');
 require('./backend/css/sb-admin-2.min.css');
 require('./backend/vendor/jquery/jquery.min.js');

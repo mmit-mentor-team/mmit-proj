@@ -369,12 +369,12 @@ class SectionController extends Controller
         ]);
         $section = Section::find($id);
 
+        $sectionTeachers = $section->teachers;
+
 
         $startdate = request('startdate');
-
         $date = Carbon::create($startdate);
         $codeno = $date->isoFormat('Do MMM YYYY'); 
-
         $section->codeno = $codeno;
         $section->title = request('title');
         $section->startdate = request('startdate');
@@ -383,7 +383,7 @@ class SectionController extends Controller
         $section->user_id=  Auth::user()->id;
         $section->save();
 
-        $section->teachers()->detach($request->teachers);
+        $section->teachers()->detach($sectionTeachers);
         $section->teachers()->attach($request->teachers);
 
         return response()->json([

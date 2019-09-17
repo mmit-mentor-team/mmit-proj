@@ -49,13 +49,8 @@ class InterviewController extends Controller
         ],200);  
     }
 
-    public function getData($id)
-    {
-        dd($id);
-    }
     public function getSections(Request $request)
     {
-        dd($request);
         $course_id = request('course_id');
         $sections = DB::table('sections')
             ->join('durations','durations.id','=','sections.duration_id')

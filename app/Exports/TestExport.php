@@ -19,8 +19,12 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+/*WithTitle,ShouldAutoSize,WithHeadings,*/
 
-class TestExport implements FromCollection, WithTitle,ShouldAutoSize,WithEvents,WithHeadings
+class TestExport implements FromView,ShouldAutoSize
 {
     protected $month = '';
     protected $year = '';
@@ -32,175 +36,193 @@ class TestExport implements FromCollection, WithTitle,ShouldAutoSize,WithEvents,
         $this->month = $month;
         $this->year = $year;
     }
-    
-    public function collection(){
-       
-         switch ($this->month) {
-            case 'Jan':
-                $this->month='01';
-                break;
-
-            case 'Feb':
-                $this->month='02';
-                break;
-            
-            case 'Mar':
-                $this->month='03';
-                break;
-
-            case 'April':
-                $this->month='04';
-                break;
-
-            case 'May':
-                $this->month='05';
-                break;
-
-            case 'June':
-                $this->month='06';
-                break;
-
-            case 'July':
-                $this->month='07';
-                break;
-
-            case 'Aug':
-                $this->month='08';
-                break;
-
-            case 'Sep':
-               $this->month='09';
-                break;
-
-            case 'Oct':
-               $this->month='10';
-                break;
-
-            case 'Nov':
-                $this->month='11';
-                break;
-
-            case 'Dec':
-               $this->month='12';
-                break;
-            default:
-                
-                break;
-        }
-        //dd($month);
-        $startdate = $this->year.'-'.$this->month.'-01';
-        //dd($startdate);
-        $enddate =$this->year.'-'.$this->month.'-31';
-        //dd($enddate);
-        $this->result = DB::table('expenses')
-                    ->join('users','users.id','=','expenses.user_id')
-                   
-                    ->whereBetween('expenses.date',[$startdate,$enddate])
-                     ->select('users.name as uname','expenses.description as edescription','expenses.date as edate','expenses.amount as eamount')
-
-                    ->get();
-                   
-         
-        $iresult = DB::table('incomes')
-                    ->join('users','users.id','=','incomes.user_id')
-                    ->whereBetween('date',[$startdate,$enddate])
-                    ->sum('incomes.amount');
-        
-        
-        $this->incomeresult = [];
-        array_push($this->incomeresult, ['','','',$iresult]);
-       
-
-        $result1 = DB::table('expenses')
-        ->join('users','users.id','=','expenses.user_id')
-       
-        ->whereBetween('expenses.date',[$startdate,$enddate])
-
-       ->sum('expenses.amount');
-    
-        $total = $iresult-$result1;
-         
-        $export=[];
-        array_push($export,[' ','','',$total]);
-      
-        $data =  $this->result->concat($this->incomeresult)->concat($export);
-        return $data;
-    
-    }
-    public function headings(): array {
-
-    	return [
-    		'User Name',
-            'Description',
-            'Date',
-    		'Amount',
-        ];
-        
-    }
-     public function title(): string
+  
+    public function view(): View
     {
-        return 'Month ' . $this->month . ' Year ' . $this->year;
-    }
+        switch ($this->month) {
+                case 'Jan':
+                    $month='01';
+                    break;
 
-    public function registerEvents(): array
+                case 'Feb':
+                    $month='02';
+                    break;
+                
+                case 'Mar':
+                    $month='03';
+                    break;
+
+                case 'April':
+                    $month='04';
+                    break;
+
+                case 'May':
+                    $month='05';
+                    break;
+
+                case 'June':
+                    $month='06';
+                    break;
+
+                case 'July':
+                    $month='07';
+                    break;
+
+                case 'Aug':
+                    $month='08';
+                    break;
+
+                case 'Sep':
+                   $month='09';
+                    break;
+
+                case 'Oct':
+                   $month='10';
+                    break;
+
+                case 'Nov':
+                    $month='11';
+                    break;
+
+                case 'Dec':
+                   $month='12';
+                    break;
+                default:
+                    
+                    break;
+            }
+            //dd($month);
+            $startdate = $this->year.'-'.$month.'-01';
+            //dd($startdate);
+            $enddate =$this->year.'-'.$month.'-31';
+            //dd($enddate);
+            $phpresult = DB::table('expenses')
+                        ->join('users','users.id','=','expenses.user_id')
+                       
+                        ->whereBetween('expenses.date',[$startdate,$enddate])
+                         ->select('expenses.type as etype','expenses.description as edescription','expenses.date as edate','expenses.amount as eamount')
+                         ->where('expenses.type','=','PHP')
+                        ->get();
+            //dd($this->phpresult);
+            $phpresults = count($phpresult);
+
+            $phptotals = DB::table('expenses')
+                        ->join('users','users.id','=','expenses.user_id')
+                       
+                        ->whereBetween('expenses.date',[$startdate,$enddate])
+                        ->where('expenses.type','=','PHP')
+                        ->sum('expenses.amount');
+
+            $recruitmentresult = DB::table('expenses')
+                        ->join('users','users.id','=','expenses.user_id')
+                       
+                        ->whereBetween('expenses.date',[$startdate,$enddate])
+                         ->select('expenses.type as etype','expenses.description as edescription','expenses.date as edate','expenses.amount as eamount')
+                         ->where('expenses.type','=','Recruitment')
+                        ->get();
+            //dd($this->recruitmentresult);
+            $recruitmentresults = count($recruitmentresult);
+
+            $recruitmenttotals = DB::table('expenses')
+                        ->join('users','users.id','=','expenses.user_id')
+                       
+                        ->whereBetween('expenses.date',[$startdate,$enddate])
+                        ->where('expenses.type','=','Recruitment')
+                        ->sum('expenses.amount');
+            //dd($recruitmenttotals);
+
+            $hrresult = DB::table('expenses')
+                        ->join('users','users.id','=','expenses.user_id')
+                       
+                        ->whereBetween('expenses.date',[$startdate,$enddate])
+                         ->select('expenses.type as etype','expenses.description as edescription','expenses.date as edate','expenses.amount as eamount')
+                         ->where('expenses.type','=','HR')
+                        ->get();
+            //dd($this->hrresult);
+            $hrresults = count($hrresult);
+
+            $hrtotals = DB::table('expenses')
+                        ->join('users','users.id','=','expenses.user_id')
+                       
+                        ->whereBetween('expenses.date',[$startdate,$enddate])
+                        ->where('expenses.type','=','HR')
+                        ->sum('expenses.amount');
+
+            $generalresult = DB::table('expenses')
+                        ->join('users','users.id','=','expenses.user_id')
+                       
+                        ->whereBetween('expenses.date',[$startdate,$enddate])
+                         ->select('expenses.type as etype','expenses.description as edescription','expenses.date as edate','expenses.amount as eamount')
+                         ->where('expenses.type','=','General')
+                        ->get();
+            //dd($this->generalresult);
+            $generalresults = count($generalresult);
+            //dd($generalresults);
+
+            $generaltotals = DB::table('expenses')
+                        ->join('users','users.id','=','expenses.user_id')
+                       
+                        ->whereBetween('expenses.date',[$startdate,$enddate])
+                        ->where('expenses.type','=','General')
+                        ->sum('expenses.amount');
+
+            $iresult = DB::table('incomes')
+                        ->join('users','users.id','=','incomes.user_id')
+                        ->whereBetween('date',[$startdate,$enddate])
+                        ->sum('incomes.amount');
+            
+            
+           /* $incomeresult = [];
+            array_push($incomeresult, ['','','',$iresult]);
+           */
+            $incomeresult = DB::table('incomes')
+                        ->join('users','users.id','=','incomes.user_id')
+                       
+                        ->whereBetween('incomes.date',[$startdate,$enddate])
+                         ->select('incomes.description as idescription','incomes.date as idate','incomes.amount as iamount')
+                        ->get();
+
+            $result1 = DB::table('expenses')
+            ->join('users','users.id','=','expenses.user_id')
+           
+            ->whereBetween('expenses.date',[$startdate,$enddate])
+
+           ->sum('expenses.amount');
+        
+            $total = $iresult-$result1;
+             
+            $export=[];
+            array_push($export,[' ','','',$total]);
+        return view('export.view_loan_export', [
+            'hrs' => $hrresult,
+            'phps' => $phpresult,
+            'recruitments' => $recruitmentresult,
+            'generals' => $generalresult,
+            'generalcount'=>$generalresults,
+            'hrcount'=>$hrresults,
+            'recruitmentcount'=>$recruitmentresults,
+            'phpcount'=>$phpresults,
+            'recruitmenttotal'=>$recruitmenttotals,
+            'hrtotal'=>$hrtotals,
+            'phptotal'=>$phptotals,
+            'generaltotal'=>$generaltotals,
+            'totalexpense'=>$result1,
+            'incomeexpense'=>$iresult,
+            'change'=>$total,
+            'incomeresults'=>$incomeresult,
+            'year' => $this->year,
+            'month'=>$this->month
+        ]);
+     }
+
+   public function registerEvents(): array
     {
         return [
-             
             AfterSheet::class    => function(AfterSheet $event) {
-                $cellRange = 'A1:W1'; // All headers
+                $cellRange = 'A1:Z1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(14);
-                $event->sheet->insertNewRowBefore(count($this->result)+2,2);
-                $event->sheet->mergeCells('A'.(count($this->result)+4).':C'.(count($this->result)+4));
-             
-                $event->sheet->setCellValue('A'.(count($this->result)+4),'Income');
-                
-                $event->sheet->mergeCells('A'.(count($this->result)+5).':C'.(count($this->result)+5));
-             
-                $event->sheet->setCellValue('A'.(count($this->result)+5),'Balance');
               
-                $event->sheet->styleCells(
-                     'A1:D1',
-                [
-                    'alignment' => [
-                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                    ],
-                    'font' => [
-                        'name'      =>  'Calibri',
-                        'size'      =>  15,
-                        'bold'      =>  true,
-                        'color' => ['argb' => 'DC143C'],
-                    ],
-                ]);
-
-                $event->sheet->styleCells(
-                     'A'.(count($this->result)+4).':C'.(count($this->result)+4),
-                [
-                    'alignment' => [
-                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                    ],
-                    'font' => [
-                        'name'      =>  'Calibri',
-                        'size'      =>  15,
-                        'bold'      =>  true,
-                        'color' => ['argb' => '00FF00'],
-                    ],
-                ]);
-                $event->sheet->styleCells(
-                     'A'.(count($this->result)+5).':C'.(count($this->result)+5),
-                [
-                    'alignment' => [
-                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                    ],
-                    'font' => [
-                        'name'      =>  'Calibri',
-                        'size'      =>  15,
-                        'bold'      =>  true,
-                        'color' => ['argb' => '34eb74'],
-                    ],
-                ]);
             },
-
-
         ];
     }
   

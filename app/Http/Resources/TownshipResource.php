@@ -5,9 +5,10 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model\Township;
 use App\Model\City;
-use App\User;
 
 use App\Http\Resources\CityResource;
+
+use App\User;
 use App\Http\Resources\UserResource;
 
 class TownshipResource extends JsonResource

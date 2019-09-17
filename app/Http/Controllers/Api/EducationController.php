@@ -53,9 +53,9 @@ class EducationController extends Controller
             'name'  =>  request('name'),
             'user_id'    =>  Auth::user()->id,
         ]);
+
         $educations = new EducationResource($educations);
         return response()->json([
-            
             'message'   =>  'Successfully Added!'
         ],200);
     }

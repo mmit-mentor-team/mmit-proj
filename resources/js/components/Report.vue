@@ -50,13 +50,13 @@
 								<td class="table-dark">Email:</td>
 								<td>yinmin@gmail.com</td>
 								<td class="table-dark">Month:</td>
-								<td>August</td>
+								<td>{{month}}</td>
 							</tr>
 							<tr>
 								<td class="table-dark">Phone No:</td>
 								<td>09876543</td>
 								<td class="table-dark">Year:</td>
-								<td>2019</td>
+								<td>{{year}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -73,7 +73,7 @@
                         <thead>
                           <tr class="text-center">
                             <th scope="col">No.</th>
-                            <th scope="col">Name</th>
+                            <th scope="col">Type</th>
                             <th scope="col">Description</th>
                             <th scope="col">Date</th>
                             <th scope="col">Expense</th>
@@ -82,7 +82,7 @@
                         <tbody>
                           <tr v-for="(results, index) in result">
                             <td scope="row" class="resultid">{{index + 1}}</td>
-                            <td class="resultid">{{results.uname}}</td>
+                            <td class="resultid">{{results.type}}</td>
                             <td class="resultid">{{results.description}}</td>
                             <td class="resultid">{{results.date}}</td>
                             <td class="resultid">{{results.amount}}</td>

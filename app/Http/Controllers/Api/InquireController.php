@@ -341,8 +341,8 @@ $inquiresAlls=InquireResource::collection($inquireAll);
                 'secinstallmentdate'=>request('paymentdate'),
                 'secinstallmentamount'=>0,
                 'remark'=>request('remark'),
-                'resume'=>'',
-                'status'=>1, 
+                'resume'=>'no resume',
+                'status'=>1,
                 'inquire_id'=>$inquire->id,
                 'user_id'=>Auth::user()->id
             ]);   

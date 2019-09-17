@@ -3,8 +3,10 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\User;
 use App\Model\Course;
+
+use App\User;
+use App\Http\Resources\UserResource;
 
 class DurationResource extends JsonResource
 {

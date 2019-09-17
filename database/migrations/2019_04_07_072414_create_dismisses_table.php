@@ -17,13 +17,11 @@ class CreateDismissesTable extends Migration
             $table->bigIncrements('id');
             $table->longText('remark');
 
-
             //interview
             $table->unsignedBigInteger('interview_id');
 
             //user
             $table->unsignedBigInteger('user_id');
-
 
             $table->timestamps();
         });

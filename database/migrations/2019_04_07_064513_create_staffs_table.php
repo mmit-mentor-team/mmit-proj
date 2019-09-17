@@ -22,15 +22,13 @@ class CreateStaffsTable extends Migration
             $table->longText('photo');
             $table->date('joineddate');
             $table->date('leavedate');
-            $table->string('status');
+            $table->boolean('status')->default(false);
 
             //location
             $table->unsignedBigInteger('location_id');
 
             //user
             $table->unsignedBigInteger('user_id');
-
-            
 
             $table->timestamps();
         });

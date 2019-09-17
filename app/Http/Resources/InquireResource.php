@@ -6,10 +6,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model\Township;
 use App\Model\Inquire;
 use App\Model\Section;
-use App\User;
 
 use App\Http\Resources\TownshipResource;
 use App\Http\Resources\SectionResource;
+
+use App\User;
 use App\Http\Resources\UserResource;
 
 class InquireResource extends JsonResource

@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\User;
 use App\Model\Location;
 
+use App\User;
 use App\Http\Resources\UserResource;
 class CourseResource extends JsonResource
 {

@@ -3,14 +3,14 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\User;
 use App\Model\Location;
 use App\Model\Staff;
 use App\Model\Role;
 
-use App\Http\Resources\UserResource;
 use App\Http\Resources\LocationResource;
 
+use App\User;
+use App\Http\Resources\UserResource;
 
 class StaffResource extends JsonResource
 {

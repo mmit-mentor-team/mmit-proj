@@ -21,8 +21,8 @@ class CreateCompaniesTable extends Migration
             $table->string('phno');
             $table->string('email');
             $table->longText('address');
-            $table->longText('remark');
-            $table->longText('fblink');
+            $table->longText('remark')->nullable();
+            $table->longText('fblink')->nullable();
 
             //township
             $table->unsignedBigInteger('township_id');

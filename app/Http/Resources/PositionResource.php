@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model;
 
+use App\User;
+use App\Http\Resources\UserResource;
+
 class PositionResource extends JsonResource
 {
     /**

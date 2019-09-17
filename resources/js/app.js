@@ -9,6 +9,38 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
+import Jobcareer from './components/Jobcareer.vue'
+import Interviewform from './components/Interviewform.vue'
+import Interview from './components/Interview.vue'
+
+const routes=[
+	{
+		name: 'jobcareer',
+		path: '/jobcareer',
+		component: Jobcareer
+	},
+	{
+		name: 'interviewform',
+		path: '/interviewform/:id',
+		component: Interviewform
+	},
+	{
+		name: 'interviewformlist',
+		path: '/interviewformlist',
+		component: Interviewform
+	},
+	{
+		name: 'interview',
+		path: '/interview/:id',
+		component: Interview
+	},
+];
+
+const router =new VueRouter({ mode: 'history', routes: routes});
+
 
 
 /**
@@ -38,13 +70,17 @@ Vue.component('inquire', require('./components/Inquire.vue').default);
 Vue.component('education', require('./components/Education.vue').default);
 Vue.component('student', require('./components/Student1.vue').default);
 Vue.component('jobcareer', require('./components/Jobcareer.vue').default);
-Vue.component('interview', require('./components/Interview.vue').default);
 Vue.component('position',require('./components/Position.vue').default);
 Vue.component('permission', require('./components/Permission.vue').default);
 Vue.component('role', require('./components/Role.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('report', require('./components/Report.vue').default);
 Vue.component('profile',require('./components/Profile.vue').default);
+
+Vue.component('interview', require('./components/Interview.vue').default);
+Vue.component('interviewform', require('./components/Interviewform.vue').default);
+Vue.component('hire', require('./components/Hire.vue').default);
+Vue.component('dismiss', require('./components/Dismiss.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -57,15 +93,10 @@ Vue.use(VueResource);
 import BootstrapVue from 'bootstrap-vue';
 Vue.use(BootstrapVue);
 
-import Multiselect from 'vue-multiselect';
-Vue.use(Multiselect);
+import vSelect from 'vue-select';
+Vue.component('v-select', vSelect);
 
-Vue.component('multiselect', Multiselect);
-
-
-import Select2 from 'v-select2-component';
-Vue.component('Select2', Select2);
-
+import 'vue-select/dist/vue-select.css';
 
 require('./backend/vendor/fontawesome-free/css/all.min.css');
 require('./backend/css/sb-admin-2.min.css');
@@ -84,5 +115,5 @@ require('./backend/js/vuejs-datatable.js');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr("content");
 const app = new Vue({
-    el: '#app'
+    el: '#app',router,routes
 });

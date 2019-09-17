@@ -29,4 +29,5 @@ class Interview extends Model
     {
         return $this->belongsTo('App\Model\Dismiss');
     }
+    
 }

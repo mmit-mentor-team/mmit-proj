@@ -6,6 +6,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model\Township;
 use Auth;
 
+use App\User;
+use App\Http\Resources\UserResource;
+
 class CompanyResource extends JsonResource
 {
     /**

@@ -53,6 +53,7 @@ class SectionController extends Controller
         $php_sections =  SectionResource::collection($php_sections);
         $ios_sections =  SectionResource::collection($ios_sections);
         $php_mdy_sections =  SectionResource::collection($php_mdy_sections);
+        
         $sections =  SectionResource::collection($sections);
 
         return response()->json([
@@ -61,7 +62,8 @@ class SectionController extends Controller
             'hr_mdy_sections'   => $hr_mdy_sections,
             'php_sections'  =>  $php_sections,
             'ios_sections'  =>  $ios_sections,
-            'php_mdy_sections'  =>  $php_mdy_sections
+            'php_mdy_sections'  =>  $php_mdy_sections,
+            'interviewsection' =>$sections
         ],200);
     }
 
@@ -178,12 +180,12 @@ class SectionController extends Controller
         ]);
         $section = Section::find($id);
 
+        $sectionTeachers = $section->teachers;
+
 
         $startdate = request('startdate');
-
         $date = Carbon::create($startdate);
         $codeno = $date->isoFormat('Do MMM YYYY'); 
-
         $section->codeno = $codeno;
         $section->title = request('title');
         $section->startdate = request('startdate');
@@ -192,7 +194,7 @@ class SectionController extends Controller
         $section->user_id=  Auth::user()->id;
         $section->save();
 
-        $section->teachers()->detach($request->teachers);
+        $section->teachers()->detach($sectionTeachers);
         $section->teachers()->attach($request->teachers);
 
         return response()->json([

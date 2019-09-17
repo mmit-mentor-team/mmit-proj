@@ -17,9 +17,9 @@ class CreateStudentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('secinstallmentdate');
             $table->string('secinstallmentamount');
-            $table->longText('remark');
+            $table->longText('remark')->nullable();
             $table->longText('resume');
-            $table->integer('status');
+            $table->boolean('status')->default(true);
 
             //inquire
             $table->unsignedBigInteger('inquire_id');

@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <inquire :permissions="{{Auth::user()->permissions}}" :active_tab="hr_ygn"> </inquire>
+    <inquire :permissions="{{Auth::user()->permissions}}"> </inquire>
 @endsection

@@ -23,4 +23,12 @@ class Student extends Model
     {
         return $this->belongsTo('App\Model\Jobcareer');
     }
+
+    public function interviews(){
+    	return $this->hasMany('App\Model\Interview');
+    }
+
+    public function dismiss(){
+    	return $this->belongsTo('App\Model\Dismiss');
+    }
 }

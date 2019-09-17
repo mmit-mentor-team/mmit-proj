@@ -9,12 +9,12 @@ use App\Model\Staff;
 use App\Model\Duration;
 use App\Model\Section;
 
-use App\User;
-
 use App\Http\Resources\TeacherResource;
-use App\Http\Resources\UserResource;
 use App\Http\Resources\StaffResource;
 use App\Http\Resources\DurationResource;
+
+use App\User;
+use App\Http\Resources\UserResource;
 
 class SectionResource extends JsonResource
 {

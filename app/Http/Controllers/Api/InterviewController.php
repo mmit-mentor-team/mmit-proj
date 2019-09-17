@@ -51,6 +51,11 @@ class InterviewController extends Controller
         ],200);  
     }
 
+    public function getData(Request $request)
+    {
+        dd($request);
+    }
+
     public function getSections(Request $request){
         $course_id = request('course_id');
         $sections = DB::table('sections')

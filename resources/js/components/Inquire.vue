@@ -341,7 +341,7 @@
     </div>
     
     <div class="modal fade" tabindex="-1" role="dialog" id="add_inquire_model">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Add New Inquire</h4>
@@ -812,10 +812,10 @@
                     <thead>
                       <tr>
                         <th> 
-                          <h3> {{ detail_inquire.sectiontitle }} </h3>
+                          <h3> {{ detail_inquire.section && detail_inquire.section.title }} </h3>
                         </th>
                         <th>
-                          {{ detail_inquire.s_codeno }}
+                          {{ detail_inquire.section && detail_inquire.section.codeno }}
                         </th>
                       </tr>
                     </thead>
@@ -824,26 +824,28 @@
                       <tr>
                         <td rowspan="2">
                           <i class="far fa-calendar"></i>
-                          {{ detail_inquire.s_startdate }}
+                          {{ detail_inquire.section && detail_inquire.section.startdate }}
 
                           &nbsp;&nbsp;&nbsp;
 
                           <i class="far fa-calendar"></i>
-                          {{ detail_inquire.s_enddate }}
+                          {{ detail_inquire.section && detail_inquire.section.enddate }}
 
                         </td>
                         <td>
                           <i class="far fa-clock"></i>
                           &nbsp;&nbsp;
-                          {{ detail_inquire.time }}
+                          {{ detail_inquire.section && detail_inquire.section.duration.time }}
                         </td>
                         
                       </tr>
                       <tr>
                         <td> 
-                          <i class="fas fa-chalkboard-teacher"></i>
-                          &nbsp;&nbsp;
-                          {{ teacherlist }} 
+                          <span v-for="sectionteacher in detail_inquire.section && detail_inquire.section.teachers">
+                            <i class="fas fa-chalkboard-teacher"></i>
+
+                            {{ sectionteacher.staff && sectionteacher.staff.user.name }} <br>
+                          </span> 
                         </td>
                       </tr>
 
@@ -908,7 +910,6 @@
                update_inquire: {},
                detail_inquire: {},
                print_inquire:{},
-               teacherlist : [],
                sreceiveno:'',
                activetab: '',
            }
@@ -1443,12 +1444,6 @@
               var inquire_data;
               // console.log(index);
                this.errors = [];
-
-               axios.get(`/api/setup/inquire/teacherlist/${s_id}`)
-                   .then(response => {
-                       this.teacherlist = response.data.teacherlist.teachers;
-                       // console.log(this.teacherlist);
-                   });
 
               if (c_id == 1)  // hr_ygn_sections
               {

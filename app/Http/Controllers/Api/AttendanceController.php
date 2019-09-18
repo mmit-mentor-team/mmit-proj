@@ -52,7 +52,7 @@ class AttendanceController extends Controller
         } catch(\Exception $e){
             
             DB::rollBack();
-            return response()->json(['message' => 'Something is wrong. Please try again']);
+            return response()->json(['message' => 'Something is wrong. Please try again', 'exception' => $e]);
         }
     }
     
@@ -62,12 +62,22 @@ class AttendanceController extends Controller
         ->join('students', 'students.id', '=', 'attendances.student_id')
         ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
         ->where('inquires.section_id', $section_id)
-        ->select('attendances.*', 'inquires.name')
+        ->distinct('inquires.name')
         ->get();
         
-        //    $attendances = Section::with('inquires.student.attendances')->where('id', $section_id)->get();
+        $students = Inquire::where('section_id', $section_id)->with('student.attendances')->get();
+        $dates = Attendance::select('date')->distinct()->get();
+        $att = [];
+        foreach($students as $student){
+            $att[] = [
+                'name' => $student->name,
+                'attendances' => $student->attendances,
+                'dates' => $dates
+            ];
+        }
+
         
-        return response()->json($attendances);
+        return response()->json($att);
     }
 }
 

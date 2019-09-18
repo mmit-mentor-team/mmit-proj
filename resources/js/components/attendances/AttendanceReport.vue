@@ -5,21 +5,26 @@
             <option disabled value="">Select Course</option>
             <option v-for="section in sections" :key="section.key" :value="section.id">{{section.title}}</option>
         </select>
-        <table class="table table-responsive table-bordered">
+        <table class="table table-responsive table-bordered" v-if="attendance_data">
             <thead>
                 <tr>
                     <th>No.</th>
                     <th>Name</th>
-                    <th v-for="n in 31" :key="n" class="text-center" style="min-width: 50px;">{{n}}</th>
+                    <th class="verticaltext" v-for="att_date in attendance_dates" :key="att_date.key">
+                        {{att_date.date}}
+                    </th>
                     <th>Total</th>
-                    <th>Absence</th>
+                    <th>Absent</th>
                     <th>%</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(attendance, index) in attendances" :key="attendance.id">
+                <tr v-for="(attendance, index) in attendances" :key="attendance.key">
                     <td>{{index+1}}</td>
-                    <td>{{attendance.student_id}}</td>
+                    <td>{{attendance.name}}</td>
+                    <td v-for="temp in attendance.attendances" :key="temp.key" :class="{'present': (temp.status == 1), 'absent': (temp.status == 0)}">
+                        
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -32,20 +37,47 @@
         data() {
             return {
                 attendances: [],
-                selected_section: ''
+                selected_section: '',
+                attendance_dates: []
+            }
+        },
+
+        computed: {
+            attendance_data: function () {
+                if (_.isEmpty(this.attendances)) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
         },
 
         methods: {
-            getAttendances(){
+            getAttendances() {
                 axios.get('/api/attendances/' + this.selected_section)
-                .then(response => {
-                    console.log(response.data.data);
-                    return;
-                    this.attendances = response.data.data;
+                    .then(response => {
+                        this.attendances = response.data;
+                        this.attendance_dates = this.attendances[0].dates;
                     })
-                .catch(error => (console.log(error)));
+                    .catch(error => (console.log(error)));
             }
         }
     }
+
 </script>
+<style scoped>
+    .verticaltext {
+        transform: rotate(-90deg);
+        transform-origin: 60% 85%;
+        height: 120px;
+        max-width: 30px;
+    }
+
+    .absent {
+        background: red;
+    }
+
+    .present {
+        background: blue;
+    }
+</style>

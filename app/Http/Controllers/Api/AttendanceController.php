@@ -29,9 +29,9 @@ class AttendanceController extends Controller
         })->whereDoesntHave('attendances', function($query){
             $query->where('date', Carbon::today());
         })->paginate(2);
-
+        
         return MyStudentResource::collection($studentList);
-       
+        
     }
     
     public function store(Request $request){
@@ -48,32 +48,36 @@ class AttendanceController extends Controller
             }
             DB::commit();
             return response()->json(['message' => 'Attendances are stored successfully']);
-
+            
         } catch(\Exception $e){
-
+            
             DB::rollBack();
-            return response()->json(['message' => 'Something is wrong. Please try again']);
+            return response()->json(['message' => 'Something is wrong. Please try again', 'exception' => $e]);
         }
     }
-
+    
     public function getAttendances($section_id){
+        
+        $attendances = DB::table('attendances')
+        ->join('students', 'students.id', '=', 'attendances.student_id')
+        ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
+        ->where('inquires.section_id', $section_id)
+        ->distinct('inquires.name')
+        ->get();
+        
+        $students = Inquire::where('section_id', $section_id)->with('student.attendances')->get();
+        $dates = Attendance::select('date')->distinct()->get();
+        $att = [];
+        foreach($students as $student){
+            $att[] = [
+                'name' => $student->name,
+                'attendances' => $student->attendances,
+                'dates' => $dates
+            ];
+        }
 
-    //    $attendances = DB::table('attendances')
-    //    ->join('students', 'students.id', '=', 'attendances.student_id')
-    //    ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
-    //    ->where('inquires.section_id', $section_id)
-    //    ->select('attendances.id', 'inquires.name')
-    //    ->get();
-
-       $attendances = Section::with('inquires.student.attendances')->where('id', $section_id)->get();
-    //    $att = [];
-
-    //    foreach($attendances as $attendance){
-    //        $att[] = $attendance->inquires;
-    //    }
-    //    dd($att);
-
-        return response()->json($attendances);
+        
+        return response()->json($att);
     }
 }
-    
+

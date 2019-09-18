@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Resources;
-
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model\Education;
+
+use App\User;
+use App\Http\Resources\UserResource;
 
 class EducationResource extends JsonResource
 {
@@ -22,4 +24,3 @@ class EducationResource extends JsonResource
             'name' => $this->name,
         ];
     }
-}

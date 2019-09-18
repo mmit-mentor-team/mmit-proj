@@ -51,6 +51,7 @@
                 <thead class="bg-primary text-white">
                   <tr class="text-center">
                     <th> No </th>
+                    <th> CodeNo </th>
                     <th> Name </th>
                     <th> Fees </th>
                     <th> Action </th>
@@ -59,6 +60,9 @@
                 <tbody>
                   <tr v-for="(course, index) in courses">
                     <td> {{ index + 1 }} </td>
+                    <td>
+                      {{ course.codeno }}
+                    </td>
                     <td> 
                       {{ course.name }}
                       ( {{ course.location.city.name }} )
@@ -71,9 +75,6 @@
                         <i class="fas fa-edit"></i> Edit
                       </button>
                       
-                      <button @click="deleteCourse(index)" class="btn btn-danger">
-                        <i class="fas fa-trash-alt"></i> Delete
-                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -160,9 +161,9 @@
             </div>
             <div class="form-group">
               <label for="names">Location:</label>
-                <select class="form-control"  name="location_id" v-model="update_course.locationid" id="locationid">
+                <select class="form-control"  name="location_id" v-model="update_course.location && update_course.location.id" id="locationid">
                   
-                  <option v-for="(location, index) in locations" :value="location.id" :selected="location.id == update_course.locationid"> {{ location.name }}  </option>
+                  <option v-for="(location, index) in locations" :value="location.id" :selected="location.id == update_course.location && update_course.location.id"> {{ location.name }}  </option>
                 </select>
             </div>
             
@@ -278,9 +279,10 @@
            updateCourse()
            {
                axios.patch('api/setup/course/' + this.update_course.id, {
+                   codeno : this.update_course.codeno,
                    name: this.update_course.name,
                    fees: this.update_course.fees,
-                   location: this.update_course.locationid,
+                   location: this.update_course.location.id
 
                })
                    .then(response => {

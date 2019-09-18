@@ -66,6 +66,10 @@
                 Position (For Student)
               </a>
 
+               <a class="collapse-item" href="{{ route("education") }}">
+                Education (For Student)
+              </a>
+
               <a class="collapse-item" href="{{ route('location') }}">
                 Department
               </a>
@@ -198,15 +202,11 @@
                 Job Appointment :
               </h6>
               
-              <a class="collapse-item" href="">
-                Interview List
-              </a>
-
-              <a class="collapse-item" href="">
+              <a class="collapse-item" href="{{route('hire')}}">
                 Hire List
               </a>
 
-              <a class="collapse-item" href="">
+              <a class="collapse-item" href="{{route('dismiss')}}">
                 Dimiss List
               </a>
 
@@ -409,5 +409,6 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
-});
+  });
+
 </script>

@@ -9,6 +9,38 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
+import Jobcareer from './components/Jobcareer.vue'
+import Interviewform from './components/Interviewform.vue'
+import Interview from './components/Interview.vue'
+
+const routes=[
+	{
+		name: 'jobcareer',
+		path: '/jobcareer',
+		component: Jobcareer
+	},
+	{
+		name: 'interviewform',
+		path: '/interviewform/:id',
+		component: Interviewform
+	},
+	{
+		name: 'interviewformlist',
+		path: '/interviewformlist',
+		component: Interviewform
+	},
+	{
+		name: 'interview',
+		path: '/interview/:id',
+		component: Interview
+	},
+];
+
+const router =new VueRouter({ mode: 'history', routes: routes});
+
 
 
 /**
@@ -35,16 +67,24 @@ Vue.component('income', require('./components/Income.vue').default);
 Vue.component('sectionkg', require('./components/Sectionkg.vue').default);
 Vue.component('company',require('./components/Company.vue').default);
 Vue.component('inquire', require('./components/Inquire.vue').default);
-Vue.component('student', require('./components/Student.vue').default);
+Vue.component('education', require('./components/Education.vue').default);
+Vue.component('student', require('./components/Student1.vue').default);
 Vue.component('jobcareer', require('./components/Jobcareer.vue').default);
-Vue.component('interview', require('./components/Interview.vue').default);
 Vue.component('position',require('./components/Position.vue').default);
 Vue.component('permission', require('./components/Permission.vue').default);
 Vue.component('role', require('./components/Role.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('report', require('./components/Report.vue').default);
 Vue.component('profile',require('./components/Profile.vue').default);
+<<<<<<< HEAD
 Vue.component('education',require('./components/education.vue').default);
+=======
+
+Vue.component('interview', require('./components/Interview.vue').default);
+Vue.component('interviewform', require('./components/Interviewform.vue').default);
+Vue.component('hire', require('./components/Hire.vue').default);
+Vue.component('dismiss', require('./components/Dismiss.vue').default);
+>>>>>>> origin/YTMN-mmit-proj
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -57,13 +97,17 @@ Vue.use(VueResource);
 import BootstrapVue from 'bootstrap-vue';
 Vue.use(BootstrapVue);
 
-import Multiselect from 'vue-multiselect';
-Vue.use(Multiselect);
+import vSelect from 'vue-select';
+Vue.component('v-select', vSelect);
 
+<<<<<<< HEAD
 import VueSelect from 'vue-select';
 Vue.use(VueSelect);
 
 Vue.component('multiselect', Multiselect);
+=======
+import 'vue-select/dist/vue-select.css';
+>>>>>>> origin/YTMN-mmit-proj
 
 Vue.component('v-select', VueSelect);
 import 'vue-select/dist/vue-select.css';
@@ -80,10 +124,11 @@ require('./backend/vendor/datatables/jquery.dataTables.min.js');
 require('./backend/vendor/datatables/dataTables.bootstrap4.min.js');
 // require('./backend/js/demo/datatables-demo.js');
 require('./backend/js/sb-admin-2.min.js');
+require('./backend/js/vuejs-datatable.js');
 
 
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr("content");
 const app = new Vue({
-    el: '#app'
+    el: '#app',router,routes
 });

@@ -14,6 +14,16 @@ class Staff extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','user_id');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo('App\Location','location_id');
+    }
+
+    public function teacher()
+    {
+    	return $this->hasOne('App\Model\Teacher');
     }
 }

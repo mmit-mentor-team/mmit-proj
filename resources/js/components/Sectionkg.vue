@@ -33,7 +33,11 @@
               </a>
 
               <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'active' : '' ]" id="nav-php_bootcamp-tab" data-toggle="tab" href="#nav-php_bootcamp" role="tab" aria-controls="nav-php_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'">
-                PHP Bootcamp 
+                PHP Bootcamp (YGN)
+              </a>
+
+              <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'active' : '' ]" id="nav-php_mdy_bootcamp-tab" data-toggle="tab" href="#nav-php_mdy_bootcamp" role="tab" aria-controls="nav-php_mdy_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - MDY )'">
+                PHP Bootcamp (MDY)
               </a>
 
               <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'">
@@ -61,15 +65,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(section, index) in sections">
+                    <tr v-for="(section, index) in hr_ygn_sections">
                       <td> {{ index + 1 }} </td>
                       <td> {{ section.title  }} </td>
                       <td> {{ section.startdate  }} </td>
                       <td> {{ section.enddate  }} </td>
-                      <td> {{ section.durations.days }} | {{section.durations.time}} </td>
-                      <td> {{ section.teachers }} </td>
+                      <td> {{ section.duration.days }} | {{section.duration.time}} </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
+                      </td>
+                      <td> 
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -107,10 +113,14 @@
                       <td> {{ section.title  }} </td>
                       <td> {{ section.startdate  }} </td>
                       <td> {{ section.enddate  }} </td>
-                      <td> {{ section.durations.days }} | {{section.durations.time}} </td>
-                      <td> {{ section.teachers }} </td>
+                      <td> {{ section.duration.days }} | {{section.duration.time}} </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> 
+                          {{ section_teacher.staff.user.name }} <br>
+                        </span>
+                      </td>
+                      <td> 
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -148,10 +158,55 @@
                       <td> {{ section.title  }} </td>
                       <td> {{ section.startdate  }} </td>
                       <td> {{ section.enddate  }} </td>
-                      <td> {{ section.durations.days }} | {{section.durations.time}} </td>
-                      <td> {{ section.teachers }} </td>
+                      <td> {{ section.duration.days }} | {{section.duration.time}} </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
+                      </td>
+                      <td> 
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
+                          <i class="fa fa-edit"></i> Edit
+                        </button>
+                        
+                        <button @click="deleteSection(index)" class="btn btn-danger">
+                          <i class="fa fa-trash"></i> Delete
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  
+                </table>
+              </div>
+              
+            </div>
+
+            <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" id="nav-php_mdy_bootcamp" role="tabpanel" aria-labelledby="nav-php_mdy_bootcamp-tab">
+
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_mdy_sections.length>0">
+                  <thead class="bg-primary text-white">
+                    <tr>
+                      <th> No </th>
+                      <th> Title  </th>
+                      <th> Start_Date   </th>
+                      <th> End_Date   </th>
+                      <th> Duration  </th>
+                      <th> Teacher  </th>
+                      <th> Action  </th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(section, index) in php_mdy_sections">
+                      <td> {{ index + 1 }} </td>
+                      <td> {{ section.title  }} </td>
+                      <td> {{ section.startdate  }} </td>
+                      <td> {{ section.enddate  }} </td>
+                      <td> {{ section.duration.days }} | {{section.duration.time}} </td>
+                      <td> 
+                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
+                      </td>
+                      <td> 
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -189,10 +244,12 @@
                       <td> {{ section.title  }} </td>
                       <td> {{ section.startdate  }} </td>
                       <td> {{ section.enddate  }} </td>
-                      <td> {{ section.durations.days  }} | {{section.durations.time}} </td>
-                      <td> {{ section.teachers }} </td>
+                      <td> {{ section.duration.days  }} | {{section.duration.time}} </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
+                      </td>
+                      <td> 
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -250,7 +307,7 @@
                <select v-model="course_id" name="course_id" id="course_id" class="form-control" @change="readDurations">
                   <option disabled value="">Please select one</option>
                   <option v-for ="(course, index) in courses"  :value="course.id">
-                    {{ course.name }} ( {{ course.cityname }} )
+                    {{ course.name }} ( {{ course.location && course.location.city.name }} )
                   </option>
                 </select>
             </div>
@@ -274,8 +331,11 @@
                   <option v-for ="(teacher, index) in teachers" :value="teacher.id">{{ teacher.staffs.users.name }}</option>
                 </select> -->
 
-                <multiselect v-model="value" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="name" track-by="id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                <!-- <multiselect v-model="value" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="name" track-by="id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect> -->
                 <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
+
+                <v-select multiple v-model="selected" :options="options" :reduce="name => name.id" label="name"></v-select>
+                {{selected}}
             </div>
             
           </div>
@@ -323,10 +383,10 @@
 
             <div class="form-group">
               <label for="names">Course:</label>
-               <select v-model="course_id" name="course_id" id="course_id" class="form-control" @change="readDurations">
+               <select v-model="update_section.course_id" name="course_id" id="course_id" class="form-control" @change="readDurations">
                   <option disabled value="">Please select one</option>
                   <option v-for ="(course, index) in courses"  :value="course.id" :selected="course.id == update_section.course_id">
-                    {{ course.name }} ( {{ course.cityname }} )
+                    {{ course.name }} ( {{ course.location && course.location.city.name }} )
                   </option>
                 </select>
             </div>
@@ -346,8 +406,10 @@
                   <option v-for ="(teacher, index) in teachers" :value="teacher.id">{{ teacher.staffs.users.name }}</option>
                 </select> -->
                 <!-- {{update_section.value}} -->
-                <multiselect v-model="update_section.value" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="name" track-by="id" :options="options" :multiple="true" :taggable="true" @tag="updateTag"></multiselect>
+                <!-- <multiselect v-model="update_section.value" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="name" track-by="id" :options="options" :multiple="true" :taggable="true" @tag="updateTag"></multiselect> -->
                 <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
+                <v-select multiple v-model="update_section.selected" :options="options" :reduce="name => name.id" label="name" :key="update_section.selected"></v-select>
+                <!-- {{update_section.selected}} -->
             </div>
             
           </div>
@@ -370,7 +432,7 @@
 
 <script>
    export default {
-      props: ["permissions","active_tab"],
+      props: ["permissions"],
 
       data(){
            return {
@@ -387,12 +449,15 @@
                sections: [],
                hr_mdy_sections: [],
                php_sections:[],
+               php_mdy_sections:[],
                ios_sections:[],
                durations:[],
                courses:[],
                teachers:[],
                detail_section: {},
-               update_section: {},
+               update_section: {
+                selected: []
+               },
                duration_id: '',
                teacher_id:'',
                course_id:'',               
@@ -401,9 +466,10 @@
                duration:'',
                teacher:'',
                teachersOptions: [],
-               value: [],
                options: [],
                activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
+               selected: [],
+               value: {}
              }
        },
        mounted()
@@ -416,23 +482,23 @@
           this.readCourses();
        },
        methods: {
-          addTag (newTag) {
-            const tag = {
-              name: newTag,
-              id: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
-            }
-            this.options.push(tag)
-            this.value.push(tag)
-          },
+          // addTag (newTag) {
+          //   const tag = {
+          //     name: newTag,
+          //     id: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+          //   }
+          //   this.options.push(tag)
+          //   this.value.push(tag)
+          // },
 
-          updateTag (newTag) {
-            const tag = {
-              name: newTag,
-              id: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
-            }
-            this.options.push(tag)
-            this.update_section.value.push(tag)
-          },
+          // updateTag (newTag) {
+          //   const tag = {
+          //     name: newTag,
+          //     id: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+          //   }
+          //   this.options.push(tag)
+          //   this.update_section.value.push(tag)
+          // },
 
          deleteSection(index)
            {
@@ -453,16 +519,16 @@
            },
             createSection()
            {  
-              for (var i = 0; i < this.value.length; i++) {
-                this.teachers[i] = this.value[i].id;
-              }
+              // for (var i = 0; i < this.value.length; i++) {
+              //   this.teachers[i] = this.value[i].id;
+              // }
 
               axios.post('/api/setup/section', {
                    title: this.section.title,
                    startdate: this.section.startdate,
                    closedays: this.section.closedays,
                    duration_id: this.duration,
-                   teachers: this.teachers,
+                   teachers: this.selected,
                    
                })
                    .then(response => {
@@ -472,10 +538,10 @@
                        this.notiMsg = "Data Inserted Successfully!!!";
                        $("#add_section_model").modal("hide");
                        this.activetab = this.permissions[0].name;
-          this.readSections();
-          this.readDurations();
-          this.readTeachers();
-          this.readCourses();
+                        this.readSections();
+                        this.readDurations();
+                        this.readTeachers();
+                        this.readCourses();
 
                    })
                    .catch(error => {
@@ -501,9 +567,6 @@
                            this.errors.push(error.response.data.errors.teacher_id[0]);
                        }
                    });
-
-
-
            },
            reset()
            {
@@ -515,8 +578,10 @@
                axios.get('/api/setup/section')
                    .then(response => {
                        this.sections = response.data.sections;
-                       this.hr_mdy_sections = response.data.hr_mdy;
+                       this.hr_ygn_sections = response.data.hr_ygn_sections;
+                       this.hr_mdy_sections = response.data.hr_mdy_sections;
                        this.php_sections = response.data.php_sections;
+                       this.php_mdy_sections = response.data.php_mdy_sections;
                        this.ios_sections = response.data.ios_sections;
 
                        this.noti=false;
@@ -543,7 +608,7 @@
                        console.log(response.data.teachers[i].username);
 
                           teachersArr.push({
-                            name:response.data.teachers[i].staffs.users.name, 
+                            name:response.data.teachers[i].staff.user.name, 
                             id: response.data.teachers[i].id
                           });
                        }
@@ -564,15 +629,16 @@
 
           initUpdate(val_id,val_title,val_startdate,val_enddate,val_duration_id,val_course_id)
            {
-              console.log(val_id);
+              console.log(val_course_id);
 
                 axios.get(`/api/setup/sectionTeacher/${val_id}`)
                   .then(response => {
                     console.log(response.data.teachers);
+                    console.log('aa');
                     for (var i = 0; i < response.data.teachers.length; i++) {
-                      this.teachersOptions.push({name:response.data.teachers[i].staffs.users.name, id: response.data.teachers[i].id});
+                      this.teachersOptions.push(response.data.teachers[i].id);
                     }
-                    this.update_section.value= this.teachersOptions;
+                    this.update_section.selected = this.teachersOptions;
                     this.teachersOptions = [];
 
                   });
@@ -589,16 +655,16 @@
            },
            updateSection()
            {
-              for (var i = 0; i < this.update_section.value.length; i++) {
-                this.teachers[i] = this.update_section.value[i].id;
-              }
+              // for (var i = 0; i < this.update_section.value.length; i++) {
+              //   this.teachers[i] = this.update_section.value[i].id;
+              // }
 
                axios.patch('/api/setup/section/' + this.update_section.id, {
                    title: this.update_section.title,
                    startdate: this.update_section.startdate,
                    enddate: this.update_section.enddate,
                    duration_id: this.update_section.duration_id,
-                   teachers: this.teachers,
+                   teachers: this.update_section.selected,
                })
                    .then(response => {
                        $("#update_section_model").modal("hide");
@@ -623,4 +689,4 @@
        }
    }
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<!-- <style src="vue-multiselect/dist/vue-multiselect.min.css"></style> -->

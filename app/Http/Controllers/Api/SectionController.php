@@ -24,141 +24,45 @@ class SectionController extends Controller
     {
         //
        /* $sections = Section::all();*/
-        $hr_ygn_sections =  DB::table('sections')
-            ->select(
+        
+        $hr_ygn_sections = Section::whereHas('duration', function($q1){
+            $q1->where('course_id', 1);
+        })->orderBy('sections.id','DESC')->get();
 
-                    DB::raw('GROUP_CONCAT(section_teacher.section_id) AS section_id'),
-                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
-                    DB::raw('GROUP_CONCAT(section_teacher.teacher_id) AS teachers_id'),
+        $hr_mdy_sections =  Section::whereHas('duration', function($q1){
+            $q1->where('course_id', 2);
+        })->orderBy('sections.id','DESC')->get();
 
-                    'sections.*', 
-                    'courses.name as coursename', 
-                    'courses.id as courseid', 
-                    'durations.time as time', 
-                    'durations.days as day', 
-                    'durations.during as during', 
-                    'locations.name as location', 
-                    'cities.name as city'
-                )
-            ->distinct()
-            ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
-            ->join('teachers', 'section_teacher.teacher_id', '=', 'teachers.id')
-            ->join('staffs','teachers.staff_id', '=', 'staffs.id')
-            ->join('users','staffs.user_id', '=', 'users.id')
-            ->join('durations', 'durations.id', '=', 'sections.duration_id')
-            ->join('courses','courses.id','=','durations.course_id')
-            ->join('locations','locations.id','=','courses.location_id')
-            ->join('cities','cities.id','=','locations.city_id')
-            ->groupBy('section_teacher.section_id')
-            ->where('durations.course_id','=',1)
-            ->orderBy('sections.id', 'desc')
-            ->get();
-            // dd($sections);
+        $php_sections =  Section::whereHas('duration', function($q1){
+            $q1->where('course_id', 3);
+        })->orderBy('sections.id','DESC')->get();
 
-        $hr_mdy_sections =  DB::table('sections')
-            ->select(
+        $ios_sections =  Section::whereHas('duration', function($q1){
+            $q1->where('course_id', 4);
+        })->orderBy('sections.id','DESC')->get();
 
-                    DB::raw('GROUP_CONCAT(section_teacher.section_id) AS section_id'),
-                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
-                    DB::raw('GROUP_CONCAT(section_teacher.teacher_id) AS teachers_id'),
+        $php_mdy_sections =  Section::whereHas('duration', function($q1){
+            $q1->where('course_id', 5);
+        })->orderBy('sections.id','DESC')->get();
 
-                    'sections.*', 
-                    'courses.name as coursename', 
-                    'courses.id as courseid', 
-                    'durations.time as time', 
-                    'durations.days as day', 
-                    'durations.during as during', 
-                    'locations.name as location', 
-                    'cities.name as city'
-                )
-            ->distinct()
-            ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
-            ->join('teachers', 'section_teacher.teacher_id', '=', 'teachers.id')
-            ->join('staffs','teachers.staff_id', '=', 'staffs.id')
-            ->join('users','staffs.user_id', '=', 'users.id')
-            ->join('durations', 'durations.id', '=', 'sections.duration_id')
-            ->join('courses','courses.id','=','durations.course_id')
-            ->join('locations','locations.id','=','courses.location_id')
-            ->join('cities','cities.id','=','locations.city_id')
-            ->groupBy('section_teacher.section_id')
-            ->where('durations.course_id','=',2)
-            ->orderBy('sections.id', 'desc')
-            ->get();
-
-        $php_sections =  DB::table('sections')
-            ->select(
-
-                    DB::raw('GROUP_CONCAT(section_teacher.section_id) AS section_id'),
-                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
-                    DB::raw('GROUP_CONCAT(section_teacher.teacher_id) AS teachers_id'),
-
-                    'sections.*', 
-                    'courses.name as coursename', 
-                    'courses.id as courseid', 
-                    'durations.time as time', 
-                    'durations.days as day', 
-                    'durations.during as during', 
-                    'locations.name as location', 
-                    'cities.name as city'
-                )
-            ->distinct()
-            ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
-            ->join('teachers', 'section_teacher.teacher_id', '=', 'teachers.id')
-            ->join('staffs','teachers.staff_id', '=', 'staffs.id')
-            ->join('users','staffs.user_id', '=', 'users.id')
-            ->join('durations', 'durations.id', '=', 'sections.duration_id')
-            ->join('courses','courses.id','=','durations.course_id')
-            ->join('locations','locations.id','=','courses.location_id')
-            ->join('cities','cities.id','=','locations.city_id')
-            ->groupBy('section_teacher.section_id')
-            ->where('durations.course_id','=',3)
-            ->orderBy('sections.id', 'desc')
-            ->get();
-
-        // dd($php_sections);
-
-        $ios_sections =  DB::table('sections')
-            ->select(
-
-                    DB::raw('GROUP_CONCAT(section_teacher.section_id) AS section_id'),
-                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
-                    DB::raw('GROUP_CONCAT(section_teacher.teacher_id) AS teachers_id'),
-
-                    'sections.*', 
-                    'courses.name as coursename', 
-                    'courses.id as courseid', 
-                    'durations.time as time', 
-                    'durations.days as day', 
-                    'durations.during as during', 
-                    'locations.name as location', 
-                    'cities.name as city'
-                )
-            ->distinct()
-            ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
-            ->join('teachers', 'section_teacher.teacher_id', '=', 'teachers.id')
-            ->join('staffs','teachers.staff_id', '=', 'staffs.id')
-            ->join('users','staffs.user_id', '=', 'users.id')
-            ->join('durations', 'durations.id', '=', 'sections.duration_id')
-            ->join('courses','courses.id','=','durations.course_id')
-            ->join('locations','locations.id','=','courses.location_id')
-            ->join('cities','cities.id','=','locations.city_id')
-            ->groupBy('section_teacher.section_id')
-            ->where('durations.course_id','=',4)
-            ->orderBy('sections.id', 'desc')
-            ->get();
-           
+        $sections = Section::orderBy('sections.id','DESC')->get();
 
         $hr_ygn_sections =  SectionResource::collection($hr_ygn_sections);
         $hr_mdy_sections =  SectionResource::collection($hr_mdy_sections);
         $php_sections =  SectionResource::collection($php_sections);
         $ios_sections =  SectionResource::collection($ios_sections);
-
+        $php_mdy_sections =  SectionResource::collection($php_mdy_sections);
+        
+        $sections =  SectionResource::collection($sections);
 
         return response()->json([
-            'sections' => $hr_ygn_sections,
-            'hr_mdy'   => $hr_mdy_sections,
+            'sections' => $sections,
+            'hr_ygn_sections' => $hr_ygn_sections,
+            'hr_mdy_sections'   => $hr_mdy_sections,
             'php_sections'  =>  $php_sections,
-            'ios_sections'  =>  $ios_sections
+            'ios_sections'  =>  $ios_sections,
+            'php_mdy_sections'  =>  $php_mdy_sections,
+            'interviewsection' =>$sections
         ],200);
     }
 
@@ -196,7 +100,8 @@ class SectionController extends Controller
         // replace days for weekends
         
         $enddate = Carbon::parse($secd->copy()->addDays($weekends)); // 15112019
-        dd($enddate);
+
+        // dd($enddate);
         
         // Find weekends from secd
         $weekends = $secd->diffInDaysFiltered(function(Carbon $date) {
@@ -246,39 +151,10 @@ class SectionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+
     {
-        $section =  DB::table('sections')
-            ->select(
 
-                    DB::raw('GROUP_CONCAT(section_teacher.section_id) AS section_id'),
-                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
-                    DB::raw('GROUP_CONCAT(section_teacher.teacher_id) AS teachers_id'),
-
-                    'sections.*', 
-                    'courses.name as coursename', 
-                    'courses.id as courseid', 
-                    'durations.time as time', 
-                    'durations.days as day', 
-                    'durations.during as during', 
-                    'locations.name as location', 
-                    'cities.name as city'
-                )
-            ->distinct()
-            ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
-            ->join('teachers', 'section_teacher.teacher_id', '=', 'teachers.id')
-            ->join('staffs','teachers.staff_id', '=', 'staffs.id')
-            ->join('users','staffs.user_id', '=', 'users.id')
-            ->join('durations', 'durations.id', '=', 'sections.duration_id')
-            ->join('courses','courses.id','=','durations.course_id')
-            ->join('locations','locations.id','=','courses.location_id')
-            ->join('cities','cities.id','=','locations.city_id')
-            ->groupBy('section_teacher.section_id')
-            ->where('sections.duration_id','=',$id)
-            ->orderBy('sections.id', 'desc')
-            ->get();
-            // dd($section);
-
-            $sections =  SectionResource::collection($section);
+        $section = Section::where('duration_id', '=', $id)->orderBy('sections.id','DESC')->get();
 
         return response()->json([
             'sections' => $sections,
@@ -303,12 +179,12 @@ class SectionController extends Controller
         ]);
         $section = Section::find($id);
 
+        $sectionTeachers = $section->teachers;
+
 
         $startdate = request('startdate');
-
         $date = Carbon::create($startdate);
         $codeno = $date->isoFormat('Do MMM YYYY'); 
-
         $section->codeno = $codeno;
         $section->title = request('title');
         $section->startdate = request('startdate');
@@ -317,7 +193,7 @@ class SectionController extends Controller
         $section->user_id=  Auth::user()->id;
         $section->save();
 
-        $section->teachers()->detach($request->teachers);
+        $section->teachers()->detach($sectionTeachers);
         $section->teachers()->attach($request->teachers);
 
         return response()->json([

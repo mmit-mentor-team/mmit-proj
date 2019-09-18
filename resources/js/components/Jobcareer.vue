@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-         <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="add_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -19,7 +19,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
         </div>
-         <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="delete_noti">
             
             <strong>SUCCESS!</strong> {{ message }}
             
@@ -38,7 +38,6 @@
               </button>
 
             </h3>
-
           </div>
 
           <div class="card-body">
@@ -48,6 +47,7 @@
                   <tr class="text-center">
                     <th> No </th>
                     <th> Senddate </th>
+                     <th>Number of staff</th>
                     <th> Company </th>
                     <th> Position </th>
                     <th> Gender </th>
@@ -59,15 +59,12 @@
                   <tr v-for="(jobcareer, index) in Jobcarrers">
                     <td> {{ index + 1 }} </td>
                     <td> {{ jobcareer.senddate }} </td>
+                     <th> {{ jobcareer.nos }} </th>
                     <td> {{ jobcareer.company.name }} </td>
                     <td> {{ jobcareer.position.name}} </td>
                     <td> {{ jobcareer.gender }}</td>
                     <td> {{ jobcareer.remark }} </td>
                     <td>
-                      <button class="btn btn-warning btn-xs" @click="interview(jobcareer.id)">
-                        <i class="far fa-handshake"></i> Interview
-                      </button>
-
                       <button class="btn btn-warning btn-xs" @click="initUpdate(index)">
                         <i class="fas fa-edit" ></i> Edit
                       </button>
@@ -75,6 +72,10 @@
                       <button class="btn btn-danger btn-xs"  @click="deletejobcareer(index)">
                         <i class="fas fa-trash-alt"></i>  Delete
                       </button>
+                      <!-- honeyhtun -->
+                      <router-link :to="{name:'interview',params:{id:jobcareer.id}}" v-if="jobcareer.status==0 && jobcareer.interviews.length>0" @click.native="reload" class="btn btn-success">Show interview list</router-link>
+
+                      <router-link :to="{name:'interviewform',params: {id:jobcareer.id} }" v-else class="btn btn-primary " id="interview" @click.native="reload" >To change interview</router-link>
                     </td>
                   </tr>
                 </tbody>
@@ -148,6 +149,12 @@
               <label>SendDate:</label>
                 <input type="date" placeholder="Send Date" class="form-control" v-model="Jobcarrer.senddate">
             </div>
+
+            <div class="form-group">
+              <label>NOS:</label>
+                <input type="number" placeholder="Number of staff" class="form-control" v-model="Jobcarrer.nos">
+            </div>
+
             <div class="form-group">
               <label>remark:</label>
                 <textarea class="form-control" v-model="Jobcarrer.remark" name="remark" id="remark"></textarea>
@@ -205,6 +212,12 @@
               <label>SendDate:</label>
                 <input type="date" placeholder="Send Date" id="updatesenddate" class="form-control" name="senddate" v-model="clone_update_jobcareer.senddate" >
             </div>
+
+             <div class="form-group">
+              <label>NOS:</label>
+                <input type="number" placeholder="Number of staff" id="updatenos" class="form-control" name="nos" v-model="clone_update_jobcareer.nos" >
+            </div>
+
             <div class="form-group">
               <label>remark:</label>
                 <textarea class="form-control" name="remark" v-model="clone_update_jobcareer.remark" id="updateremark"></textarea>
@@ -256,7 +269,8 @@
   data(){
            return {
                Jobcarrer: {
-                     gender: ''
+                     gender: '',
+                     nos:0
                },
                positions:[],
                companys:[],
@@ -279,6 +293,12 @@
           this.readCompanys()
        },
         methods: {
+          //honeyhtun
+          reload()
+           {
+            location.reload();
+           },
+
           deletejobcareer(index)
            {
                let conf = confirm("Do you ready want to delete this jobcareer?");
@@ -318,6 +338,7 @@
                axios.post('/api/setup/jobcareer', {
                    gender: this.Jobcarrer.gender,
                    senddate : this.Jobcarrer.senddate,
+                   nos: this.Jobcarrer.nos,
                    remark : this.Jobcarrer.remark,
                    company_id : this.company_id,
                    position_id : this.position_id,
@@ -372,6 +393,7 @@
             axios.patch('/api/setup/jobcareer/' + this.clone_update_jobcareer.id, {
                    gender: this.clone_update_jobcareer.gender,
                    senddate : this.clone_update_jobcareer.senddate,
+                    nos: this.clone_update_jobcareer.nos,
                    remark :this.clone_update_jobcareer.remark,
                    company_id : this.clone_update_jobcareer.company_id,
                    position_id : this.clone_update_jobcareer.position_id,

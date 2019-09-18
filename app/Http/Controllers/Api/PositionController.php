@@ -20,8 +20,9 @@ class PositionController extends Controller
     public function index()
     {
         //
-        $positions=Position::all();
+        $positions=Position::orderBy('id','DESC')->get();
         $positions=PositionResource::collection($positions);
+        
         return response()->json([
             'positions'=>$positions
         ],200);

@@ -39,7 +39,7 @@
                             <td>{{expense.date}}</td>
                             <td>
                                 <div v-if="expense.attachment">
-                                    <img :src="myImage" v-for="myImage in expense.attachment.split(',')" width="50" height="50">
+                                    <img :src="myImage" v-for="myImage in expense.attachment.split(',')" width="50" height="50" @click="initClick(myImage)">
                                 </div>
                             </td>
                             <td> 
@@ -59,6 +59,12 @@
                   </div>
 
                 </div>
+                <!-- Detail Image-->
+                <div id="detail_staff_model" class="modal">
+                  
+                  <img class="modal-content" :src="detailimage">
+                     
+                </div>
 
                 <!-- Add Modal -->
                 <div class="modal fade" id="add_expense_modal" tabindex="-1" role="dialog">
@@ -74,6 +80,7 @@
                                 <div class="form-group">
                                     <label for="type">Select Type</label>
                                     <select name="type" class="form-control" id="type" v-model="addData.type">
+                                        <option disabled value="">Please Select Year</option>
                                         <option value="PHP">PHP</option>
                                         <option value="Recruitment">Recruitment</option>
                                         <option value="HR">HR</option>
@@ -95,6 +102,7 @@
                                 <div class="form-group">
                                     <label for="add_file">Select file input</label>
                                     <input name="attachments" ref="add_file" type="file" class="form-control-file" id="add_file" multiple @change="fileHandle">
+                                    <img v-for="image in images" :src="image" class="preview" width="50" height="50">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -142,9 +150,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="add_file">Select file input</label>
+                                    <div v-if="updateData.attachment">
+                                  
+                                   <img :src="myImage" v-for="myImage in updateData.attachment.split(',')" width="50" height="50" @click="initClick(myImage)" id="hideimage">
+                                 
+                                    </div>
                                     <input name="updated_files" type="file" class="form-control-file" id="edit_file" multiple @change="fileHandleforUpdate">
 
-                                     <div class="col-md-6">
+                                    <img v-for="image in images" :src="image" class="preview" width="50" height="50">
+
+                                    <div class="col-md-6">
                                       <input type="hidden" name="oldimage" :value="updateData.attachment" id="oldimage">
                                       {{apiData.attachment}}
                                      </div> 
@@ -180,6 +195,8 @@ export default {
                 files: []
             },
             updateData: {},
+            detailimage:'',
+            images:[],
         }
     },
 
@@ -201,7 +218,14 @@ export default {
                        });
             }
         },
-
+        initClick(myImage)
+           {
+           //console.log(myImage);
+               this.errors = [];
+               $("#detail_staff_model").modal("show");
+                this.detailimage = myImage;
+                 //console.log(this.detailimage);
+           },
         getImage(attachment){
               return "img/" + attachment;
             },
@@ -222,6 +246,23 @@ export default {
             for (var i = 0; i < addFile.length; i++) {
                 this.addData.files.push(addFile[i]);
             }
+
+            this.images = [];
+              let fileList = Array.prototype.slice.call(e.target.files);
+              fileList.forEach(f => {
+
+                if(!f.type.match("image.*")) {
+                  return;
+                }
+
+                let reader = new FileReader();
+                let that = this;
+
+                reader.onload = function (e) {
+                  that.images.push(e.target.result);
+                }
+                reader.readAsDataURL(f); 
+              });
         },
 
         add_expense() {
@@ -254,12 +295,30 @@ export default {
         },
 
         fileHandleforUpdate(e) {
+            $('#hideimage').hide();
             let editedFiles = e.target.files;
             this.updatedFiles = [];
 
             for (var i = 0; i < editedFiles.length; i++) {
                 this.updatedFiles.push(editedFiles[i]);
             }
+
+            this.images = [];
+          let fileList = Array.prototype.slice.call(e.target.files);
+          fileList.forEach(f => {
+
+            if(!f.type.match("image.*")) {
+              return;
+            }
+
+            let reader = new FileReader();
+            let that = this;
+
+            reader.onload = function (e) {
+              that.images.push(e.target.result);
+            }
+            reader.readAsDataURL(f); 
+          });
         },
 
         update_expense() {
@@ -300,3 +359,25 @@ export default {
 };
 
 </script>
+
+<style type="text/css">
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1;
+  padding-top: 50px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto;
+  vertical-align: middle;
+}
+.modal-content{
+    width: 80%;
+    max-width: 700px; 
+    height:500; 
+    margin: auto;
+    display: block;
+}
+</style>

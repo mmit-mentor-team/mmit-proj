@@ -17,7 +17,7 @@ class CreateDurationsTable extends Migration
             $table->bigIncrements('id');
             $table->string('time');
             $table->string('days');
-            $table->string('during');
+            $table->integer('during');
 
             //course
             $table->unsignedBigInteger('course_id');

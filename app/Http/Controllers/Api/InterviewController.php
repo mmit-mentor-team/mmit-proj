@@ -8,6 +8,7 @@ use Auth;
 use App\Model\Interview;
 use App\Http\Resources\InterviewResource;
 use App\Http\Resources\JobcareerResource;
+use App\Http\Resources\interviews\StudentResource;
 use App\Model\Student;
 use App\Model\Jobcareer;
 use App\Model\Inquire;
@@ -20,29 +21,82 @@ class InterviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $jobcareerid = request('id');
-        dd($jobcareerid);
-       $inquires = Inquire::all();
-       $students = Student::all();
-       $jobcareers = Jobcareer::all();
-       /*$interviews = Interview::all();*/
-       $interviews = DB::table('interviews')
-            ->join('jobcareers','jobcareers.id','=', 'interviews.jobcareer_id')
-            ->join('students','students.id', '=', 'interviews.student_id')
-            ->join('inquires','inquires.id', '=', 'students.inquire_id')
-            ->join('companies','companies.id', '=', 'jobcareers.company_id')
-            ->join('positions','positions.id', '=', 'Jobcareers.position_id')
-            ->select('interviews.*','inquires.name as inquirename','companies.name as companyname','positions.name as positionname')
-            ->get();
-        //dd($interviews);
 
-       $interviews = InterviewResource::collection($interviews);
+        $interviews = DB::table('interviews')
+        ->join('students','students.id','=', 'interviews.student_id')
+        ->join('inquires','inquires.id', '=', 'students.inquire_id')
+        ->join('sections','sections.id', '=', 'inquires.section_id')
+        ->join('durations','durations.id', '=', 'sections.duration_id')
+        ->join('courses','courses.id', '=', 'durations.course_id')
+        ->select('interviews.*','inquires.name as inquirename','courses.name as coursename','sections.title as sectionname')
+        ->whereNotExists(function($q){
+            $q->select(DB::raw(1))
+            ->from('hires')
+            ->whereRaw('hires.interview_id = interviews.id');
+        })
+        ->whereNotExists(function($q){
+            $q->select(DB::raw(1))
+            ->from('dismisses')
+            ->whereRaw('dismisses.interview_id = interviews.id');
+        })->get();
 
-       return response()->json([
+
+        $interviews = InterviewResource::collection($interviews);
+        return response()->json([
             'interviews' => $interviews,
-       ],200);
+        ],200);  
+    }
+
+    public function getSections(Request $request)
+    {
+        $course_id = request('course_id');
+        $sections = DB::table('sections')
+            ->join('durations','durations.id','=','sections.duration_id')
+            ->join('courses','courses.id','=','durations.course_id')
+            ->select('sections.*')
+            ->where('courses.id',$course_id)
+            ->get();
+
+        return response()->json([
+            'sections' => $sections,
+        ],200);
+
+    }
+
+    public function getStudentsForInterview(Request $request){
+
+        $section = $request['section_id'];
+        $jobcareer = $request['jobcareer_id'];
+        $myList = [];
+
+        $jobgender = Jobcareer::find($jobcareer);
+        $gender = $jobgender->gender;
+
+        if ($gender == 'both') {
+            $students = Student::whereHas('inquire', function($q) use ($section){
+                $q->where('section_id', $section);
+            })->whereDoesntHave('interviews', function($query) use ($jobcareer){
+                $query->where('jobcareer_id', $jobcareer);
+            })
+            ->get();
+        } else {
+            $students = Student::whereHas('inquire', function($q) use ($section, $gender){
+                $q->where('section_id', $section)
+                ->where('gender', $gender);
+            })->whereDoesntHave('interviews', function($query) use ($jobcareer){
+                $query->where('jobcareer_id', $jobcareer);
+            })
+            ->get();
+        }
+
+        $getstudents = StudentResource::collection($students);
+
+
+        return response()->json([
+            'interviewstudent' => $getstudents,
+        ],200);
     }
 
     /**
@@ -54,47 +108,37 @@ class InterviewController extends Controller
 
     public function create(Request $request)
     {
-        $id = request('id');
-        // dd($jobcareer);
-        $jobcareer =  DB::table('jobcareers')
-                ->where('jobcareers.id','=',$id)
-                ->get();
-
-        $jobcareers =  JobcareerResource::collection($jobcareer);
-
-       return response()->json([
-            'jobcareers' => $jobcareers,
-       ],200);
+        //
     }
 
     public function store(Request $request)
     {
         //
-
-        //dd($request);
         $this->validate($request, [
             'appointment'  => 'required',
-                'remark'   => 'required',
-                'status'   => 'required',
-             'student_id'  => 'required',
+            'remark'   => 'required',
+            'student_id'  => 'required',
             'jobcareer_id' => 'required'
         ]);
 
         $appointment = request('appointment');
-             $remark = request('remark');
-             $status = request('status');
+        $remark = request('remark');
+        $status = 1;
         $student_id  = request('student_id');
-       $jobcareer_id = request('jobcareer_id');
-            $user_id = Auth::user()->id;
+        $jobcareer_id = request('jobcareer_id');
+        $user_id = Auth::user()->id;
 
-        $interview = Interview::create([
-            'appointment' => $appointment,
-                 'remark' => $remark,
-                 'status' => $status,
-             'student_id' => $student_id,
-           'jobcareer_id' => $jobcareer_id,
+
+        foreach($student_id as $l){
+            $interview = Interview::create([
+                'appointment' => $appointment,
+                'remark' => $remark,
+                'status' => $status,
+                'student_id' => $l,
+                'jobcareer_id' => $jobcareer_id,
                 'user_id' => $user_id,
-        ]);
+            ]);
+        }
 
         $interview = new InterviewResource($interview);
 
@@ -112,7 +156,30 @@ class InterviewController extends Controller
      */
     public function show($id)
     {
-        echo "string";
+        $interviews = DB::table('interviews')
+        ->join('students','students.id','=', 'interviews.student_id')
+        ->join('jobcareers','jobcareers.id','=','interviews.jobcareer_id')
+        ->join('inquires','inquires.id', '=', 'students.inquire_id')
+        ->join('sections','sections.id', '=', 'inquires.section_id')
+        ->join('durations','durations.id', '=', 'sections.duration_id')
+        ->join('courses','courses.id', '=', 'durations.course_id')
+        ->select('interviews.*','inquires.name as inquirename','courses.name as coursename','sections.title as sectionname')
+        ->whereNotExists(function($q){
+            $q->select(DB::raw(1))
+            ->from('hires')
+            ->whereRaw('hires.interview_id = interviews.id');
+        })
+        ->whereNotExists(function($q){
+            $q->select(DB::raw(1))
+            ->from('dismisses')
+            ->whereRaw('dismisses.interview_id = interviews.id');
+        })
+        ->where('jobcareers.id',$id)
+        ->get();
+        $interviews = InterviewResource::collection($interviews);
+        return response()->json([
+            'interviews' => $interviews,
+        ],200);
     }
 
     /**
@@ -124,30 +191,9 @@ class InterviewController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        dd($request);
-        $this->validate($request, [
-            'appointment' => 'required',
-                'remark'  => 'required|max:255',
-                'status'  => 'required|max:225',
-            'student_id'  => 'required',
-           'jobcareer_id' => 'required',
-        ]);
-
-        $interview = Interview::find($id);
-
-        $interview->appointment = request('appointment');
-        $interview->remark = request('remark');
-        $interview->status = request('status');
-        $interview->student_id = request('student_id');
-        $interview->jobcareer_id = request('jobcareer_id');
-        $interview->user_id = Auth::user()->id;
-        $interview->save();
-
-        return response()->json([
-
-            'message' => 'Interview updated Successfully'
-        ],200);
+        $jobcareer = Jobcareer::find($id);
+        $jobcareer->status = 0;
+        $jobcareer->save();
     }
 
     /**

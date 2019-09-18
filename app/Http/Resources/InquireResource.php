@@ -6,10 +6,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Model\Township;
 use App\Model\Inquire;
 use App\Model\Section;
-use App\User;
 
 use App\Http\Resources\TownshipResource;
 use App\Http\Resources\SectionResource;
+
+use App\User;
 use App\Http\Resources\UserResource;
 
 class InquireResource extends JsonResource
@@ -44,7 +45,7 @@ class InquireResource extends JsonResource
             'educationid' => $this->education,
             'user' => new UserResource(User::find($this->user_id)),
             'township' => new TownshipResource(Township::find($this->township_id)),
-             'section' => new SectionResource(Section::find($this->section_id)),
+            'section' => new SectionResource(Section::find($this->section_id)),
 
             'townshipname' => $this->townshipname,
             'sectiontitle' => $this->sectiontitle,

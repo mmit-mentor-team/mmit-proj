@@ -8,8 +8,13 @@ class Education extends Model
 {
     //
 
-    protected $fillable = [
+     protected $fillable = [
         'name', 'user_id'
     ];
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User','user_id');
+    }
 
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 06, 2019 at 09:11 AM
+-- Generation Time: Sep 18, 2019 at 05:28 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -47,6 +47,7 @@ CREATE TABLE `attendances` (
 
 CREATE TABLE `cities` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `zipcode` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -57,9 +58,9 @@ CREATE TABLE `cities` (
 -- Dumping data for table `cities`
 --
 
-INSERT INTO `cities` (`id`, `name`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'Yangon', 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(2, 'Mandalay', 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27');
+INSERT INTO `cities` (`id`, `zipcode`, `name`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, '11181', 'Yangon', 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
+(2, '05011', 'Mandalay', 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27');
 
 -- --------------------------------------------------------
 
@@ -83,6 +84,13 @@ CREATE TABLE `companies` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `companies`
+--
+
+INSERT INTO `companies` (`id`, `logo`, `name`, `hrname`, `phno`, `email`, `address`, `remark`, `fblink`, `township_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, '1568191631.jpeg', 'ACE Software Myanmar', 'Ma Mya', '0987654321', 'mamya@acemm.com', 'Than Lan', 'good software coltd', 'http://facebook.com', 21, 1, '2019-09-11 00:47:11', '2019-09-11 00:47:11');
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +99,7 @@ CREATE TABLE `companies` (
 
 CREATE TABLE `courses` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `codeno` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fees` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `location_id` bigint(20) UNSIGNED NOT NULL,
@@ -103,11 +112,12 @@ CREATE TABLE `courses` (
 -- Dumping data for table `courses`
 --
 
-INSERT INTO `courses` (`id`, `name`, `fees`, `location_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'HR/ Admin/ Office Staff Training', '140000', 2, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(2, 'HR/ Admin/ Office Staff Training', '140000', 3, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(3, 'PHP Web Developer Bootcamp', '250000', 1, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(4, 'iOS Application Development Training', '200000', 1, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27');
+INSERT INTO `courses` (`id`, `codeno`, `name`, `fees`, `location_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, '00001', 'HR/ Admin/ Office Staff Training', '140000', 2, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
+(2, '00002', 'HR/ Admin/ Office Staff Training', '140000', 3, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
+(3, '00003', 'PHP Web Developer Bootcamp', '280000', 1, 29, '2019-08-29 21:49:27', '2019-09-06 01:55:53'),
+(4, '00004', 'iOS Application Development Training', '200000', 1, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
+(5, '00005', 'PHP Web Developer Bootcamp', '280000', 3, 1, '2019-09-10 23:52:16', '2019-09-10 23:52:16');
 
 -- --------------------------------------------------------
 
@@ -146,16 +156,38 @@ CREATE TABLE `durations` (
 --
 
 INSERT INTO `durations` (`id`, `time`, `days`, `during`, `course_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, '9:00 AM- 5:00 PM', 'Monday - Friday', '31 Days', 3, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(2, '9:00 AM- 12:00 PM', 'Monday - Friday', '35 Days', 1, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(3, '1:00 PM - 3:00 PM', 'Monday - Friday', '53 Days', 1, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(4, '3:00 PM - 5:00 PM', 'Monday - Friday', '53 Days', 1, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(5, '9:00 AM- 12:00 PM', 'Monday - Friday', '36 Days', 2, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(6, '1:00 PM - 3:00 PM', 'Monday - Friday', '54 Days', 2, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(7, '7:00 AM - 8:30 AM', 'Monday - Friday', '54 Days', 2, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(8, '1:00 PM - 4:00 PM', 'Monday - Friday', '36 Days', 2, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(9, '2:00 PM - 4:00 PM', 'Saturday - Sunday', '60 Days', 4, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(10, '4:00 PM- 6:00 PM', 'Saturday - Sunday', '60 Days', 4, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27');
+(1, '9:00 AM - 5:00 PM', 'Monday - Friday', '30', 5, 1, '2019-09-10 23:55:38', '2019-09-17 01:09:26'),
+(2, '7:00 AM to 8:30 AM', 'Monday to Friday', '60', 2, 29, '2019-09-14 05:15:43', '2019-09-14 05:15:43'),
+(3, '9:00 AM to 12:00 AM', 'Monday to Friday', '35', 2, 29, '2019-09-14 05:16:09', '2019-09-14 05:16:09'),
+(4, '1:00 PM to 3:00 PM', 'Monday to Friday', '45', 2, 29, '2019-09-14 05:16:58', '2019-09-14 05:16:58'),
+(5, '1:00 PM to 4:00 PM', 'Monday to Friday', '35', 2, 29, '2019-09-14 05:17:22', '2019-09-14 05:17:22'),
+(6, '3:00 PM to 5:00 PM', 'Monday to Friday', '45', 2, 29, '2019-09-14 05:17:39', '2019-09-14 05:17:39'),
+(7, '9:00 AM - 5:00 PM', 'Monday - Friday', '30', 3, 1, '2019-09-17 00:43:15', '2019-09-17 01:09:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `education`
+--
+
+CREATE TABLE `education` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `education`
+--
+
+INSERT INTO `education` (`id`, `name`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'B.C.Sc', 1, '2019-09-12 04:17:12', '2019-09-12 04:17:12'),
+(2, 'B.E (IT)', 1, '2019-09-12 04:17:12', '2019-09-12 04:17:12'),
+(3, 'KMD(Diploma)', 1, '2019-09-12 05:30:57', '2019-09-12 05:30:57'),
+(4, 'B.A', 7, '2019-09-14 05:25:14', '2019-09-14 05:25:14'),
+(5, 'B.Sc', 7, '2019-09-14 05:25:25', '2019-09-14 05:25:25');
 
 -- --------------------------------------------------------
 
@@ -174,6 +206,15 @@ CREATE TABLE `expenses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `expenses`
+--
+
+INSERT INTO `expenses` (`id`, `type`, `amount`, `description`, `date`, `attachment`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'PHP', '500000', 'For developter T-shirt', '2019-09-06', '/img/e1.jpg', 1, '2019-09-12 05:28:57', '2019-09-12 05:28:57'),
+(2, 'PHP', '100000', 'fvgbhnjmkujk;l\'', '2019-09-12', '/img/Desert.jpg', 1, '2019-09-12 05:58:27', '2019-09-12 05:58:27'),
+(3, 'General', '600000', 'ytrfytfrghftgf', '2019-09-12', '/img/e1.jpg', 1, '2019-09-12 06:09:38', '2019-09-12 06:09:38');
 
 -- --------------------------------------------------------
 
@@ -209,6 +250,14 @@ CREATE TABLE `incomes` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `incomes`
+--
+
+INSERT INTO `incomes` (`id`, `amount`, `description`, `date`, `location_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, '1500000', 'For September from Ma Zarchi', '2019-09-02', 1, 1, '2019-09-12 05:26:29', '2019-09-12 05:26:29'),
+(2, '100000', 'rgthjklgiuhjlljk', '2019-09-12', 2, 1, '2019-09-12 05:57:43', '2019-09-12 05:57:43');
+
 -- --------------------------------------------------------
 
 --
@@ -217,21 +266,23 @@ CREATE TABLE `incomes` (
 
 CREATE TABLE `inquires` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `inquireno` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `receiveno` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gender` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dob` date NOT NULL,
+  `dob` date DEFAULT NULL,
   `age` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` longtext COLLATE utf8mb4_unicode_ci,
   `phno` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `installmentdate` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `installmentamount` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remark` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `position` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `installmentdate` date NOT NULL,
+  `installmentamount` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT '0',
+  `remark` longtext COLLATE utf8mb4_unicode_ci,
+  `position` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `camp` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT 'No Camp',
   `education` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `acceptedyear` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `acceptedyear` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `actionstatus` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `section_id` bigint(20) UNSIGNED NOT NULL,
   `township_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
@@ -243,69 +294,11 @@ CREATE TABLE `inquires` (
 -- Dumping data for table `inquires`
 --
 
-INSERT INTO `inquires` (`id`, `receiveno`, `name`, `gender`, `dob`, `age`, `address`, `phno`, `email`, `installmentdate`, `installmentamount`, `remark`, `position`, `camp`, `education`, `acceptedyear`, `section_id`, `township_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, '1010819205', 'Mg Mg', 'male', '1990-05-07', '21', 'Yangon', '987654321', 'mgmg@gmail.com', '2019-12-31', '30000', 'asfasdfasdfasfasdfasdfasfasdfasdfasfasdfasdfasfasdfasdfasfasdfasdfasfasdfasdf', 'Developer', 'No Camp', 'B.Sc', '2017-12-01', 2, 4, 1, '2019-09-02 00:34:14', '2019-09-02 00:34:14'),
-(2, '111111', 'Aye Aye', 'male', '1997-12-01', '22', 'Yangon', '0987654321', 'ayeaye@gmail.com', '2019-12-01', '80000', 'asdfadfasdfasdf', 'Web Developer', 'Male Camp', 'B.Sc', '2019-12-31', 3, 4, 1, '2019-09-03 03:29:53', '2019-09-03 03:29:53'),
-(3, '111111', 'Hla Hla', 'female', '2019-07-05', '22', 'Yangon', '0987654321', 'hlahla@gmail.com', '2019-09-03', '80000', 'asdfasdfasdfasdf', 'Developer', 'Female Camp', 'B.Sc', '2019-12-20', 3, 6, 1, '2019-09-03 03:33:49', '2019-09-03 03:33:49'),
-(4, '111111', 'Kyaw Kyaw', 'female', '1997-10-24', '22', 'Yangon', '0987654321', 'kyawkyaw@gmail.com', '2019-09-03', '80000', 'asfdasdfasdfasdfad', 'Developer', 'No Camp', 'B.Sc', '2019-12-01', 3, 9, 1, '2019-09-03 03:36:49', '2019-09-03 03:36:49'),
-(5, '111111', 'Mya Mya', 'female', '1997-12-01', '22', 'Yangon', '0987654321', 'myamya@gmail.com', '2019-09-03', '80000', 'asfasdfasdfasdfasfdsasd', 'Developer', 'No Camp', 'B.Sc', '2019-12-03', 3, 11, 1, '2019-09-03 03:38:08', '2019-09-03 03:38:08'),
-(6, '111111', 'Ko Ko', 'male', '1997-05-04', '22', 'Yangon', '0987654321', 'koko@gmail.com', '2019-09-03', '80000', 'afasdfasdfasdfasdfasdf', 'Developer', 'No Camp', 'B.Sc', '2019-12-31', 3, 12, 1, '2019-09-03 03:39:47', '2019-09-03 03:39:47'),
-(7, '111111', 'Aye Chan', 'female', '1997-07-09', '22', 'Yangon', '0987654321', 'ayechan@gmail.com', '2019-09-03', '80000', 'asfasdfasdfasdfaf', 'Developer', 'No Camp', 'B.Sc', '2019-12-05', 3, 5, 1, '2019-09-03 03:40:59', '2019-09-03 03:40:59'),
-(8, '111111', 'Myo Myo', 'female', '1997-12-06', '22', 'Yangon', '0987654321', 'myomyo@gmail.com', '2019-09-03', '80000', 'asdfasdfasdfasdf', 'Developer', 'No Camp', 'B.Sc', '2019-12-04', 3, 13, 1, '2019-09-03 03:42:26', '2019-09-03 03:42:26'),
-(9, '111111', 'Nyo Nyo', 'female', '1997-01-31', '22', 'Yangon', '0987654321', 'nyonyo@gmail.com', '2019-09-03', '80000', 'asdfasdfasdfasfdasdf', 'Developer', 'Male Camp', 'B.Sc', '2019-12-05', 3, 19, 1, '2019-09-03 03:47:23', '2019-09-03 03:47:23'),
-(10, '111111', 'Kywe Kywe', 'male', '1997-12-03', '22', 'Yangon', '0987654321', 'kywekywe@gmail.com', '2019-09-03', '80000', 'afasdfasdfasdfasdf', 'Developer', 'No Camp', 'B.Sc', '2019-12-05', 3, 20, 1, '2019-09-03 03:49:03', '2019-09-03 03:49:03'),
-(11, '111111', 'Myo Mg', 'male', '1997-05-03', '22', 'Yangon', '0987654321', 'myomg@gmail.com', '2019-09-03', '80000', 'asfasdfasdfasdfadf', 'Developer', 'Male Camp', 'B.Sc', '2019-12-05', 2, 21, 1, '2019-09-03 03:52:09', '2019-09-03 03:52:09'),
-(12, '111111', 'Aung Ko', 'male', '1997-07-03', '22', 'Yangon', '0987654321', 'aungko@gmail.com', '2019-09-03', '80000', 'asfasdfasdfasfafs', 'Developer', 'No Camp', 'B.Sc', '2019-12-07', 3, 55, 1, '2019-09-03 03:55:30', '2019-09-03 03:55:30'),
-(13, '111111', 'Pyae Pyae', 'female', '1997-09-05', '22', 'Yangon', '0987654321', 'pyaepyae@gmail.com', '2019-09-03', '80000', 'asdfsdfasdfasdfasdfafasdfasdfasdf', 'Developer', 'No Camp', 'B.Sc', '2019-12-07', 3, 13, 1, '2019-09-03 03:58:18', '2019-09-03 03:58:18'),
-(14, '111111', 'testing', 'female', '2019-09-05', '22', 'Yangon', '0987654321', 'john@gmail.com', '2019-09-03', '80000', 'jimjojmojmomj', 'Developer', 'No Camp', 'B.Sc', '2019-09-02', 2, 9, 1, '2019-09-03 04:04:35', '2019-09-03 04:04:35'),
-(15, '111111', 'testing one', 'male', '1997-04-04', '22', 'Yangon', '0987654321', 'testingone@gmail.com', '2019-09-03', '80000', 'asfasdfasfasfasdfasf', 'Developer', 'No Camp', 'B.Sc', '2019-09-03', 3, 14, 1, '2019-09-03 04:09:34', '2019-09-03 04:09:34'),
-(16, '111111', 'testing two', 'male', '2019-09-10', '23', 'sfsdfds', '09876543', 'thet@gmail.cin', '2019-09-03', '800000', 'fhsjkfhsdkjfhdsjkfhdsf', 'fsdjhfkjdshfkjdsf', 'No Camp', 'sfhksjdhfjkdshf', '2019-09-03', 2, 4, 1, '2019-09-03 04:11:15', '2019-09-03 04:11:15'),
-(17, '111111', 'testing stttt', 'male', '2019-09-03', '34', 'Yangon', '0987654321', 'admin@gmail.com', '2019-09-03', '90000', 'ertyuiofghjfghjghj', 'Developer', 'No Camp', 'B.Sc', '2019-09-03', 2, 5, 1, '2019-09-03 04:14:22', '2019-09-03 04:14:22'),
-(18, '111111', 'sfsfsdkfhjdkjhfkhkj', 'male', '2019-09-03', '34', 'sdfsdfdsf', '09876543', 'boss@gmail.com', '2019-09-03', '900000', 'lskjfksdhjfjksjhfs', 'skhfksdjhfjksdf', 'No Camp', 'shkjfhdskjfds', '2019-09-03', 2, 4, 1, '2019-09-03 04:18:24', '2019-09-03 04:18:24'),
-(19, '111111', 'Mya Mya', 'male', '2019-09-03', '23', 'yangon', '09876543', 'boss@gmail.com', '2019-09-03', '900000', 'sfsdfsfdfdsfsfsf', 'sfasdfdsf', 'No Camp', 'sfsdfdsf', '2019-09-10', 2, 12, 1, '2019-09-03 04:20:31', '2019-09-03 04:20:31'),
-(20, '111111', 'Kit Kit', 'female', '1997-08-02', '22', 'Yangon', '987654321', 'kitkit@gmail.com', '2019-09-03', '80000', 'asfasdfasdfasdfasdf', 'Developer', 'Female Camp', 'B.Sc', '2018-12-22', 3, 8, 1, '2019-09-03 06:45:19', '2019-09-03 06:45:19'),
-(21, '111111', 'Kay Thwe', 'female', '1997-11-05', '22', 'Yangon', '987654321', 'kaythwe@gmail.com', '2019-09-03', '80000', 'asdfasdfasfasdfadfasdfasfasdfasdfasdf', 'Developer', 'Female Camp', 'B.Sc', '2018-12-03', 3, 9, 1, '2019-09-03 06:49:54', '2019-09-03 06:49:54'),
-(22, '111111', 'Kay Thwe', 'female', '1997-11-05', '22', 'Yangon', '987654321', 'kaythwe@gmail.com', '2019-09-03', '80000', 'asdfasdfasfasdfadfasdfasfasdfasdfasdf', 'Developer', 'Female Camp', 'B.Sc', '2018-12-03', 3, 9, 1, '2019-09-03 06:50:49', '2019-09-03 06:50:49'),
-(23, '111111', 'Kay Thwe', 'female', '1997-11-05', '22', 'Yangon', '987654321', 'kaythwe@gmail.com', '2019-09-03', '80000', 'asdfasdfasfasdfadfasdfasfasdfasdfasdf', 'Developer', 'Female Camp', 'B.Sc', '2018-12-03', 3, 9, 1, '2019-09-03 06:52:54', '2019-09-03 06:52:54'),
-(24, '111111', 'Moe Moe', 'male', '1997-03-05', '22', 'Yangon', '987654321', 'moemoe@gmail.com', '2019-09-03', '80000', 'asdfasdfasdfadf', 'Developer', 'No Camp', 'B.Sc', '2018-12-03', 3, 6, 1, '2019-09-03 06:55:08', '2019-09-03 06:55:08'),
-(25, '111111', 'Thwe Thwe', 'female', '1997-05-03', '22', 'Yangon', '987654321', 'thwethwe@gmail.com', '2019-09-03', '80000', 'asdfasdfasdf', 'Developer', 'No Camp', 'B.Sc', '2018-12-05', 3, 5, 1, '2019-09-03 06:58:12', '2019-09-03 06:58:12'),
-(26, '111111', 'Hein', 'male', '1997-03-08', '22', 'Yangon', '987654321', 'hein@gmail.com', '2019-09-03', '80000', 'asdfasdfasdfasf', 'Developer', 'No Camp', 'B.Sc', '2018-12-16', 2, 3, 1, '2019-09-03 07:05:05', '2019-09-03 07:05:05'),
-(27, '111111', 'Ko Si', 'male', '1997-08-04', '22', 'Yangon', '987654321', 'kosi@gmail.com', '2019-09-03', '80000', 'asdfasfasfasdfasdfasdf', 'Developer', 'No Camp', 'B.Sc', '2017-12-27', 3, 5, 1, '2019-09-03 07:08:07', '2019-09-03 07:08:07'),
-(28, '040920190001', 'Chan', 'female', '1997-08-03', '22', 'Yangon', '987654321', 'chan@gmail.com', '2019-09-04', '80000', 'asdfasdfadsfasfasfasdf', 'Developer', 'No Camp', 'B.Sc', '2019-12-04', 3, 6, 1, '2019-09-03 20:11:41', '2019-09-03 20:11:41'),
-(29, '040920190002', 'Chan', 'female', '1997-08-03', '22', 'Yangon', '987654321', 'chan@gmail.com', '2019-09-04', '80000', 'asdfasdfadsfasfasfasdf', 'Developer', 'No Camp', 'B.Sc', '2019-12-04', 3, 6, 1, '2019-09-03 20:11:57', '2019-09-03 20:11:57'),
-(30, '040920190003', 'asfasdf', 'male', '1997-03-05', '23', 'Yangon', '987654321', 'afs@mgail.com', '2019-09-04', '80000', 'asfadfasfasdf', 'Developer', 'Male Camp', 'B .Sc', '2019-09-03', 3, 3, 1, '2019-09-03 20:13:45', '2019-09-03 20:13:45'),
-(31, '040920190004', 'Min Pike', 'male', '2019-09-04', '22', 'ygn', '09876543', 'hfkdsjhfjksd@gmail.cioi', '2019-09-04', '80000', 'slfshfjhsfkjhsjfdsfkdjsfds', 'sfsfdsfsdf', 'No Camp', 'fsfdsfsf', '2019-09-03', 2, 1, 1, '2019-09-03 20:22:57', '2019-09-03 20:22:57'),
-(32, '040920190005', 'testing', 'male', '2019-09-04', '33', 'sfdsfsdfdsf', '0987654', 'boss@gmail.com', '2019-09-04', '800000', 'sfsdfsafafaf', 'fsdfdsfsfs', 'No Camp', 'bcsc', '2019-09-04', 2, 10, 1, '2019-09-03 20:25:45', '2019-09-03 20:25:45'),
-(33, '040920190006', 'Hello All', 'male', '2018-08-03', '22', 'YGN', '0987654', 'boss@gmail.com', '2019-09-04', '80000', 'sjfsljfksdjfklj slkfjsklf jsdlkf sd', 'ygn sjfklsjfs', 'No Camp', 'BCsc', '2019-09-04', 1, 9, 1, '2019-09-03 20:35:10', '2019-09-03 20:35:10'),
-(34, '040920190007', 'Hello All', 'male', '2018-08-03', '22', 'YGN', '0987654', 'boss@gmail.com', '2019-09-04', '80000', 'sjfsljfksdjfklj slkfjsklf jsdlkf sd', 'ygn sjfklsjfs', 'No Camp', 'BCsc', '2019-09-04', 1, 9, 1, '2019-09-03 20:35:54', '2019-09-03 20:35:54'),
-(35, '040920190008', 'Hello One', 'male', '2019-09-04', '23', 'ygn', '098765432', 'boss@gmail.com', '2019-09-04', '90000', 'skjfkdsjfksafsd', 'sfsdlkfjdskfds', 'No Camp', 'kljfsdkljfkldsf', '2019-09-04', 2, 8, 1, '2019-09-03 20:40:34', '2019-09-03 20:40:34'),
-(36, '040920190009', 'Han ni', 'male', '2019-09-04', '23', 'asdfasdf', '0987654321', 'yathawmyatnoe007@gmail.com', '2019-09-04', '70000', 'sdlfhjkshfdsjfdsfdsfsjfsf', 'Developer', 'Male Camp', 'B.Sc', '2019-09-05', 2, 4, 1, '2019-09-03 20:48:39', '2019-09-03 20:48:39'),
-(37, '040920190010', 'Chan ei', 'male', '2019-09-04', '23', 'asdfasdf', '0987654321', 'yathawmyatnoe007@gmail.com', '2019-09-04', '80000', 'KLJHDSHFKDSHKFHSDFH', 'Digital Marketing', 'No Camp', 'B.Sc', '2019-09-04', 1, 6, 1, '2019-09-03 20:52:10', '2019-09-03 20:52:10'),
-(38, '040920190011', 'Chicken Handi', 'male', '2019-09-04', '30', 'Yangon', '0987654321', 'yathawmyatnoe007@gmail.com', '2019-09-04', '50000', 'lksjflkshjfkshkfhsdkjfsdf', 'Developer', 'No Camp', 'B.Sc', '2019-09-05', 2, 3, 1, '2019-09-03 20:55:44', '2019-09-03 20:55:44'),
-(39, '040920190012', 'Testing Three', 'male', '1997-09-04', '33', 'Yangon', '0987654321', 'testingthree@gmail.com', '2019-09-04', '80000', 'asdfasdfasdfasdfasdf', 'Developer', 'No Camp', 'B.Sc', '2019-09-04', 3, 8, 1, '2019-09-03 21:00:14', '2019-09-03 21:00:14'),
-(40, '040920190013', 'Testing Four', 'male', '2019-08-07', '22', 'Yangon', '0987654321', 'testingfour@gmail.com', '2019-09-04', '80000', 'asdfasdfasdfasd', 'Developer', 'Male Camp', 'B.Sc', '2019-09-04', 3, 4, 1, '2019-09-03 21:02:41', '2019-09-03 21:02:41'),
-(41, '040920190014', 'Testing Five', 'male', '2019-09-04', '23', 'Yangon', '0987654321', 'yathawmyatnoe007@gmail.com', '2019-09-04', '80000', 'sfkljslkfjdksljfkjasdlkfjdsklfjsdlkf', 'Developer', 'Male Camp', 'B.Sc', '2019-09-04', 2, 4, 1, '2019-09-03 21:14:49', '2019-09-03 21:14:49'),
-(42, '040920190015', 'Testing Six', 'male', '2019-09-04', '22', 'Yangon', '0987654321', 'admin@gmail.com', '2019-09-04', '70000', 'kjfgsjfksdhkfhdsjkfhsdkhfjkdsf', 'Developer', 'No Camp', 'B.Sc', '2019-09-05', 2, 6, 1, '2019-09-03 21:17:52', '2019-09-03 21:17:52'),
-(43, '040920190016', 'Testing Seven', 'male', '1997-07-03', '22', 'Yangon', '0987654321', 'testingseven@gmail.com', '2019-09-04', '80000', 'asdfasdfasdfasdfasdfasdfas', 'Developer', 'No Camp', 'B.Sc', '2017-12-03', 3, 3, 1, '2019-09-04 03:39:56', '2019-09-04 03:39:56'),
-(44, '040920190017', 'Wai Yan', 'male', '1997-09-01', '22', 'Yangon', '0987654321', 'waiyan@gmail.com', '2019-09-04', '80000', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\n              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\n              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\n              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\n              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\n              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Developer', 'Male Camp', 'B.Sc', '2019-12-01', 3, 7, 1, '2019-09-04 08:10:07', '2019-09-04 08:10:07'),
-(45, '050920190001', 'HR Course YGN Testing One', 'male', '1997-12-01', '22', 'Yangon', '0987654321', 'testingone@gmail.com', '2019-09-06', '80000', 'asdfasdfasdfasdf', 'Digital Marketing', NULL, 'B.Sc', '2019-09-05', 4, 2, 1, '2019-09-05 12:13:33', '2019-09-05 12:13:33'),
-(46, '050920190002', 'Wai Wai', 'female', '1997-12-31', '22', 'Yangon', '0987654321', 'waiwai@gmail.com', '2019-09-06', '80000', 'asdfasdfasdfa', 'Developer', 'No Camp', 'B.Sc', '2019-09-06', 3, 7, 1, '2019-09-05 12:18:08', '2019-09-05 12:18:08'),
-(47, '050920190003', 'Testing Eight', 'male', '1997-02-25', '22', 'Yangon', '0987654321', 'testingone@gmail.com', '2019-12-01', '80000', 'asdfasdasdfasdf', 'Developer', 'Male Camp', 'B.Sc', '2019-09-06', 3, 2, 1, '2019-09-05 13:03:06', '2019-09-05 13:03:06'),
-(49, '060920190001', 'Testing Ten', 'male', '1997-12-31', '22', 'Yangon', '0987654321', 'testingten@gmail.com', '2019-09-06', '280000', 'asdfasdfasfasfd', 'Developer', 'Male Camp', 'B.Sc', '2019-09-03', 3, 8, 1, '2019-09-05 20:42:29', '2019-09-05 20:42:29'),
-(50, '060920190002', 'Testing A', 'male', '1997-09-06', '22', 'Yangon', '0987654321', 'testinga@gmail.com', '2019-09-06', '280000', 'asdfasdfasdfasdfasdf', 'Developer', 'Male Camp', 'B.Sc', '2019-09-02', 3, 8, 1, '2019-09-05 20:49:29', '2019-09-05 20:49:29'),
-(52, '060920190003', 'Testing B', 'male', '1997-09-06', '22', 'Yangon', '0987654321', 'testingb@gmail.com', '2019-09-06', '80000', 'asdfasdfasdfadsdfasdfasd', 'Developer', 'Male Camp', 'B.Sc', '2019-09-06', 3, 9, 1, '2019-09-05 21:41:11', '2019-09-05 21:41:11'),
-(53, '060920190004', 'Testing C', 'male', '2019-09-06', '22', 'Yangon', '0987654321', 'testingc@gmail.com', '2019-09-06', '80000', 'asdfasdfasdfadsfas', 'Developer', 'No Camp', 'B.Sc', '2019-09-06', 3, 8, 1, '2019-09-05 21:42:59', '2019-09-05 21:42:59'),
-(54, '060920190005', 'Testing D', 'male', '0007-09-04', '22', 'Yangon', '0987654321', 'testingd@gmail.com', '2019-09-06', '80000', 'asdfasdfasdfasdfasdf', 'Developer', NULL, 'B.Sc', '2019-09-06', 4, 2, 1, '2019-09-05 21:46:23', '2019-09-05 21:46:23'),
-(55, '060920190006', 'Testing E', 'female', '1997-09-06', '22', 'Yangon', '0987654321', 'testinge@gmail.com', '2019-09-06', '80000', 'asdfasdfasfasfasfasdf', 'Developer', 'Female Camp', 'B.Sc', '2019-09-06', 3, 9, 1, '2019-09-05 21:48:22', '2019-09-05 21:48:22'),
-(56, '060920190007', 'Testing F', 'male', '1997-09-01', '22', 'Yangon', '0987654321', 'testingf@gmail.com', '2019-09-06', '80000', 'asdfasdfasdfasdfasdfasdfasdfsadf', 'Developer', NULL, 'B.Sc', '2019-09-06', 4, 11, 1, '2019-09-05 21:49:55', '2019-09-05 21:49:55'),
-(57, '060920190008', 'Testing G', 'male', '1997-09-04', '22', 'Yangon', '0987654321', 'testingg@gmail.com', '2019-09-06', '80000', 'asfasdfasdfasdfasdfasfasdfasdf', 'Developer', 'Male Camp', 'B.Sc', '2019-09-06', 3, 16, 1, '2019-09-05 21:51:33', '2019-09-05 21:51:33'),
-(58, '060920190009', 'Testing H', 'male', '1997-09-04', '22', 'Yangon', '0987654321', 'testingh@gmail.com', '2019-09-06', '80000', 'asdfasdfasdfasdfasdfasfaesfasd', 'Developer', NULL, 'B.Sc', '2019-09-06', 4, 4, 1, '2019-09-05 21:55:00', '2019-09-05 21:55:00'),
-(59, '060920190010', 'Testing I', 'male', '2019-09-06', '22', 'Yangon', '0987654321', 'testingi@gmail.com', '2019-09-06', '80000', 'retdyrtfjytygyjguygkuguy', 'Developer', 'Male Camp', 'B.Sc', '2019-09-06', 3, 12, 1, '2019-09-05 22:04:15', '2019-09-05 22:04:15'),
-(60, '060920190011', 'Testing j', 'male', '2019-09-06', '22', 'Yangon', '0987654321', 'admin@gmail.com', '2019-09-06', '80000', 'asdfasfasfasfasfafadsfdfadsfa', 'Developer', 'Male Camp', 'B.Sc', '2019-09-06', 3, 10, 1, '2019-09-05 22:13:25', '2019-09-05 22:13:25'),
-(61, '060920190012', 'Mg Soe Gyi', 'male', '2019-09-06', '22', 'Yangon', '0987654321', 'admin@gmail.com', '2019-09-06', '80000', 'sdfsfjshfkshfkshfshjfhsfjhdsfjksf', 'Developer', 'No Camp', 'B.Sc', '2019-09-06', 2, 5, 1, '2019-09-05 22:15:49', '2019-09-05 22:15:49'),
-(62, '060920190013', 'Ju Ju', 'female', '2019-09-06', '22', 'asdfasdf', '0987654321', 'admin@gmail.com', '2019-09-06', '90000', 'This is an error', 'Developer', 'Female Camp', 'B.Sc', '2019-09-06', 2, 4, 1, '2019-09-05 22:20:30', '2019-09-05 22:20:30'),
-(63, '060920190014', 'Se Se', 'female', '2019-09-06', '33', 'Yangon', '0987654321', 'admin@gmail.com', '2019-09-06', '80000', 'Do Error again', 'Developer', 'Female Camp', 'B.Sc', '2019-09-06', 2, 2, 1, '2019-09-05 22:28:24', '2019-09-05 22:28:24'),
-(64, '060920190015', 'Me Me', 'female', '2019-09-06', '32', 'Yangon', '0987654321', 'john@gmail.com', '2019-09-06', '90000', 'Error Pya', 'Developer', 'No Camp', 'B.Sc', '2019-09-06', 3, 7, 1, '2019-09-05 22:34:07', '2019-09-05 22:34:07');
+INSERT INTO `inquires` (`id`, `inquireno`, `receiveno`, `name`, `gender`, `dob`, `age`, `address`, `phno`, `email`, `installmentdate`, `installmentamount`, `remark`, `position`, `camp`, `education`, `acceptedyear`, `actionstatus`, `section_id`, `township_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, '', '120920190001', 'Soe San Myan', 'female', NULL, '22', 'Mahar Myaing', '098765432', NULL, '2019-09-12', '100000', 'HTML,CSS little experience', 'Junior Web Developer', 'No Camp', '3', '2019-09-12', '', 1, 49, 1, '2019-09-12 05:35:29', '2019-09-12 05:35:29'),
+(2, '', '120920190002', 'Moe Tain Nyunt', 'male', NULL, '23', 'Mahar Myaing ghggjgjhgjh', '0987654325365', NULL, '2019-09-12', '280000', 'Android, Java little experience', 'Junior Web Developer', 'No Camp', '2', '2019-09-12', '', 1, 47, 1, '2019-09-12 05:38:01', '2019-09-12 05:38:01'),
+(3, '', '120920190003', 'Na Kyang', 'male', NULL, '23', NULL, '0987654321', NULL, '2019-09-12', '0', 'Computer Basic', NULL, 'No Camp', '2', NULL, '', 1, 46, 1, '2019-09-12 06:39:07', '2019-09-12 06:39:07'),
+(5, '', '140920190001', 'Nandar Win', 'female', NULL, '22', 'mattaya', '09-787270996', NULL, '2019-09-14', NULL, NULL, NULL, 'No Camp', '5', '2019-09-04', '', 2, 67, 9, '2019-09-14 05:27:22', '2019-09-14 05:27:22');
 
 -- --------------------------------------------------------
 
@@ -335,6 +328,7 @@ CREATE TABLE `jobcareers` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `gender` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `senddate` date NOT NULL,
+  `nos` int(11) NOT NULL,
   `remark` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` int(11) NOT NULL,
   `company_id` bigint(20) UNSIGNED NOT NULL,
@@ -343,6 +337,13 @@ CREATE TABLE `jobcareers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `jobcareers`
+--
+
+INSERT INTO `jobcareers` (`id`, `gender`, `senddate`, `nos`, `remark`, `status`, `company_id`, `position_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'both', '2019-09-27', 3, 'Testing for software', 1, 1, 6, 1, '2019-09-11 00:53:33', '2019-09-11 00:53:33');
 
 -- --------------------------------------------------------
 
@@ -364,9 +365,9 @@ CREATE TABLE `locations` (
 --
 
 INSERT INTO `locations` (`id`, `name`, `city_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'တိုက္အမွတ္ (၁၆၉)၊ အခန္းနံပါတ္ 8/A၊ MTP ကြန္ဒို၊ လွည္းတန္း - အင္းစိန္လမ္းမၾကီး၊ ၉ ရပ္ကြက္၊ လိႈင္ျမိဳ႕နယ္၊။ ', 1, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(2, 'တိုက္အမွတ္ (29 A/ 5A) ၊ No.1 Beauty Saloon အေပၚထပ္ ၅ လႊာ ၊ ခိုင္ေရႊ၀ါလမ္း လွည္းတန္း။', 1, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27'),
-(3, 'လမ္း ၄၀ ၊ ၇၀x ၇၁ ၾကား ၊ ၀ါၿမဲ Learning Center', 2, 1, '2019-08-29 21:49:27', '2019-08-29 21:49:27');
+(1, 'တိုက်အမှတ် (၁၆၉)၊ အခန်းနံပါတ် 8/A၊ MTP ကွန်ဒို၊ လှည်းတန်း - အင်းစိန်လမ်းမကြီး၊ ၉ ရပ်ကွက်၊ လှိုင်မြို့နယ်၊။', 1, 29, '2019-08-29 21:49:27', '2019-09-06 01:57:12'),
+(2, 'တိုက်အမှတ် (29 A/ 5A) ၊ No.1 Beauty Saloon အပေါ်ထပ် ၅ လွှာ ၊ ခိုင်ရွှေဝါလမ်း လှည်းတန်း။', 1, 29, '2019-08-29 21:49:27', '2019-09-06 01:57:30'),
+(3, 'လမ်း ၄၀ ၊ ၇၀x ၇၁ ကြား ၊ ဝါမြဲ Learning Center', 2, 29, '2019-08-29 21:49:27', '2019-09-06 01:57:46');
 
 -- --------------------------------------------------------
 
@@ -438,11 +439,14 @@ INSERT INTO `model_has_permissions` (`permission_id`, `model_type`, `model_id`) 
 (2, 'App\\User', 1),
 (2, 'App\\User', 2),
 (2, 'App\\User', 3),
+(2, 'App\\User', 7),
+(2, 'App\\User', 9),
 (2, 'App\\User', 29),
 (2, 'App\\User', 30),
 (3, 'App\\User', 1),
 (3, 'App\\User', 2),
 (3, 'App\\User', 7),
+(3, 'App\\User', 9),
 (3, 'App\\User', 29),
 (3, 'App\\User', 30),
 (4, 'App\\User', 1),
@@ -458,11 +462,14 @@ INSERT INTO `model_has_permissions` (`permission_id`, `model_type`, `model_id`) 
 (6, 'App\\User', 1),
 (6, 'App\\User', 2),
 (6, 'App\\User', 3),
+(6, 'App\\User', 7),
+(6, 'App\\User', 9),
 (6, 'App\\User', 29),
 (6, 'App\\User', 30),
 (7, 'App\\User', 1),
 (7, 'App\\User', 2),
 (7, 'App\\User', 7),
+(7, 'App\\User', 9),
 (7, 'App\\User', 10),
 (7, 'App\\User', 29),
 (7, 'App\\User', 30),
@@ -474,6 +481,8 @@ INSERT INTO `model_has_permissions` (`permission_id`, `model_type`, `model_id`) 
 (9, 'App\\User', 1),
 (9, 'App\\User', 2),
 (9, 'App\\User', 3),
+(9, 'App\\User', 7),
+(9, 'App\\User', 9),
 (9, 'App\\User', 29),
 (9, 'App\\User', 30),
 (10, 'App\\User', 1),
@@ -485,7 +494,6 @@ INSERT INTO `model_has_permissions` (`permission_id`, `model_type`, `model_id`) 
 (11, 'App\\User', 1),
 (11, 'App\\User', 2),
 (11, 'App\\User', 8),
-(11, 'App\\User', 9),
 (11, 'App\\User', 29),
 (11, 'App\\User', 30),
 (12, 'App\\User', 1),
@@ -517,7 +525,10 @@ INSERT INTO `model_has_permissions` (`permission_id`, `model_type`, `model_id`) 
 (14, 'App\\User', 27),
 (14, 'App\\User', 28),
 (14, 'App\\User', 29),
-(14, 'App\\User', 30);
+(14, 'App\\User', 30),
+(14, 'App\\User', 31),
+(15, 'App\\User', 1),
+(16, '', 1);
 
 -- --------------------------------------------------------
 
@@ -537,12 +548,12 @@ CREATE TABLE `model_has_roles` (
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (1, 'App\\User', 1),
+(1, 'App\\User', 29),
+(1, 'App\\User', 30),
 (2, 'App\\User', 2),
 (2, 'App\\User', 3),
 (2, 'App\\User', 5),
 (2, 'App\\User', 8),
-(2, 'App\\User', 29),
-(2, 'App\\User', 30),
 (3, 'App\\User', 4),
 (3, 'App\\User', 6),
 (3, 'App\\User', 7),
@@ -550,6 +561,7 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (3, 'App\\User', 10),
 (4, 'App\\User', 11),
 (4, 'App\\User', 12),
+(4, 'App\\User', 13),
 (4, 'App\\User', 22),
 (4, 'App\\User', 23),
 (4, 'App\\User', 24),
@@ -557,7 +569,7 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (4, 'App\\User', 26),
 (4, 'App\\User', 27),
 (4, 'App\\User', 28),
-(5, 'App\\User', 13),
+(4, 'App\\User', 31),
 (5, 'App\\User', 14),
 (5, 'App\\User', 15),
 (5, 'App\\User', 16),
@@ -619,6 +631,16 @@ CREATE TABLE `oauth_clients` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `oauth_clients`
+--
+
+INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `redirect`, `personal_access_client`, `password_client`, `revoked`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'Laravel Personal Access Client', 'BEfgAQUqF27XLaxKdlaD5jeKPIyx0imbT4V4HeMI', 'http://localhost', 1, 0, 0, '2019-09-10 23:43:44', '2019-09-10 23:43:44'),
+(2, NULL, 'Laravel Password Grant Client', 'L0kM1CtmxThg6rU3q2V45U7ZDrzmyP1wq5ve9v3T', 'http://localhost', 0, 1, 0, '2019-09-10 23:43:44', '2019-09-10 23:43:44'),
+(3, NULL, 'Laravel Personal Access Client', 'D91HsxP2AeiwnAZZBxTkPHH83ODQWtTcY59xw2cT', 'http://localhost', 1, 0, 0, '2019-09-16 22:26:44', '2019-09-16 22:26:44'),
+(4, NULL, 'Laravel Password Grant Client', 'auJgWLuiGXVB22nOyUzpB9DRBCFeyL2b2UFwVKze', 'http://localhost', 0, 1, 0, '2019-09-16 22:26:44', '2019-09-16 22:26:44');
+
 -- --------------------------------------------------------
 
 --
@@ -631,6 +653,14 @@ CREATE TABLE `oauth_personal_access_clients` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `oauth_personal_access_clients`
+--
+
+INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `updated_at`) VALUES
+(1, 1, '2019-09-10 23:43:44', '2019-09-10 23:43:44'),
+(2, 3, '2019-09-16 22:26:44', '2019-09-16 22:26:44');
 
 -- --------------------------------------------------------
 
@@ -689,7 +719,9 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at
 (11, 'Find HR Jobs ( MDY )', 'web', '2019-08-29 21:52:39', '2019-08-29 21:52:39'),
 (12, 'Find PHP Jobs', 'web', '2019-08-29 21:52:47', '2019-08-29 21:52:47'),
 (13, 'Record Expense', 'web', '2019-08-29 21:52:56', '2019-08-29 21:52:56'),
-(14, 'Took Attendance', 'web', '2019-08-29 21:53:07', '2019-08-29 21:53:07');
+(14, 'Took Attendance', 'web', '2019-08-29 21:53:07', '2019-08-29 21:53:07'),
+(15, 'Accept Student Enquiry ( PHP Bootcamp - MDY )', 'web', '2019-09-11 02:28:50', '2019-09-11 02:28:50'),
+(16, 'Enroll Student ( PHP Bootcamp - MDY )', 'web', '2019-09-17 13:14:40', '2019-09-17 13:14:40');
 
 -- --------------------------------------------------------
 
@@ -777,11 +809,12 @@ CREATE TABLE `sections` (
 --
 
 INSERT INTO `sections` (`id`, `codeno`, `title`, `startdate`, `enddate`, `duration_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(2, '7th Oct 2019', 'Batch 10', '2019-10-07', '2019-11-25', 1, 1, '2019-08-29 22:56:24', '2019-08-29 22:56:24'),
-(3, '2nd Oct 2017', 'Batch 11', '2017-10-02', '2017-11-20', 1, 1, '2019-09-03 02:03:57', '2019-09-03 02:03:57'),
-(4, '9th Sep 2019', 'September 2019', '2019-09-09', '2019-10-24', 2, 1, '2019-09-04 08:34:06', '2019-09-04 02:02:24'),
-(5, '9th Sep 2019', 'September 2019', '2019-09-09', '2019-10-24', 3, 1, '2019-09-04 21:20:03', '2019-09-04 21:20:03'),
-(6, '9th Sep 2019', 'Testing One', '2019-09-09', '2019-10-27', 9, 1, '2019-09-04 22:10:55', '2019-09-04 22:10:55');
+(1, '16th Oct 2019', 'Batch-1', '2019-10-16', '2019-12-18', 1, 1, '2019-09-12 05:32:08', '2019-09-12 05:32:08'),
+(2, '16th Sep 2019', 'MDY HR Batch 29', '2019-09-16', '2019-11-21', 6, 29, '2019-09-14 05:19:42', '2019-09-14 05:19:42'),
+(3, '18th Sep 2019', 'MDY HR Batch 30', '2019-09-18', '2019-12-14', 2, 29, '2019-09-14 05:20:17', '2019-09-14 05:20:17'),
+(4, '25th Sep 2019', 'MDY HR Batch 31', '2019-09-25', '2019-11-30', 6, 29, '2019-09-14 05:20:48', '2019-09-14 05:20:48'),
+(9, '7th Oct 2019', 'Batch 10', '2019-10-07', '2019-11-23', 7, 1, '2019-09-17 01:11:40', '2019-09-17 01:11:40'),
+(11, '23rd Oct 2019', 'Batch 11', '2019-10-23', '2019-12-06', 7, 1, '2019-09-17 01:15:09', '2019-09-17 01:15:09');
 
 -- --------------------------------------------------------
 
@@ -802,13 +835,24 @@ CREATE TABLE `section_teacher` (
 --
 
 INSERT INTO `section_teacher` (`id`, `section_id`, `teacher_id`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, '2019-08-30 06:38:13', '2019-08-30 05:26:24'),
-(2, 2, 2, '2019-08-30 05:26:24', '2019-08-30 05:26:24'),
-(3, 3, 1, '2019-09-03 08:33:57', '2019-09-03 08:33:57'),
-(4, 3, 2, '2019-09-03 08:33:57', '2019-09-03 08:33:57'),
-(5, 4, 5, '2019-09-04 08:32:24', '2019-09-04 08:32:24'),
-(6, 5, 5, '2019-09-05 03:50:03', '2019-09-05 03:50:03'),
-(7, 6, 3, '2019-09-05 04:40:55', '2019-09-05 04:40:55');
+(2, 1, 12, '2019-09-12 07:02:08', '2019-09-12 07:02:08'),
+(3, 2, 8, '2019-09-14 06:49:42', '2019-09-14 06:49:42'),
+(4, 3, 8, '2019-09-14 06:50:17', '2019-09-14 06:50:17'),
+(5, 4, 9, '2019-09-14 06:50:48', '2019-09-14 06:50:48'),
+(6, 5, 1, '2019-09-17 07:13:41', '2019-09-17 07:13:41'),
+(7, 5, 2, '2019-09-17 07:13:41', '2019-09-17 07:13:41'),
+(8, 6, 11, '2019-09-17 07:29:24', '2019-09-17 07:29:24'),
+(9, 7, 11, '2019-09-17 07:30:16', '2019-09-17 07:30:16'),
+(10, 8, 1, '2019-09-17 07:31:08', '2019-09-17 07:31:08'),
+(11, 8, 2, '2019-09-17 07:31:08', '2019-09-17 07:31:08'),
+(12, 9, 1, '2019-09-17 07:41:40', '2019-09-17 07:41:40'),
+(13, 9, 2, '2019-09-17 07:41:40', '2019-09-17 07:41:40'),
+(14, 10, 11, '2019-09-17 07:44:41', '2019-09-17 07:44:41'),
+(15, 10, 13, '2019-09-17 07:44:41', '2019-09-17 07:44:41'),
+(16, 11, 1, '2019-09-17 07:45:09', '2019-09-17 07:45:09'),
+(17, 11, 2, '2019-09-17 07:45:09', '2019-09-17 07:45:09'),
+(18, 1, 11, '2019-09-17 14:33:15', '2019-09-17 14:33:15'),
+(19, 1, 13, '2019-09-17 14:33:15', '2019-09-17 14:33:15');
 
 -- --------------------------------------------------------
 
@@ -837,7 +881,7 @@ CREATE TABLE `staffs` (
 --
 
 INSERT INTO `staffs` (`id`, `dob`, `fathername`, `nrc`, `phone`, `photo`, `joineddate`, `leavedate`, `status`, `location_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, '1995-06-14', 'U Mg Mg', '987654321', '987654321', '1567139342.jpeg', '2017-08-17', '2019-08-30', '0', 1, 2, '2019-08-29 21:59:02', '2019-08-29 21:59:02'),
+(1, '1993-10-20', 'U Mg Mg', '8/Ma Tha Na (N) 102279', '987654321', '1567139342.jpeg', '2017-08-17', '2019-08-30', '0', 1, 2, '2019-08-29 21:59:02', '2019-08-29 21:59:02'),
 (2, '1995-06-14', 'U Mg Mg', '987654321', '987654321', '1567139400.jpeg', '2017-08-17', '2019-08-30', '0', 1, 3, '2019-08-29 22:00:00', '2019-08-29 22:00:00'),
 (3, '1995-06-14', 'U Mg Mg', '987654321', '987654321', '1567139547.jpeg', '2017-08-17', '2019-08-30', '0', 1, 4, '2019-08-29 22:02:27', '2019-08-29 22:02:27'),
 (4, '1995-06-14', 'U Mg Mg', '987654321', '987654321', '1567139598.jpeg', '2017-07-17', '2019-08-30', '0', 1, 5, '2019-08-29 22:03:19', '2019-08-29 22:03:19'),
@@ -865,7 +909,8 @@ INSERT INTO `staffs` (`id`, `dob`, `fathername`, `nrc`, `phone`, `photo`, `joine
 (26, '1995-06-14', 'U Mg Mg', '987654321', '987654321', '1567141373.png', '2015-11-28', '2019-08-30', '0', 3, 27, '2019-08-29 22:32:53', '2019-08-29 22:32:53'),
 (27, '1995-06-14', 'U Mg Mg', '987654321', '987654321', '1567141402.jpeg', '2015-11-28', '2019-08-30', '0', 1, 28, '2019-08-29 22:33:22', '2019-08-29 22:33:22'),
 (28, '1990-12-04', 'U Mg Mg', '987654321', '987654321', '1567703546.jpeg', '2019-09-01', '2019-09-05', '0', 1, 29, '2019-09-05 10:42:26', '2019-09-05 10:42:26'),
-(29, '1990-12-04', 'U Mg Mg', '987654321', '987654321', '1567703574.jpeg', '2019-09-01', '2019-09-05', '0', 1, 30, '2019-09-05 10:42:54', '2019-09-05 10:42:54');
+(29, '1990-12-04', 'U Mg Mg', '987654321', '987654321', '1567703574.jpeg', '2019-09-01', '2019-09-05', '0', 1, 30, '2019-09-05 10:42:54', '2019-09-05 10:42:54'),
+(30, '2019-09-09', 'U Ba', 'hhhhhhhhhh', '0987654321', '1568014785.jpeg', '2019-09-09', '2019-09-09', '0', 1, 31, '2019-09-08 23:39:47', '2019-09-08 23:39:47');
 
 -- --------------------------------------------------------
 
@@ -875,11 +920,12 @@ INSERT INTO `staffs` (`id`, `dob`, `fathername`, `nrc`, `phone`, `photo`, `joine
 
 CREATE TABLE `students` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `secinstallmentdate` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secinstallmentdate` date NOT NULL,
   `secinstallmentamount` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remark` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `resume` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` int(11) NOT NULL,
+  `actionstatus` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `inquire_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -890,14 +936,9 @@ CREATE TABLE `students` (
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`id`, `secinstallmentdate`, `secinstallmentamount`, `remark`, `resume`, `status`, `inquire_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, '9/4/2019', '170000', 'asdfasdfasdfasdfasdfcasdf', 'no resume', 1, 43, 1, '2019-09-04 03:59:23', '2019-09-04 03:59:23'),
-(2, '9/5/2019', '170000', 'asfasfasdfasdfadfasdfasdfasdfadsf', 'no resume', 1, 10, 1, '2019-09-05 00:40:48', '2019-09-05 00:40:48'),
-(3, '9/6/2019', '170000', 'asdfasdfasdf', '15677086454_TidalWave(edocumentworkflowsystem).pdf', 1, 6, 1, '2019-09-05 11:36:20', '2019-09-05 12:07:25'),
-(4, '9/6/2019', '170000', 'dfvzdfvadfvadfvagdfadvad', 'no resume', 1, 39, 1, '2019-09-05 11:42:15', '2019-09-05 11:42:20'),
-(5, '9/6/2019', '0', 'zdfvadfasdfasdfasdfasdfasf', 'no resume', 0, 45, 1, '2019-09-05 12:14:14', '2019-09-05 12:14:14'),
-(6, '2019-09-06', '0', 'asdfasdfasfasfd', '', 1, 49, 1, '2019-09-05 20:42:29', '2019-09-05 20:42:29'),
-(7, '9/6/2019', '0', 'adfasdfasdasdfasdfasdfasdfasdfasdfafsd', 'no resume', 1, 50, 1, '2019-09-06 00:20:14', '2019-09-06 00:20:14');
+INSERT INTO `students` (`id`, `secinstallmentdate`, `secinstallmentamount`, `remark`, `resume`, `status`, `actionstatus`, `inquire_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, '2019-09-12', '0', 'Android, Java little experience', '1568272312demo.docx', 1, '', 2, 1, '2019-09-12 05:38:01', '2019-09-12 05:41:52'),
+(2, '0000-00-00', '180000', 'Not Bad', '1568272333demo.docx', 1, '', 1, 1, '2019-09-12 05:39:18', '2019-09-12 05:42:13');
 
 -- --------------------------------------------------------
 
@@ -927,7 +968,10 @@ INSERT INTO `teachers` (`id`, `staff_id`, `course_id`, `user_id`, `created_at`, 
 (6, 23, 1, 1, '2019-08-29 22:37:15', '2019-08-29 22:37:15'),
 (7, 24, 2, 1, '2019-08-29 22:37:23', '2019-08-29 22:37:23'),
 (8, 25, 2, 1, '2019-08-29 22:37:26', '2019-08-29 22:37:26'),
-(9, 26, 2, 1, '2019-08-29 22:37:31', '2019-08-29 22:37:31');
+(9, 26, 2, 1, '2019-08-29 22:37:31', '2019-08-29 22:37:31'),
+(10, 30, 3, 1, '2019-09-08 23:40:38', '2019-09-08 23:40:38'),
+(11, 10, 5, 1, '2019-09-10 23:56:59', '2019-09-10 23:56:59'),
+(13, 12, 5, 1, '2019-09-17 01:14:16', '2019-09-17 01:14:16');
 
 -- --------------------------------------------------------
 
@@ -1046,7 +1090,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `role_id`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Developer', 'developer@gmail.com', 1, NULL, '$2y$10$QZVlOyuMMtnI7xFTs..wz.wLLId0xeVbEmM03aWkdsGWJzBOYEF9.', NULL, '2019-08-29 21:50:02', '2019-08-29 21:50:02'),
-(2, 'Yin Min Ei', 'yinmim.mic@gmail.com', 2, NULL, '$2y$10$iJA07pnNM7ZLwTIDSablq.rIpcQW87X4/gZciV0t5RmRhwJ3WRX/u', NULL, '2019-08-29 21:59:02', '2019-08-29 21:59:02'),
+(2, 'Yin Min Ei', 'yinmin.mic@gmail.com', 2, NULL, '$2y$10$iJA07pnNM7ZLwTIDSablq.rIpcQW87X4/gZciV0t5RmRhwJ3WRX/u', NULL, '2019-08-29 21:59:02', '2019-08-29 21:59:02'),
 (3, 'Aye Chan Khin', 'ayechankhin.mic@gmail.com', 2, NULL, '$2y$10$lN3In17ak1m3PPhMUMsCcuWF8SDOIlAj9EAnM6RIioPkx3cOL8FQ.', NULL, '2019-08-29 22:00:00', '2019-08-29 22:00:00'),
 (4, 'Htet Htet Wai', 'htetwai.mic@gmail.com', 3, NULL, '$2y$10$TbDw6iSC3Y5aFihV8hWYie46ztVDp8GvNKOAdYyAjh8KuTossGLr2', NULL, '2019-08-29 22:02:27', '2019-08-29 22:02:27'),
 (5, 'Naing Zaw', 'naingzaw@myanmaritc.com', 2, NULL, '$2y$10$td22rzMEq97eJ31SW6SFKOpH.zO4se9dlt9vLcyJYPKeNey6icWU6', NULL, '2019-08-29 22:03:19', '2019-08-29 22:03:19'),
@@ -1057,7 +1101,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `role_id`, `email_verified_at`, `pas
 (10, 'Kay Thidar Khaing', 'kaythidarkhaing@gmail.com', 3, NULL, '$2y$10$xSL.1PP3X5rD2DnbnYU6/OzK9QIsYCOQFstr800o0Zc2uSxWMBDPq', NULL, '2019-08-29 22:15:33', '2019-08-29 22:15:33'),
 (11, 'Thet Paing Htut', 'thetpainghtut.bf@gmail.com', 4, NULL, '$2y$10$oWSXFfnDH8MemBjQJNGnEOeiuulqgByZiAta3Ysp9xS4tbzewdbjW', NULL, '2019-08-29 22:17:18', '2019-08-29 22:17:18'),
 (12, 'Ya Thaw Myat Noe', 'yathawmyatnoe007@gmail.com', 4, NULL, '$2y$10$DSM7Fvc0E6ybhakRhdAsdOtP0UKunJUbNr/.RRSdonw0m5dxnBHRW', NULL, '2019-08-29 22:17:55', '2019-09-06 00:40:42'),
-(13, 'Hein Min Htet', 'heinminhtet8138@gmail.com', 5, NULL, '$2y$10$gTFgfWtOKTlzQJTdodr9L.g4K08vTAl4DQ3Ip87qg/Hj5aR389Xpu', NULL, '2019-08-29 22:18:50', '2019-08-29 22:18:50'),
+(13, 'Hein Min Htet', 'heinminhtet8138@gmail.com', 4, NULL, '$2y$10$gTFgfWtOKTlzQJTdodr9L.g4K08vTAl4DQ3Ip87qg/Hj5aR389Xpu', NULL, '2019-08-29 22:18:50', '2019-09-17 01:13:50'),
 (14, 'Aye Lwin Soe', 'ayelwinsoe@gmail.com', 5, NULL, '$2y$10$LTAE5M6YfEAbXdLug7piVOw1RzVUGQuUatpaLIDoa9DIs.An88zz2', NULL, '2019-08-29 22:20:15', '2019-08-29 22:20:15'),
 (15, 'Chan Ei Mhwe', 'chaneimhmweit@gmail.com', 5, NULL, '$2y$10$S9sQZy8gRk24TkJ6P9s9LO1xxLcN5ZES5MAZ2ZIwyxw3Cz0KwEN6i', NULL, '2019-08-29 22:22:01', '2019-08-29 22:22:01'),
 (16, 'Min Pike Mhu', 'minpikemhu10@gmail.com', 5, NULL, '$2y$10$JC2i91PGeWpWhq6UY.BJXutl1UXl0TuzZtxwuavx3.gso4uV69W8i', NULL, '2019-08-29 22:23:01', '2019-08-29 22:23:01'),
@@ -1074,7 +1118,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `role_id`, `email_verified_at`, `pas
 (27, 'Kyi Kyi Swe', 'kyikyiswe@gmail.com', 4, NULL, '$2y$10$6.j11JH3YjITbgOnJ8DfluvOBgijgV6HdPMO6vDjYjdEf4g/EmpDy', NULL, '2019-08-29 22:32:53', '2019-08-29 22:32:53'),
 (28, 'Min Aung Hein', 'minaunghein@gmail.com', 4, NULL, '$2y$10$c47xV3dYs.34Re2z6bGUsuN8DAce62PaaKx6xT4g310bgMSnEIY8O', NULL, '2019-08-29 22:33:22', '2019-08-29 22:33:22'),
 (29, 'Yan Myoe Aung', 'yanmyoeaung@gmail.com', 1, NULL, '$2y$10$il0BM.4W4uHcRm/ySJfVp.jrhigei5UtTsItq6UJNOaWOAiNwElga', NULL, '2019-09-05 10:42:26', '2019-09-05 10:42:26'),
-(30, 'Zar Chi Lin', 'zarchilin@gmail.com', 1, NULL, '$2y$10$hTelmC4CtZXC3xK/jdVtd.SOl0Vf626LdypWP16E7l7uQ16tTwkbS', NULL, '2019-09-05 10:42:54', '2019-09-05 10:42:54');
+(30, 'Zar Chi Lin', 'zarchilin@gmail.com', 1, NULL, '$2y$10$hTelmC4CtZXC3xK/jdVtd.SOl0Vf626LdypWP16E7l7uQ16tTwkbS', NULL, '2019-09-05 10:42:54', '2019-09-05 10:42:54'),
+(31, 'test staff', 'teststaff@gmail.com', 4, NULL, '$2y$10$7hh6uGzjxaBHTGLhXwdlfuiIJb/0e1LPPmsPVCIb7kdHhp1ldKOQ.', NULL, '2019-09-08 23:39:47', '2019-09-08 23:39:47');
 
 --
 -- Indexes for dumped tables
@@ -1114,6 +1159,12 @@ ALTER TABLE `dismisses`
 -- Indexes for table `durations`
 --
 ALTER TABLE `durations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `education`
+--
+ALTER TABLE `education`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1306,13 +1357,13 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `dismisses`
@@ -1324,13 +1375,19 @@ ALTER TABLE `dismisses`
 -- AUTO_INCREMENT for table `durations`
 --
 ALTER TABLE `durations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `education`
+--
+ALTER TABLE `education`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `hires`
@@ -1342,13 +1399,13 @@ ALTER TABLE `hires`
 -- AUTO_INCREMENT for table `incomes`
 --
 ALTER TABLE `incomes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `inquires`
 --
 ALTER TABLE `inquires`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `interviews`
@@ -1360,7 +1417,7 @@ ALTER TABLE `interviews`
 -- AUTO_INCREMENT for table `jobcareers`
 --
 ALTER TABLE `jobcareers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `locations`
@@ -1378,19 +1435,19 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `oauth_clients`
 --
 ALTER TABLE `oauth_clients`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `oauth_personal_access_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `positions`
@@ -1408,31 +1465,31 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `section_teacher`
 --
 ALTER TABLE `section_teacher`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `staffs`
 --
 ALTER TABLE `staffs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `townships`
@@ -1444,7 +1501,7 @@ ALTER TABLE `townships`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables

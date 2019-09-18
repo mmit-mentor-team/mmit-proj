@@ -16,19 +16,20 @@ class CreateInquiresTable extends Migration
         Schema::create('inquires', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('receiveno');
             $table->string('gender');
-           
+            $table->date('dob')->nullable();
             $table->string('age');
-            $table->longText('address');
+            $table->longText('address')->nullable();
             $table->string('phno');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('installmentdate');
-            $table->string('installmentamount');
-            $table->longText('remark');
-            $table->string('position');
+            $table->string('installmentamount')->default(0);
+            $table->longText('remark')->nullable();
+            $table->string('position')->nullable();
             $table->string('camp');
-            $table->unsignedBigInteger('education');
-            $table->string('acceptedyear');
+            $table->string('education');
+            $table->string('acceptedyear')->nullable();
 
             //section
             $table->unsignedBigInteger('section_id');

@@ -23,7 +23,7 @@ class TownshipController extends Controller
     public function index()
     {
         $cities = City::all();
-        $townships =  Township::all();
+        $townships =  Township::orderBy('id','DESC')->get();
 
         $townships =  TownshipResource::collection($townships);
 

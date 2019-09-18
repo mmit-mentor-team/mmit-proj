@@ -40,26 +40,29 @@
                 <i class="fa fa-plus"></i> Add New Inquire
               </button>
 
-
             </h3>
           </div>
 
           <div class="card-body">
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn-tab" data-toggle="tab" href="#nav-hr_ygn" role="tab" aria-controls="nav-hr_ygn" aria-selected="true" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - YGN )'">
+                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn-tab" data-toggle="tab" href="#nav-hr_ygn" role="tab" aria-controls="nav-hr_ygn" aria-selected="true" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( HR - YGN )')">
                   HR/ Admin (YGN)
                 </a>
 
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'active' : '' ]" id="nav-hr_mdy-tab" data-toggle="tab" href="#nav-hr_mdy" role="tab" aria-controls="nav-hr_mdy" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - MDY )'">
+                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'active' : '' ]" id="nav-hr_mdy-tab" data-toggle="tab" href="#nav-hr_mdy" role="tab" aria-controls="nav-hr_mdy" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - MDY )'" @click.stop.prevent="setActive('Accept Student Enquiry ( HR - MDY )')">
                   HR/ Admin (MDY)
                 </a>
 
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'active' : '' ]" id="nav-php_bootcamp-tab" data-toggle="tab" href="#nav-php_bootcamp" role="tab" aria-controls="nav-php_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'">
-                  PHP Bootcamp 
+                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'active' : '' ]" id="nav-php_bootcamp-tab" data-toggle="tab" href="#nav-php_bootcamp" role="tab" aria-controls="nav-php_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( PHP Bootcamp - YGN )')">
+                  PHP Bootcamp (YGN)
                 </a>
 
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'">
+                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'active' : '' ]" id="nav-php_mdy_bootcamp-tab" data-toggle="tab" href="#nav-php_mdy_bootcamp" role="tab" aria-controls="nav-php_mdy_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - MDY )'" @click.stop.prevent="setActive('Accept Student Enquiry ( PHP Bootcamp - MDY )')">
+                  PHP Bootcamp (MDY)
+                </a>
+
+                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( iOS - YGN )')">
                   iOS 
                 </a>
 
@@ -69,14 +72,15 @@
             <div class="tab-content mt-3" id="nav-tabContent">
 
               <div class="tab-pane fade show" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn" role="tabpanel" aria-labelledby="nav-hr_ygn-tab">
-               <div class="col-md-12">
-                    <input type="text" name="" class="my-2 mr-2" v-model="fit" for="hr_ygn_inquire">
-                    <button class="btn-primary mb-2 " @click="fits(1)" >Search </button>
-                    <span id="error" class="text-danger d-block" v-if="noti==0"></span>
+
+                <div class="form-row form-group">
+                  <div class="col-md-4">
+                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
                   </div>
-                
+                </div>
+
                 <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="hr_ygn_inquires.length>0">
+                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
                      <thead class="bg-primary text-white">
                         <tr class="text-center">
                           <th> No </th>
@@ -87,26 +91,26 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(hr_ygn_inquire, index) in hr_ygn_inquires">
+                        <tr v-for="(hr_ygn_inquire, index) in filterMembers">
                           <td> {{ index + 1 }} </td>
                           <td> {{ hr_ygn_inquire.receiveno}}</td>
                           <td> {{ hr_ygn_inquire.name }} </td>
                           <td>  {{ hr_ygn_inquire.phno}}</td>
                           
                           <td> 
-                            <button @click="printInquire(index, hr_ygn_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(hr_ygn_inquire.id, hr_ygn_inquire.courseid)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
-                            <button @click="initDetail(index, hr_ygn_inquire.courseid, hr_ygn_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(hr_ygn_inquire.id, hr_ygn_inquire.courseid, hr_ygn_inquire.s_id)" class="btn btn-info btn-xs text-white">
                                   <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(index, hr_ygn_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(hr_ygn_inquire.id, hr_ygn_inquire.courseid)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(index, hr_ygn_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(hr_ygn_inquire.id, hr_ygn_inquire.courseid)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -118,13 +122,15 @@
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'show active' : '' ]" id="nav-hr_mdy" role="tabpanel" aria-labelledby="nav-hr_mdy-tab">
-                <div class="col-md-12">
-                  <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="hr_mdy_inquire">
-                  <button class="btn-primary mb-2 " @click="fits(2)" >Search </button>
-                  <span id="error" class="text-danger d-block" ></span>
+
+                <div class="form-row form-group">
+                  <div class="col-md-4">
+                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
                 </div>
+
                 <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="hr_mdy_inquires.length>0">
+                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
                     <thead class="bg-primary text-white">
                         <tr class="text-center">
                           <th> No </th>
@@ -135,26 +141,26 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(hr_mdy_inquire, index) in hr_mdy_inquires">
+                        <tr v-for="(hr_mdy_inquire, index) in filterMembers">
                           <td> {{ index + 1 }} </td>
                           <td> {{ hr_mdy_inquire.receiveno}}</td>
                           <td> {{ hr_mdy_inquire.name }} </td>
                           <td>  {{ hr_mdy_inquire.phno}}</td>
                           
                           <td> 
-                            <button @click="printInquire(index, hr_mdy_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(hr_mdy_inquire.id, hr_mdy_inquire.courseid)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
-                            <button @click="initDetail(index, hr_mdy_inquire.courseid, hr_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(hr_mdy_inquire.id, hr_mdy_inquire.courseid, hr_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
                               <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(index,hr_mdy_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(hr_mdy_inquire.id,hr_mdy_inquire.courseid)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(index,hr_mdy_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(hr_mdy_inquire.id,hr_mdy_inquire.courseid)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -166,13 +172,15 @@
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" id="nav-php_bootcamp" role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
-                  <div class="col-md-12">
-                    <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="php_inquires">
-                    <button class="btn-primary mb-2 " @click="fits(3)" >Search </button>
-                    <span id="error" class="text-danger d-block" v-if="noti==0"></span>
+                <!-- For Receiveno Search -->
+                <div class="form-row form-group">
+                  <div class="col-md-4">
+                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
                   </div>
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_inquires.length > 0">
+                </div>
+
+                 <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
                       <thead class="bg-primary text-white">
                         <tr class="text-center">
                           <th> No </th>
@@ -183,27 +191,81 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(php_inquire, index) in php_inquires">
+                        <tr v-for="(php_inquire, index) in filterMembers">
                           <td> {{ index + 1 }} </td>
-                          <td> {{ php_inquire.receiveno}}</td>
+                          <td> {{ php_inquire.section.codeno}}</td>
                           <td> {{ php_inquire.name }} </td>
-                          <td>  {{ php_inquire.phno}}</td>
+                          <td> {{ php_inquire.phno}}</td>
                           
                          
                           <td> 
-                            <button @click="printInquire(index, php_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(php_inquire.id, php_inquire.courseid)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
-                            <button @click="initDetail(index, php_inquire.courseid, php_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(php_inquire.id, php_inquire.courseid, php_inquire.s_id)" class="btn btn-info btn-xs text-white">
                                 <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(index,php_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(php_inquire.id,php_inquire.courseid)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(index,php_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(php_inquire.id,php_inquire.courseid)" class="btn btn-danger btn-xs">
+                              <i class="fas fa-trash-alt"></i>  Delete
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      
+                    </table>
+                 </div>
+                   
+              </div>
+
+              <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" id="nav-php_mdy_bootcamp" role="tabpanel" aria-labelledby="nav-php_mdy_bootcamp-tab">
+
+                <!-- For Receiveno Search -->
+                <div class="form-row form-group">
+                  <div class="col-md-4">
+                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                </div>
+
+                 <div class="table-responsive">
+                  <!-- {{filterMembers}} -->
+                    <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
+                      <thead class="bg-primary text-white">
+                        <tr class="text-center">
+                          <th> No </th>
+                          <th> Receive No </th>
+                          <th> Name </th>
+                          <th> Phone No:</th>
+                          <th> Action </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(php_mdy_inquire, index) in filterMembers">
+                          <td> {{ index + 1 }} </td>
+                          <td> {{ php_mdy_inquire.receiveno}}</td>
+                          <td> {{ php_mdy_inquire.name }} </td>
+                          <td>  {{ php_mdy_inquire.phno}}</td>
+                          
+                         
+                          <td> 
+                            <button @click="printInquire(php_mdy_inquire.id, php_mdy_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                              <i class="fa fa-print"></i> Print
+                            </button>
+
+                            <button @click="initDetail(php_mdy_inquire.id, php_mdy_inquire.courseid, php_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                                <i class="fa fa-eye"></i> Detail
+                            </button>
+
+                            <button @click="initUpdate(php_mdy_inquire.id,php_mdy_inquire.courseid)" class="btn btn-warning btn-xs">
+                              <i class="fas fa-edit"></i> Edit
+                            </button>
+                            
+                            <button @click="deleteInquire(php_mdy_inquire.id,php_mdy_inquire.courseid)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -215,13 +277,13 @@
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'show active' : '' ]" id="nav-ios" role="tabpanel" aria-labelledby="nav-ios-tab">
-                <div class="col-md-12">
-                  <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="ios_inquire">
-                  <button class="btn-primary mb-2 " @click="fits(4)" >Search </button>
-                  <span id="error" class="text-danger d-block" ></span>
+                <div class="form-row form-group">
+                  <div class="col-md-4">
+                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
                 </div>
                 <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="ios_inquires.length>0">
+                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
                     <thead class="bg-primary text-white">
                         <tr class="text-center">
                           <th> No </th>
@@ -232,26 +294,26 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(ios_inquire, index) in ios_inquires">
+                        <tr v-for="(ios_inquire, index) in filterMembers">
                           <td> {{ index + 1 }} </td>
                           <td> {{ ios_inquire.receiveno}}</td>
                           <td> {{ ios_inquire.name }} </td>
-                          <td>  {{ ios_inquire.phno}}</td>
+                          <td> {{ ios_inquire.phno}}</td>
                           
                           <td>
-                            <button @click="printInquire(index, ios_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(ios_inquire.id, ios_inquire.courseid)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
                             
-                            <button @click="initDetail(index, ios_inquire.courseid, ios_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(ios_inquire.id, ios_inquire.courseid, ios_inquire.s_id)" class="btn btn-info btn-xs text-white">
                                   <i class="fa fa-eye"></i> Detail
                             </button>
                             
-                            <button @click="initUpdate(index, ios_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(ios_inquire.id, ios_inquire.courseid)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(index, ios_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(ios_inquire.id, ios_inquire.courseid)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -282,50 +344,40 @@
               </ul>
             </div>
 
-            <div class="row">
+            <div class="form-row form-group">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Receiveno:</label>
-                  <input type="text" name="receiveno" id="receiveno" placeholder="receiveno" class="form-control" v-model="receiveno" readonly>
-                </div>
+                <label for="names">Receiveno:</label>
+                <input type="text" name="receiveno" id="receiveno" placeholder="receiveno" class="form-control" v-model="receiveno" readonly>
               </div>
-              <div class="col-md-6">  
-                <div class="form-group">
-                    <label for="names">Name:</label>
-                    <input type="text" name="name" id="name" placeholder="Inquire Name" class="form-control" v-model="inquire.name">
-                </div>
+              <div class="col-md-6">
+                <label for="names">Name:</label>
+                <input type="text" name="name" id="name" placeholder="Inquire Name" class="form-control" v-model="inquire.name">
               </div>
-            </div>  
-
-            <div class="row">
+            </div>
+            
+            <div class="form-row form-group">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Course:</label>
-                   
-                   <select v-model="course" name="course_id" id="course_id" class="form-control"
-                    @change="readDurations" >
-                      <option disabled value="">Please select one</option>
-                      <option v-for ="(course, index) in courses"  :value="course.id">
-                        {{ course.name }} ( {{ course.cityname }} )
-                      </option>
-                    </select>
-                    
-                </div>
-              </div> 
-              
+                <label for="names">Course:</label>
+                 
+                <select v-model="course" name="course_id" id="course_id" class="form-control"
+                  @change="readDurations" >
+                  <option disabled value="">Please select one</option>
+                  <option v-for ="(course, index) in courses"  :value="course.id">
+                    {{ course.name }} ( {{ course.cityname }} )
+                  </option>
+                </select>
+              </div>
+
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Duration:</label>
-                    <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
-                      <option disabled value="">Please select one</option>
-                      <option v-for ="(duration, index) in durations"  :value="duration.id">
-                        {{ duration.days }} ( {{ duration.time }} )
-                        [ {{ duration.during }} ]
+                <label for="names">Duration:</label>
+                  <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
+                    <option disabled value="">Please select one</option>
+                    <option v-for ="(duration, index) in durations"  :value="duration.id">
+                      {{ duration.days }} ( {{ duration.time }} )
+                      [ {{ duration.during }} ]
 
-                      </option>
-                    </select>
-                </div>
-
+                    </option>
+                  </select>
               </div>
             </div>
             
@@ -337,10 +389,20 @@
                     <option disabled value="">Please select one</option>
                     <option v-for ="(section, index) in sections"  :value="section.id">
 
-                      <div class="row">
-                        <div class="col-md-3">
-                          {{ section.title }}
-                        </div>
+            <div class="form-group">
+              <label for="names">Sections:</label>
+                <select v-model="section" name="section_id" id="section_id" class="form-control" >
+                  <option disabled value="">Please select one</option>
+                  <option v-for ="(section, index) in sections"  :value="section.id">
+
+                    <div class="row">
+                      <div class="col-md-3">
+                        {{ section.title }}
+                      </div>
+
+                      <div class="col-md-3">
+                        {{ section.durations.time }}
+                      </div> 
 
                         <div class="col-md-3">
                           {{ section.durations.time }}
@@ -356,145 +418,111 @@
 
                       </div>
 
-                    </option>
-                  </select>
-                </div>
+
+            <div class="form-row form-group camphide d-none">
+              <div class="col-md-6">
+                <label for="names">Camp:</label>
+                <br>
+
+                <label for="nocamp"  class="mx-2">No Camp:</label>
+                <input type="radio" value="No Camp" id="nocamp"  v-model="inquire.camp">
+
+                <label for="malecamp" class="mx-2">Male Camp:</label>
+                <input type="radio" value="Male Camp"  id="malecamp"  v-model="inquire.camp">
+
+                <label for="femalecamp"  class="mx-2">Female Camp:</label>
+                <input type="radio" value="Female Camp" id="femalecamp" v-model="inquire.camp">
               </div>
               <div class="col-md-6">
-                <div class="form-group camphide d-none">
-                  <label for="names">Camp:</label>
-                  <br>
-
-                  <label for="nocamp"  class="mx-2">No Camp:</label>
-                  <input type="radio" value="No Camp" id="nocamp"  v-model="inquire.camp">
-
-                  <label for="malecamp" class="mx-2">Male Camp:</label>
-                  <input type="radio" value="Male Camp"  id="malecamp"  v-model="inquire.camp">
-
-                  <label for="femalecamp"  class="mx-2">Female Camp:</label>
-                  <input type="radio" value="Female Camp" id="femalecamp" v-model="inquire.camp">
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Age:</label>
-                  <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="inquire.age">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Position:</label>
-                  <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="inquire.position">
-                </div>
-
-              </div>
-            </div>  
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="gender" class="d-block"> Gender</label>
-             
-                  <label for="male" class="mx-2">Male:</label>
-                  <input type="radio" value="male"  id="male" placeholder="Male"  v-model="inquire.gender">
-                  <label for="female"  class="mx-2">Female:</label>
-                  <input type="radio" value="female" id="female" placeholder="Female"  v-model="inquire.gender">
-                
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="names">Address:</label>
-                <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="inquire.address">
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Township:</label> 
-                  <select v-model="township_id" name="township" class="form-control">
-                  <option disabled value="">Please select one</option>
-                  <option v-for ="(township, index) in townships" :value="township.id">{{ township.name }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Phone no:</label>
-                  <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="inquire.phoneno">
-                </div>
-          
-              </div>
-            </div>  
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Email:</label>
+                <label for="names">Email:</label>
                   <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="inquire.email">
-                </div>
               </div>
+            </div>
+            
+            <div class="form-row form-group">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Payment Date:</label>
-                 <input type="text" name="paymentdate" id="addpaymentdate" readonly="readonly" :required="inquire.paymentdate < 0"  placeholder="Payment Date" class="form-control" v-model="inquire.paymentdate">
-                </div>
+                <label for="names">Age:</label>
+                <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="inquire.age">
+              </div>
 
-              </div>
-              
-            </div>   
-
-            <div class="row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Payment Amount:</label>
-                  <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="inquire.paymentamount">
-                 
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Education:</label>
-                  <!--  <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="inquire.education"> -->
-                   
-                  <!--    <select v-model="inquire.education_id" name="education" class="form-control">
-                      <option disabled value="">Please select one</option>
-                      <option v-for ="(education, index) in educations" :value="education.id">{{ education.name }}</option>
-                  </select> -->
-                     
-                    <v-select label="name" :options="educations" language="en-US" v-model="selected"
-                       @input="selectId" :key="educations.id" >
-                    </v-select>
-                
-                </div>
-              </div>  
-            </div> 
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Accepted Year:</label>
-                  <input type="month" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="inquire.acceptedyear">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Remark:</label>
-                
-                  <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="inquire.remark"></textarea>
-                </div>
- 
+                <label class="d-block">Gender:</label>
+                <label for="male" class="mx-2">Male:</label>
+                <input type="radio" value="male"  id="male" placeholder="Male"  v-model="inquire.gender">
+                <label for="female"  class="mx-2">Female:</label>
+                <input type="radio" value="female" id="female" placeholder="Female"  v-model="inquire.gender">
               </div>
 
             </div>
 
-          
-           </div> 
+            <!-- <div class="form-group">
+              <label for="names">date of Birth:</label>
+                <input type="date" name="status" id="dob" placeholder="Date of Birth" class="form-control" v-model="inquire.dob">
+            </div> -->
+
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Address:</label>
+                  <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="inquire.address">
+              </div>
+
+              <div class="col-md-6">
+                <label for="names">Township:</label> 
+                  <select v-model="township_id" name="township" class="form-control">
+                      <option disabled value="">Please select one</option>
+                    <option v-for ="(township, index) in townships" :value="township.id">{{ township.name }}</option>
+                  </select>
+              </div>
+            </div>
+            
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Phone no:</label>
+                  <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="inquire.phoneno">
+              </div>
+            
+              <div class="col-md-6">
+                <label for="names">Job Position:</label>
+                  <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="inquire.position">
+              </div>
+            </div>
+            
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Payment Date:</label>
+                  <input type="date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="inquire.paymentdate" readonly="readonly">
+              </div>
+
+              <div class="col-md-6">
+                <label for="names">Payment Amount:</label>
+                <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="inquire.paymentamount"> 
+              </div>
+            </div>
+
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Education:</label>
+                  <!-- <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="inquire.education"> -->
+                  <select v-model="inquire.education" name="education" class="form-control">
+                    <option disabled value="">Please select one</option>
+                    <option v-for ="(education, index) in educations" :value="education.id">{{ education.name }}</option>
+                  </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="names">Accepted Year:</label>
+                  <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="inquire.acceptedyear">
+              </div>
+            </div>
+            
+            <div class="form-row form-group">
+              <div class="col-md-12">
+                <label for="names">Remark:</label>
+                <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="inquire.remark"></textarea>
+              </div>
+            </div>
+            
+          </div> 
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">
               <i class="fa fa-times"></i> Close
@@ -509,7 +537,7 @@
     </div><!-- /.modal -->
 
     <div class="modal fade" tabindex="-1" role="dialog" id="update_inquire_model">
-      <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Update Inquire</h4>
@@ -523,184 +551,172 @@
               </ul>
             </div>
 
-
             <input type="hidden" class="form-control" v-model="update_inquire.userid" name="userid" id="userid">
-            <input type="hidden" class="form-control" v-model="update_inquire.receiveno" name="receiveno" id="receiveno">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                  <label>Name:</label>
-                    <input type="text" placeholder="township Name" class="form-control" v-model="update_inquire.name">
-                </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Course:</label>
-                 
-                    <select v-model="course" name="course_id" id="course_id" class="form-control"
-                      @change="readDurations" >
-                        <option disabled value="">Please select one</option>
-                        <option v-for ="(course, index) in courses"  :value="course.id">
-                          {{ course.name }} ( {{ course.cityname }} )
-                        </option>
-                    </select>
-                
-                  </div>
-                  
-                </div>
-                
+            
+            <div class="form-group form-row">
+              <div class="col-md-6">
+                <label for="names">Receiveno:</label>
+                <input type="text" name="receiveno" placeholder="receiveno" class="form-control" v-model="update_inquire.receiveno" readonly>
               </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Duration:</label>
-                    <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
-                      <option disabled value="">Please select one</option>
-                      <option v-for ="(duration, index) in durations"  :value="duration.id">
-                        {{ duration.days }} ( {{ duration.time }} )
-                        [ {{ duration.during }} ]
-
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names"> Section :</label>
-                    <select class="form-control"  name="section_id" v-model="update_inquire.sectionid" id="cityid">
-                  
-                      <option v-for="(section, index) in sections" :value="section.id" :selected=" section.id == update_inquire.sectionid "> {{ section.title }}  </option>
-                    </select>
-                  </div>
-                </div>
-                
+              <div class="col-md-6">
+                <label>Name:</label>
+                <input type="text" placeholder="Name" class="form-control" v-model="update_inquire.name">
               </div>
+            </div>
 
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Age:</label>
-                    <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="update_inquire.age">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-             
-                    <label for="gender" class="mx-2">Male:</label>
-                      <input type="radio" value="male"  id="male" placeholder="Male"  v-model="update_inquire.gender">
-                      <label for="gender"  class="mx-2">Female:</label>
-                      <input type="radio" value="female" id="female" placeholder="Female"  v-model="update_inquire.gender">
-                      <label for="gender"  class="mx-2">Other:</label>
-                      <input type="radio" value="other" id="other" placeholder="Other"  v-model="update_inquire.gender">
-                  </div>
-                  
-                </div>
-                
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Course:</label>
+                <select v-model="course" name="course_id" id="course_id" class="form-control"
+                  @change="readDurations" >
+                  <option disabled value="">Please select one</option>
+                  <option v-for ="(course, index) in courses"  :value="course.id" :selected="course.id == update_inquire.courseid">
+                    {{ course.name }} ( {{ course.cityname }} )
+                  </option>
+                </select>
               </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Address:</label>
-                    <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="update_inquire.address">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="names">Phone no:</label>
-                      <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="update_inquire.phno">
+              <div class="col-md-6">
+                <label for="names">Duration:</label>
+                <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
+                  <option disabled value="">Please select one</option>
+                  <option v-for ="(duration, index) in durations"  :value="duration.id" :selected="duration.id == update_inquire.durationid">
+                    {{ duration.days }} ( {{ duration.time }} )
+                    [ {{ duration.during }} ]
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row form-group">
+              <div class="col-md-12">
+                <label for="names"> Section :</label>
+                <select class="form-control"  name="section_id" v-model="update_inquire.sectionid">
+                  <option disabled value="">Please select one</option>
+                  <option v-for="(section, index) in sections" :value="section.id" :selected="section.id == update_inquire.sectionid">
+                    <div class="row">
+                      <div class="col-md-3">
+                        {{ section.title }}
+                      </div>
+
+                      <div class="col-md-3">
+                        {{ section.duration }}
+                      </div> 
+
+                      <div class="col-md-3">
+                        {{ section.during }}
+                      </div>
+
+                      <div class="col-md-3">
+                        {{ section.startdate}} - {{ section.enddate }}
+                      </div> 
+
                     </div>
-                  
-                </div>
+                  </option>
+                </select>
               </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">email:</label>
-                    <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="update_inquire.email">
-                  </div>
-                  
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Payment Date:</label>
-                    <input type="Date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="update_inquire.installmentdate">
-                  </div>
-                  
-                </div>
-                
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Payment Amount:</label>
-                    <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="update_inquire.installmentamount">
-                  </div> 
-                  
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Remark:</label>
-                    <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="update_inquire.remark"></textarea>
-                  </div>
-                  
-                </div>
-                
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="names">Position:</label>
-                      <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="update_inquire.position">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="names">Camp:</label>
-                      <input type="text" name="camp" id="camp" placeholder="Camp" class="form-control" v-model="update_inquire.camp">
-                    </div>
-                </div>
-                
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Education:</label>
-                     <!-- <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="update_inquire.education"> -->
-                    <!-- <select v-model="update_inquire.educationid" name="education" class="form-control">
-                      <option disabled value="">Please select one</option>
-                      <option v-for ="(education, index) in educations" :value="education.id" :selected="education.id == update_inquire.educationid">
-                      {{ education.name }}</option>
-                    </select> -->
+            </div>
 
-                    <v-select label="name" :options="educations" :key="selected"
-                              :reduce= "name => name.id" v-model="selected"  >
-                          
-                    </v-select>
-                    
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names">Accepted Year:</label>
-                    <input type="month" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="update_inquire.acceptedyear">
-                  </div>
-                </div>
-                
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Camp:</label>
+                <br>
+
+                <label for="nocamp"  class="mx-2">No Camp:</label>
+                <input type="radio" value="No Camp" id="nocamp"  v-model="update_inquire.camp">
+
+                <label for="malecamp" class="mx-2">Male Camp:</label>
+                <input type="radio" value="Male Camp"  id="malecamp"  v-model="update_inquire.camp">
+
+                <label for="femalecamp"  class="mx-2">Female Camp:</label>
+                <input type="radio" value="Female Camp" id="femalecamp" v-model="update_inquire.camp">
               </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="names"> Township :</label>
-                    <select class="form-control"  name="township_id" v-model="update_inquire.townshipid" id="townshipid">
+              <div class="col-md-6">
+                <label for="names">email:</label>
+                  <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="update_inquire.email">
+              </div>
+            </div>
+
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Age:</label>
+                  <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="update_inquire.age">
+              </div>
+              <div class="col-md-6">
+                <label class="d-block">Gender:</label>
+                <label for="gender" class="mx-2">Male:</label>
+                <input type="radio" value="male"  id="male" placeholder="Male"  v-model="update_inquire.gender">
+                <label for="gender"  class="mx-2">Female:</label>
+                <input type="radio" value="female" id="female" placeholder="Female"  v-model="update_inquire.gender">
+                <label for="gender"  class="mx-2">Other:</label>
+                <input type="radio" value="other" id="other" placeholder="Other"  v-model="update_inquire.gender">
+              </div>
+            </div>
+            
+
+            <!-- <div class="form-group">
+                <label for="names">date of Birth:</label>
+                <input type="date" name="status" id="dob" placeholder="Date of Birth" class="form-control" v-model="update_inquire.dob">
+            </div> -->
+
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Address:</label>
+                  <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="update_inquire.address">
+              </div>
+
+              <div class="col-md-6">
+                <label for="names"> Township :</label>
+                <select class="form-control"  name="township_id" v-model="update_inquire.townshipid" id="townshipid">
                   
-                      <option v-for="(township, index) in townships" :value="township.id" :selected="township.id == update_inquire.townshipid"> {{ township.name }}  </option>
-                    </select>
-                  </div>
-                </div>
-                
+                  <option v-for="(township, index) in townships" :value="township.id" :selected="township.id == update_inquire.townshipid"> {{ township.name }}  </option>
+                </select>
               </div>
-          
+            </div>
+            
+
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Phone no:</label>
+                  <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="update_inquire.phno">
+              </div>
+              <div class="col-md-6">
+                <label for="names">Job Position:</label>
+                  <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="update_inquire.position">
+              </div>
+            </div>
+            
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Payment Date:</label>
+                <input type="date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="update_inquire.installmentdate" readonly="readonly">
+              </div>
+              <div class="col-md-6">
+                <label for="names">Payment Amount:</label>
+                <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="update_inquire.installmentamount">
+              </div>
+            </div> 
+            
+            <div class="form-row form-group">
+              <div class="col-md-6">
+                <label for="names">Education:</label>
+                <select v-model="update_inquire.education" name="education" class="form-control">
+                  <option disabled value="">Please select one</option>
+                  <option v-for ="(education, index) in educations" :value="education.id" :selected="education.id == update_inquire.education">{{ education.name }}</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="names">Accepted Year:</label>
+                <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="update_inquire.acceptedyear">
+              </div>
+            </div>
+
+            <div class="form-row form-group">
+              <div class="col-md-12">
+                <label for="names">Remark:</label>
+                <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="update_inquire.remark"></textarea>
+              </div>
+            </div>
+
           </div>
               
           <div class="modal-footer">
@@ -723,7 +739,7 @@
             <h4 class="modal-title">{{ detail_inquire.receiveno }}</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" >
                    
                    <!-- {{detail_staff}} -->
               <div class="row mt-3">
@@ -796,7 +812,7 @@
                           <h3> {{ detail_inquire.sectiontitle }} </h3>
                         </th>
                         <th>
-                          {{ detail_inquire.s_codeno }}
+                          {{ detail_inquire.section && detail_inquire.section.codeno }}
                         </th>
                       </tr>
                     </thead>
@@ -832,9 +848,7 @@
                   </table>
                 </div>
               </div>
-            </div>
-                   
-                   
+            </div>   
           </div>
               
           <div class="modal-footer">
@@ -851,19 +865,24 @@
 
 
    export default {
-    props: ["permissions","active_tab"],
+    props: ["permissions"],
 
        data(){
            return {
                inquire: {
-                name:''
+                name:'',
+                camp: 'No Camp',
+                gender: 'male',
+                paymentamount: 0
                },
                errors: [],
                townships: [],
+               educations:[],
                sections: [],
                hr_ygn_inquires: [],
                hr_mdy_inquires: [],
                php_inquires:[],
+               php_mdy_inquires:[],
                ios_inquires:[],
                
                durations:[],
@@ -890,11 +909,15 @@
                lastinquire:{},
                update_inquire: {},
                detail_inquire: {},
+               detail_object : {},
                print_inquire:{},
                teacherlist : [],
                
                activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
-               
+
+               b : '',
+               sreceiveno:'',
+               activetab: '',
            }
        },
        mounted()
@@ -902,48 +925,83 @@
            this.activetab = this.permissions[0].name;
            this.readInquire();
            this.readTownship();
-           this.readSections();
+           // this.readSections();
            this.readSection();
            this.readCourses();
            this.readDurations();
            this.callFunction();
            this.readEducation();
            this.getDate();
+
+           this.php_mdy_inquires = this.filterMembers;
        },
-       methods: {
-            selectId(e) {
-              console.log(e.id);
-              this.inquire.education_id = e.id;
-              this.selectedId = e.id;
-            },
-
-
-           deleteInquire(index, courseid)
-           {
+      computed: {
+        filterMembers: function() {
+          let filtered;
+          if (this.activetab == 'Accept Student Enquiry ( HR - YGN )') {
+            filtered = this.hr_ygn_inquires;
+          }else if (this.activetab == 'Accept Student Enquiry ( HR - MDY )') {
+            filtered = this.hr_mdy_inquires;
+          }else if (this.activetab == 'Accept Student Enquiry ( PHP Bootcamp - YGN )') {
+            filtered = this.php_inquires;
+          }else if (this.activetab == 'Accept Student Enquiry ( PHP Bootcamp - MDY )') {
+            filtered = this.php_mdy_inquires;
+          }else if (this.activetab == 'Accept Student Enquiry ( iOS - YGN )') {
+            filtered = this.ios_inquires;
+          }
           
-              let conf = confirm("Do you ready want to delete this Inquire?");
+          if (this.sreceiveno) {
+            filtered = filtered.filter(
+              m => m.receiveno === this.sreceiveno
+            );
+          }
+          return filtered;
+        }
+      },
+      methods: {
+            setActive(tabname){
+              this.activetab = tabname;
+            },
+            deleteInquire(index, courseid)
+            {
+              let conf = confirm("Do you ready want to delete this city?");
               if (conf === true) 
               {
                 var inquire_data;
                 if (courseid == 1)  // hr_ygn_sections
                 {
-                  inquire_data = this.hr_ygn_inquires[index].id
+                  inquire_data = this.hr_ygn_inquires.find(
+                    m => m.id === index
+                  );
+                  // inquire_data = this.hr_ygn_inquires[index].id
                 }
                 else if (courseid == 2 ) // hr_mdy_sections
                 {
-                  inquire_data = this.hr_mdy_inquires[index].id
+                  inquire_data = this.hr_mdy_inquires.find(
+                    m => m.id === index
+                  );
+                  // inquire_data = this.hr_mdy_inquires[index].id
                 }
                 else if (courseid == 3) // php_sections
                 {
-                  inquire_data = this.php_inquires[index].id
-                  
+                  inquire_data = this.php_inquires.find(
+                    m => m.id === index
+                  );
+                  // inquire_data = this.php_inquires[index].id
                 }
-                else
+                else if (courseid == 4)
                 {
-                  inquire_data = this.ios_inquires[index].id
+                  inquire_data = this.ios_inquires.find(
+                    m => m.id === index
+                  );
+                  // inquire_data = this.ios_inquires[index].id
+                }else{
+                  inquire_data = this.php_mdy_inquires.find(
+                    m => m.id === index
+                  );
                 }
 
-                axios.delete('/api/setup/inquire/' + inquire_data)
+                axios.delete('/api/setup/inquire/' + inquire_data.id)
                        .then(response => {
                            this.inquires.splice(index, 1);
                            this.delete_noti=true;
@@ -952,83 +1010,25 @@
                        .catch(error => {
                        });
               }
-           },
-           fits(courseid){
 
-          
-              var fit='';
-             // console.log(courseid);
-              fit = this.fit;
-              // console.log(fit);
-              var inquire_data;
-              if (courseid == 1)  // hr_ygn_sections
-                {
-                  inquire_data = this.hr_ygn_inquires;
-                   this.readInquire();
-                 
-                }else if(courseid == 2)
-
-                {
-                  inquire_data = this.hr_ygn_inquires;
-
-                }else if(courseid == 3)
-                { 
-                   
-                  inquire_data = this.php_inquires;
-                   this.readInquire();
-
-                }else{
-                  inquire_data = this.ios_inquires;
-                }
-                // console.log(inquire_data);
-                let myarr = [];
-                let myarr1 = [];
-                let myarr2 =[];
-                let myarr3  = [];
-               
-                $.each(inquire_data,function(i,v){
-                  var rec=v.receiveno;
-                   if( fit==rec ){
-
-                      if (v.courseid == 1 ) {
-                        
-                        myarr.push(v);
-                        
-                      }else if (v.courseid == 2) {
-                        myarr1.push(v);
-                      }
-                      else if (v.courseid == 3) {
-                        myarr2.push(v);
-                      }else{
-                        myarr3.push(v);
-                      }
-                      
-
-                  }
-
-                })
-
-                this.hr_ygn_inquires = myarr;
-                this.php_inquires = myarr2;
-                console.log(this.php_inquires);
-           },
-             
-           initAddInquire()
-           {
-              $("#add_inquire_model").modal("show");
-           },
+            },
+            initAddInquire()
+            {
+               $("#add_inquire_model").modal("show");
+            },
             getDate()
             {
-              var d=new Date();
-              //this.today=d.getDate()+"-"+d.getMonth()+"-"+d.getFullYear();
-              this.today=d.toLocaleDateString();
-              this.inquire.paymentdate=this.today;
-              $('#addpaymentdate').val(d);
+              var m=new Date();
+              var dateString = m.getUTCFullYear() + "-" +
+              ("0" + (m.getUTCMonth()+1)).slice(-2) + "-" +
+              ("0" + m.getUTCDate()).slice(-2) ;
+              
+              this.inquire.paymentdate=dateString;
             },
 
-           createInquire()
-           {
-               axios.post('/api/setup/inquire', {
+            createInquire()
+            {
+                axios.post('/api/setup/inquire', {
                    name: this.inquire.name,
                    receiveno:this.receiveno,
                    course: this.course,
@@ -1047,139 +1047,149 @@
                    position: this.inquire.position, 
                    remark: this.inquire.remark,
                   // course_id: this.course_id,           
-               })
-                   .then(response => {
-                       this.reset();
+                })
+                .then(response => {
+                   this.reset();
 
-                       var courseid = response.course_id;
+                   var courseid = response.course_id;
 
-                       let inquire_data=[];
-                        
-                        if (courseid == 1)  // hr_ygn_sections
-                        {
-                          this.hr_ygn_inquires.push(response.inquire);
-                          inquire_data = this.hr_ygn_inquires;
-                        }
-                        else if (courseid == 2 ) // hr_mdy_sections
-                        {
-                          this.hr_mdy_inquires.push(response.inquire);
-                          inquire_data = this.hr_mdy_inquires;
-                        }
-                        else if (courseid == 3) // php_sections
-                        {
-                          this.php_inquires.push(response.inquire);
-                          inquire_data = this.php_inquires;
-                        }
-                        else
-                        {
-                          this.ios_inquires.push(response.inquire);
-                          inquire_data = this.ios_inquires;
-                        }
-                      console.log('php inquire data => '+this.php_inquires);
-                      console.log('A Paw Mhar => '+ inquire_data);
+                   let inquire_data=[];
+                    
+                    if (courseid == 1)  // hr_ygn_sections
+                    {
+                      this.hr_ygn_inquires.push(response.inquire);
+                      inquire_data = this.hr_ygn_inquires;
+                    }
+                    else if (courseid == 2 ) // hr_mdy_sections
+                    {
+                      this.hr_mdy_inquires.push(response.inquire);
+                      inquire_data = this.hr_mdy_inquires;
+                    }
+                    else if (courseid == 3) // php_sections
+                    {
+                      this.php_inquires.push(response.inquire);
+                      inquire_data = this.php_inquires;
+                    }
+                    else
+                    {
+                      this.ios_inquires.push(response.inquire);
+                      inquire_data = this.ios_inquires;
+                    }
+                  console.log('php inquire data => '+this.php_inquires);
+                  console.log('A Paw Mhar => '+ inquire_data);
 
-                       this.add_noti=true;
-                       this.message="New Inquire has been sucessfully added!!";
-                       $("#add_inquire_model").modal("hide");
-                       this.readInquire();
-                       this.callFunction();
+                   this.add_noti=true;
+                   this.message="New Inquire has been sucessfully added!!";
+                   $("#add_inquire_model").modal("hide");
+                   this.readInquire();
+                   this.callFunction();
 
-                       console.log(inquire_data);
+                   // console.log(inquire_data);
 
-                       var id = inquire_data.length - 1;
+                   var id = inquire_data.length - 1;
 
-                       // console.log(id);
+                   // console.log(id);
 
-                       // this.printInquire(id, courseid);
+                   // this.printInquire(id, courseid);
 
-                   })
-                   .catch(error => {
-                       this.errors = [];
-                       if (error.response.data.errors && error.response.data.errors.name) {
-                           this.errors.push(error.response.data.errors.name[0]);
-                       }
-                   });
-           },
-           reset()
-           {
-               this.inquire.name = '';
-           },
-           readInquire()
-           {
+                })
+                .catch(error => {
+                  this.errors = [];
+                  if (error.response.data.errors && error.response.data.errors.name) {
+                    this.errors.push(error.response.data.errors.name[0]);
+                  }
+                });
+            },
+            reset()
+            {
+              this.inquire.name = '';
+            },
+            readInquire()
+            { 
                axios.get('/api/setup/inquire')
                    .then(response => {
+                        console.log(response);
+
                        this.inquires = response.data.inquires;
 
                        this.hr_ygn_inquires = response.data.hr_ygn_inquires;
                        this.hr_mdy_inquires = response.data.hr_mdy_inquires;
                        this.php_inquires = response.data.php_inquires;
                        this.ios_inquires = response.data.ios_inquires;
-
+                       this.php_mdy_inquires = response.data.php_mdy_inquires;
                        // console.log("php section =>",this.php_sections);
                        
                        this.noti=false;
                        this.notiup=false;
                        this.notidel=false;
                    });
-           },
+            },
             readCourses()
-           {
+            {
                axios.get('/api/setup/course')
                    .then(response => {
                        this.courses = response.data.courses;
                        //console.log(response.data.teachers);
                    });
-           },
-           readEducation()
-           {
-             axios.get(`/api/setup/education`)
-                    .then(response => {
-                      console.log(response.data.educations);
-                      this.educations = response.data.educations;
-                      
 
-                    })
-           },
+            },
 
-          readSection(){
-            axios.get(`/api/setup/section`)
-                   .then(response => {
-                       //console.log(response.data.sections);
-                       this.sections=response.data.sections;
+            readSection()
+            {
+              axios.get('/api/setup/section')
+               .then(response => {
+                   // console.log(response.data.sections);
+                   this.sections=response.data.sections
 
-                   });
-                  this.setZero();
-                 
-          
-          },
+               });
+              this.setZero();
+            },
 
         printInquire(index, courseid)
         {
           var inquire_data;
           if (courseid == 1)  // hr_ygn_sections
           {
-            inquire_data = this.hr_ygn_inquires[index]
+            inquire_data = this.hr_ygn_inquires.find(
+              m => m.id === index
+            );
+            // inquire_data = this.hr_ygn_inquires[index]
           }
           else if (courseid == 2 ) // hr_mdy_sections
           {
-            inquire_data = this.hr_mdy_inquires[index]
+            inquire_data = this.hr_mdy_inquires.find(
+              m => m.id === index
+            );
+            // inquire_data = this.hr_mdy_inquires[index]
           }
           else if (courseid == 3) // php_sections
           {
-            inquire_data = this.php_inquires[index]
+            inquire_data = this.php_inquires.find(
+              m => m.id === index
+            );
+            // inquire_data = this.php_inquires[index]
           }
-          else
+          else if (courseid == 4)
           {
-            inquire_data = this.ios_inquires[index]
+            inquire_data = this.ios_inquires.find(
+              m => m.id === index
+            );
+            // inquire_data = this.ios_inquires[index]
+          }else
+          {
+            inquire_data = this.php_mdy_inquires.find(
+              m => m.id === index
+            );
+            // inquire_data = this.php_mdy_inquires[index]
           }
-          console.log(inquire_data);
+          // console.log(inquire_data);
           this.print(inquire_data);
 
         },
 
         print(index)
            {
-            console.log(index);
+            // console.log(index);
             //  location.href="interview/"+id;
             this.print_inquire = index;
             console.log(this.print_inquire);
@@ -1352,7 +1362,7 @@
            },
 
         setZero(){
-          console.log(this.duration);
+          // console.log(this.duration);
           this.duration='';
           this.section='';
         },
@@ -1375,13 +1385,12 @@
         },
 
             readDurations()
-           {
+            {
                axios.get(`/api/setup/duration/${this.course}`)
                    .then(response => {
                        this.durations = response.data.durations;
-                    
-                      console.log(response.data.durations);
-                      console.log(this.course);
+                      // console.log(response.data.durations);
+                      // console.log(this.course);
 
                    });
                    // // courseid = this.course;
@@ -1394,86 +1403,129 @@
 
                       $('.camphide').hide();
                    }
-           },
+            },
            initUpdate(index,courseid)
            {
-               this.errors = [];
+              this.errors = [];
 
-                var inquire_data;
-               //console.log(courseid);
+              var inquire_data;
+              console.log(courseid);
               if (courseid == 1)  // hr_ygn_sections
               {
-                inquire_data = this.hr_ygn_inquires[index]
-                //console.log(inquire_data);
+                inquire_data = this.hr_ygn_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.hr_ygn_inquires[index]
               }
               else if (courseid == 2 ) // hr_mdy_sections
               {
-                inquire_data = this.hr_mdy_inquires[index]
+                inquire_data = this.hr_mdy_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.hr_mdy_inquires[index]
               }
               else if (courseid == 3) // php_sections
               {
-                inquire_data = this.php_inquires[index]
-                
+                inquire_data = this.php_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.php_inquires[index]
               }
-              else
+              else if (courseid == 4) // ios_sections
               {
-                inquire_data = this.ios_inquires[index]
+                inquire_data = this.ios_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.ios_inquires[index]
               }
-                $("#update_inquire_model").modal("show");
+              else 
+              {
+                inquire_data = this.php_mdy_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.php_mdy_inquires[index]
+              }
+               $("#update_inquire_model").modal("show");
+               
                this.update_inquire = inquire_data;
-               this.selected = this.update_inquire.educationid;
-             
-               
-
-               
-               
-              
-               // this.select = this.update_inquire.educationid;
-               //console.log(this.update_inquire.section);
+               // console.log(this.update_inquire);
            },
            initDetail(index, c_id, s_id)
            {
+              var inquire_data = {};
+              console.log(index);
               var inquire_data;
-              //console.log(index);
-
+              // console.log(index);
                this.errors = [];
 
                axios.get(`/api/setup/inquire/teacherlist/${s_id}`)
                    .then(response => {
                        this.teacherlist = response.data.teacherlist.teachers;
-                       console.log(this.teacherlist);
-
+                       // console.log(this.teacherlist);
                    });
 
               if (c_id == 1)  // hr_ygn_sections
               {
-                inquire_data = this.hr_ygn_inquires[index]
+                inquire_data = this.hr_ygn_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.hr_ygn_inquires[index]
               }
               else if (c_id == 2 ) // hr_mdy_sections
               {
-                inquire_data = this.hr_mdy_inquires[index]
+                inquire_data = this.hr_mdy_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.hr_mdy_inquires[index]
               }
               else if (c_id == 3) // php_sections
               {
-                inquire_data = this.php_inquires[index]
-                
+                // inquire_data = this.php_inquires[index]
+                inquire_data = this.php_inquires.find(
+                  m => m.id === index
+                );
               }
-              else
+              else if (c_id == 4)
               {
-                inquire_data = this.ios_inquires[index]
+                inquire_data = this.ios_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.ios_inquires[index]
+              }else
+              {
+                inquire_data = this.php_mdy_inquires.find(
+                  m => m.id === index
+                );
+                // inquire_data = this.php_mdy_inquires[index]
               }
 
-              console.log(inquire_data);
+              // console.log(inquire_data);
 
                $("#detail_inquire_model").modal("show");
+               // this.detail_inquire = _.cloneDeep(inquire_data);
+
                this.detail_inquire = inquire_data;
+
+
+
+               // b = JSON.parse(JSON.stringify(this.detail_inquire));
+
+
+
+               // this.detail_object = {
+               //  codeno  : inquire_data.section.codeno,
+               //  title   : inquire_data.section.title,
+               //  startdate : inquire_data.section.startdate,   
+               // }
+               // this.detail_inquire = JSON.parse(JSON.stringify(inquire_data));
                // this.detail_inquire.push(teacherlist);
            },
            updateInquire()
            {
                axios.patch('/api/setup/inquire/' + this.update_inquire.id, {
-                  userid: this.update_inquire.userid,
-                  receiveno: this.update_inquire.receiveno,
+
+                 userid: this.update_inquire.userid,
+                 receiveno:this.update_inquire.receiveno,
                   name: this.update_inquire.name,
                    gender: this.update_inquire.gender,
                    dob: this.update_inquire.dob,
@@ -1513,12 +1565,28 @@
                        this.townships = response.data.townships;
                    });
            },
-
+           readEducation()
+           {
+             axios.get(`/api/setup/education`)
+                .then(response => {
+                  // console.log(response.data.educations);
+                  this.educations = response.data.educations;
+                  
+                })
+           },
           callFunction() {
+            /*var currentDate = new Date();
+            console.log(currentDate);*/
+            
+
+            // this.readInquire();
+
              axios.get('/api/setup/lastinquire')
                 .then(response => {
-                    this.lastinquire = response.data.inquire;
-                    //console.log(this.lastinquire.receiveno);
+                  /*console.log(response.data.inquire);*/
+                   this.lastinquire = response.data.inquire;
+                   // console.log("last inquire"+this.lastinquire.receiveno);
+                    
                     this.caculatedate(this.lastinquire.receiveno);
                 });
           },
@@ -1531,19 +1599,14 @@
             var year=datearray[0];
             var date=day+month+year;
             var output='';
-            //console.log(typeof(receiveno));
 
-
-            if(receiveno == 0 ){
+            if (receiveno == 0) {
+              // console.log('0 condition');
               this.receiveno = date+'0001';
-
             }else{
-               var currentreceiveno=receiveno.substring(0,8);
-
-                console.log(currentreceiveno+'=='+date);
-
+              var currentreceiveno=receiveno.substring(0,8);
+              // console.log(currentreceiveno+'=='+date);
             }
-           
 
             if(currentreceiveno==date){ // 04092019 == 04092019
 

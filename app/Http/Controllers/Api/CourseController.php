@@ -23,13 +23,8 @@ class CourseController extends Controller
         //
         
         $locations = Location::all();
-        $courses =  DB::table('courses')
-            ->join('locations', 'locations.id', '=', 'courses.location_id')
-            ->join('users', 'users.id', '=', 'courses.user_id')
-            ->join('cities', 'cities.id', '=', 'locations.city_id')
-            ->select('courses.*', 'locations.name as locationname', 'users.name as username','cities.name as cityname')
-            ->get();
-
+        
+        $courses = Course::all();
         $courses =  CourseResource::collection($courses);
 
         return response()->json([
@@ -50,17 +45,32 @@ class CourseController extends Controller
             'name'  => 'required',
         ]);
 
+        $course_db_codeno=Course::orderBy('id','desc')
+                ->first();
+
+        if ($course_db_codeno == null) 
+        {
+            $codeno = '00001';
+        }
+        else
+        {
+            $last_codeno = $course_db_codeno['codeno'];
+            $number = ++$last_codeno;
+            $codeno = '0000'.$number;
+        }    
+
         $course = Course::create([
-            'name'  =>  request('name'),
-            'fees'  =>  request('fees'),
-            'location_id'  =>  request('location'),
-            'user_id'    =>  Auth::user()->id,
+            'codeno'        =>  request('codeno'),
+            'name'          =>  request('name'),
+            'fees'          =>  request('fees'),
+            'location_id'   =>  request('location'),
+            'user_id'       =>  Auth::user()->id,
         ]);
 
         $course = new CourseResource($course);
 
         return response()->json([
-            'course'  =>  $course,
+            'course'    =>  $course,
             'message'   =>  'Successfully Added!'
         ],200);
     }
@@ -92,6 +102,7 @@ class CourseController extends Controller
         // dd(request('location'));
         $course = Course::find($id);
 
+        $course->codeno = request('codeno');
         $course->name = request('name');
         $course->fees = request('fees');
         

@@ -116,9 +116,9 @@
             <div class="form-group">
               <label for="names">City:</label>
                 
-                <select class="form-control"  name="city_id" v-model="update_location.cityid" id="cityid">
+                <select class="form-control"  name="city_id" v-model="update_location.city && update_location.city.id" id="cityid">
                   
-                  <option v-for="(city, index) in cities" :value="city.id" :selected="city.id == update_location.cityid"> {{ city.name }}  </option>
+                  <option v-for="(city, index) in cities" :value="city.id" :selected="city.id == update_location.city && update_location.city.id"> {{ city.name }}  </option>
                 </select>
             </div>
             
@@ -152,7 +152,7 @@
 
        mounted()
        {
-           this.readLocations();
+          this.readLocations();
           this.readCities();
 
        },
@@ -184,6 +184,7 @@
                        this.reset();
                        this.locations.push(response.data.location);
                        $("#add_location_model").modal("hide");
+                       this.readLocations();
                    })
                    .catch(error => {
                        this.errors = [];
@@ -220,11 +221,12 @@
            {
                axios.patch('api/setup/location/' + this.update_location.id, {
                    name: this.update_location.name,
-                   city_id: this.update_location.cityid,
+                   city_id: this.update_location.city.id,
 
                })
                    .then(response => {
                        $("#update_location_model").modal("hide");
+                       this.readLocations();
                    })
                    .catch(error => {
                        this.errors = [];
@@ -232,6 +234,7 @@
                            this.errors.push(error.response.data.errors.name[0]);
                        }
                    });
+
            }
        }
    }

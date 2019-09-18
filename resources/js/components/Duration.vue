@@ -115,7 +115,7 @@
             </div>
             <div class="form-group">
               <label for="names">During:</label>
-                <input type="text" name="during" id="during" placeholder="During" class="form-control" v-model="duration.during">
+                <input type="number" name="during" id="during" placeholder="During" class="form-control" v-model="duration.during">
             </div>
             <div class="form-group">
               <label for="names">Course:</label>
@@ -172,14 +172,14 @@
             </div>
             <div class="form-group">
               <label for="names">During:</label>
-                <input type="text" name="during" id="during" placeholder="During" class="form-control" v-model="update_duration.during">
+                <input type="number" name="during" id="during" placeholder="During" class="form-control" v-model="update_duration.during">
             </div>
             <div class="form-group">
               <label for="names">Course:</label>
                 
-                <select class="form-control"  name="course_id" v-model="update_duration.courseid" id="courseid">
+                <select class="form-control"  name="course_id" v-model="update_duration.course && update_duration.course.id" id="courseid">
                   
-                  <option v-for="(course, index) in courses" :value="course.id" :selected="course.id == update_duration.courseid"> 
+                  <option v-for="(course, index) in courses" :value="course.id" :selected="course.id == update_duration.course && update_duration.course.id"> 
                     {{ course.name }}  
                     ( {{ course.location.city.name }} ) 
                   </option>
@@ -318,7 +318,7 @@
                    days: this.update_duration.days,
                    during: this.update_duration.during,
 
-                   course_id: this.update_duration.courseid,
+                   course_id: this.update_duration.course.id,
 
                })
                    .then(response => {

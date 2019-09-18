@@ -57,6 +57,7 @@ Route::get('profile','HomeController@profile')->name('profile');
 
 // Si Thu Aung
 Route::get('/inquire', 'HomeController@inquire')->name('inquire');
+Route::get('/education', 'HomeController@education')->name('education');
 
 Route::get('/education', 'HomeController@education')->name('education');
 
@@ -67,8 +68,15 @@ Route::get('/student', 'HomeController@student')->name('student');
 Route::get('/jobcareer', 'HomeController@jobcareer')->name('jobcareer');
 
 // Honey Htun
-Route::get('/interview','HomeController@interview')->name('interview');
-Route::get('/interviewform/{id}','HomeController@interviewform')->name('interview');
-Route::get('/interview/{id}','HomeController@interviewform')->name('interview');
+Route::get('/interview/{id}','HomeController@interview')->name('interview');
+Route::get('/interviewform/{id}','HomeController@interviewform')->name('interviewform');
+Route::get('/interviewformlist','HomeController@interviewformlist')->name('interviewformlist');
+
+Route::get('/hire','HomeController@hire')->name('hire');
+Route::get('/dismiss','HomeController@dismiss')->name('dismiss');
 
 Route::get('/role','HomeController@role')->name('role');
+
+//Report
+Route::get('/export/{month}/{year}', 'ExportController@export');
+Route::get('/report', 'HomeController@report')->name('report');

@@ -44,9 +44,9 @@
                           
                             <tr v-for="(staff, index) in staffs">
                               <td>{{ index + 1 }}</td>
-                              <td> {{ staff.username }} </td>
+                              <td> {{ staff.user.name }} </td>
                               <td> {{ staff.joineddate }} </td>
-                              <td> {{ staff.rolename }} </td>
+                              <td> {{ staff.user.roles[0].name }} </td>
                               <td>
                                 <button @click="initDetail(index)" class="btn btn-info btn-xs text-white">
                                   <i class="fa fa-eye"></i> Detail
@@ -99,10 +99,11 @@
                           
                             <tr v-for="(leavestaff, index) in leavestaffs">
                               <td>{{ index + 1 }}</td>
-                              <td> {{ leavestaff.username }} </td>
+                              <td> {{ leavestaff.user.name }} </td>
                               <td> {{ leavestaff.joineddate }} </td>
                               <td> {{ leavestaff.leavedate }} </td>
-                              <td> {{ leavestaff.rolename }} </td>
+                              <td> {{ leavestaff.user.roles.name }} </td>
+
                               <td>
                                 <button @click="initDetail(index)" class="btn btn-info btn-xs text-white">
                                   <i class="fa fa-eye"></i> Detail
@@ -225,7 +226,7 @@
                <div class="modal-content">
                    <div class="modal-header">
 
-                      <h4 class="modal-title">{{ update_staff.username }}</h4>
+                      <h4 class="modal-title">{{ update_staff.user && update_staff.user.name }}</h4>
                       <div class="alert alert-success float-left col-md-4 offset-2" v-if="noti">
                           {{message}}
                   </div>
@@ -240,9 +241,9 @@
                       
                        <div class="form-group">
                             <label for="names"> Role :</label>
-                              <select class="form-control"  name="role_id" v-model="update_staff.roleid" id="locationid">
+                              <select class="form-control"  name="role_id" v-model="update_staff.user && update_staff.user.roles[0].id" id="locationid">
                   
-                              <option v-for="(role, index) in roles" :value="role.id" :selected="role.id == update_staff.roleid"> {{ role.name }}  </option>
+                              <option v-for="(role, index) in roles" :value="role.id" :selected="role.id == update_staff.user && update_staff.user.roles[0].id"> {{ role.name }}  </option>
                              </select>
                         </div>
                         <div class="form-group">
@@ -317,9 +318,9 @@
                        
                        <div class="form-group">
                             <label for="names"> Location :</label>
-                              <select class="form-control"  name="location_id" v-model="update_staff.staff_locationid" id="locationid">
+                              <select class="form-control"  name="location_id" v-model="update_staff.location_id" id="locationid">
                   
-                              <option v-for="(location, index) in locations" :value="location.id" :selected="location.id == update_staff.staff_locationid"> {{ location.name }}  </option>
+                              <option v-for="(location, index) in locations" :value="location.id" :selected="location.id == update_staff.location_id"> {{ location.name }}  </option>
                              </select>
                         </div>
                    </div>
@@ -338,7 +339,7 @@
            <div class="modal-dialog modal-lg" role="document">
                <div class="modal-content">
                    <div class="modal-header">
-                      <h4 class="modal-title"> {{detail_staff.username}} </h4>
+                      <h4 class="modal-title"> {{detail_staff.user && detail_staff.user.name }} </h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                    </div>
                    <div class="modal-body col-md-8 offset-1">
@@ -356,7 +357,7 @@
                               <b> Position </b>
                             </div>
                             <div class="col-md-6">
-                              <p> {{detail_staff.rolename}} </p>
+                              <p> {{detail_staff.user && detail_staff.user.roles[0].name }} </p>
                             </div>
                           </div>
 
@@ -420,7 +421,7 @@
                               Email
                             </div>
                             <div class="col-md-8">
-                              {{ detail_staff.useremail }}
+                              {{ detail_staff.user && detail_staff.user.email }}
                             </div>
                           </div>
 
@@ -429,7 +430,7 @@
                               Location Assign
                             </div>
                             <div class="col-md-8">
-                              {{ detail_staff.locationname }}
+                              {{ detail_staff.location && detail_staff.location.name }}
                             </div>
                           </div>
 
@@ -612,19 +613,16 @@
                $("#update_staff_model").modal("show");
                this.update_staff = this.staffs[index];
                //console.log(this.staffs[index]);
-               console.log(this.update_staff.userid);
-               axios.post('/api/setup/staff', {
-                   userid: this.update_staff.userid,
-               })
-               .then(response => {
-                      var temp = [];
-                       this.user_permissions = response.data.permissions;
-                       for (var i = 0; i < this.user_permissions.length; i++) {
-                         temp.push(this.user_permissions[i].id);
-                       }
 
-                       this.updated_checkedPermissions = temp;
-                   })
+               var temp = [];
+
+               this.user_permissions = this.update_staff.user.permissions;
+               for (var i = 0; i < this.user_permissions.length; i++) 
+                {
+                  temp.push(this.user_permissions[i].id);
+                }
+
+                this.updated_checkedPermissions = temp;
            },
            initDetail(index)
            {
@@ -635,10 +633,10 @@
            updateStaff()
            {
                axios.patch('/api/setup/staff/' + this.update_staff.id, {
-                   userid: this.update_staff.userid,
-                   username : this.update_staff.username,
-                   useremail : this.update_staff.useremail,
-                   userpassword : this.update_staff.userpassword, 
+                   userid: this.update_staff.user.id,
+                   username : this.update_staff.user.name,
+                   useremail : this.update_staff.user.email,
+                   userpassword : this.update_staff.user.password, 
                    dob: this.update_staff.dob,
                    fname: this.update_staff.fathername,
                    nrc: this.update_staff.nrc,
@@ -646,9 +644,9 @@
                    oldimage: this.update_staff.photo,
                    jdate: this.update_staff.joineddate,
                    ldate: this.update_staff.leavedate,
-                   location_id: this.update_staff.staff_locationid,
-                   roleid : this.update_staff.roleid,
-                   old_roleid : this.update_staff.userroleid,
+                   location_id: this.update_staff.location_id,
+                   roleid : this.update_staff.user.roles[0].id,
+                   old_roleid : this.update_staff.user.role_id,
                    permissions_id:this.updated_checkedPermissions
                })
                    .then(response => {

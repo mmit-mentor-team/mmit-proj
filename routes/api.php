@@ -37,13 +37,18 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth:api'], function()
 	Route::resource('/student', 'Api\StudentController');
 	Route::resource('/jobcareer', 'Api\JobcareerController');
 	Route::resource('/position', 'Api\PositionController');
-	// Route::resource('/interview', 'Api\InterviewController');
-	Route::get('/interview/{id}','Api\InterviewController@create');
+
+	Route::resource('/interview', 'Api\InterviewController');
+	Route::resource('/hire', 'Api\HireController');
+	Route::resource('/dismiss', 'Api\DismissController');
+
 	Route::resource('/role', 'Api\RoleController');
 	Route::resource('/permission', 'Api\PermissionController');
 	Route::get('/print/{id}','Api\InquireController@print');
 
 	Route::get('/getinquirebyId/{id}','Api\InquireController@getInquire');
+	Route::post('/getInquires/','Api\InquireController@getInquires');
+
 	Route::get('/showstudent/{id}','Api\StudentController@showstudents');
 
 	Route::patch('/updateamountstudent/{sample}', 'Api\StudentController@updateamount');
@@ -58,6 +63,11 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth:api'], function()
 	// By Thet Paing Htut
 	Route::resource('/sectionTeacher', 'Api\SectionTeacherController');
 
+	//Report
+	Route::resource('/report','Api\ReportController');
+
+	Route::get('/interviews/students', 'Api\InterviewController@getStudentsForInterview');
+	Route::get('/interviews/sections','Api\InterviewController@getSections');
 });
 
 // Student
@@ -65,14 +75,18 @@ Route::get('/studentall', 'Api\StudentController@index');
 
 // Interview
 
+
+Route::get('/getData/{id}','Api\InterviewController@getData');
+	
 // Hire
-Route::resource('/hire', 'Api\HireController');
+
 
 // Dismiss
-Route::resource('/dismiss', 'Api\DismissController');
+
 
 // Attendance
 Route::resource('/attendance', 'Api\AttendanceController');
 
 //Location
 Route::resource('/location', 'Api\LocationController');
+

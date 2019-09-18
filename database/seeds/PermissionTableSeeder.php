@@ -15,7 +15,7 @@ class PermissionTableSeeder extends Seeder
       app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         //
 
-      Permission::create(['name' => 'ediAccept Student Enquiry ( PHP Bootcamp - YGN )t']);
+      Permission::create(['name' => 'ediAccept Student Enquiry ( PHP Bootcamp - YGN )']);
       Permission::create(['name' => ' 
 Accept Student Enquiry ( HR - YGN )']);
       Permission::create(['name' => 'Accept Student Enquiry ( HR - MDY )']);

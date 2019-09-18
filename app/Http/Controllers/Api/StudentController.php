@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentResource;
 use App\Model\Student;
+use App\Model\Jobcareer;
 use Auth;
 use DB;
 
@@ -199,6 +200,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+
         $name='';$remark="no thing";
         
         //dd($status);
@@ -252,9 +254,6 @@ class StudentController extends Controller
 
         return response()->json([
             "succsssful"=>"succesfully added"],200);
-            
-        
-            
 
         
 

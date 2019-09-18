@@ -17,8 +17,9 @@ class CreateJobcareersTable extends Migration
             $table->bigIncrements('id');
             $table->string('gender');
             $table->date('senddate');
-            $table->longText('remark');
-            $table->integer('status');
+            $table->integer('nos');
+            $table->longText('remark')->nullable();
+            $table->boolean('status')->default(false);
 
             //company
             $table->unsignedBigInteger('company_id');

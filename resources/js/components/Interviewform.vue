@@ -127,14 +127,18 @@ export default {
     },
 
     readSection(){
-      axios.get('/api/getData/'+this.coursename)
+      axios.get('/api/setup/interviews/sections',{
+        params: {
+          course_id : this.coursename
+        }
+      })
       .then(response => {
         this.sections = response.data.sections;
       })
     },
 
     getStudents(){
-      axios.get('/api/interviews/students', {
+      axios.get('/api/setup/interviews/students', {
         params: {
           jobcareer_id: this.$route.params.id,
           section_id: this.section_id

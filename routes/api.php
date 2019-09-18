@@ -65,6 +65,9 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth:api'], function()
 
 	//Report
 	Route::resource('/report','Api\ReportController');
+
+	Route::get('/interviews/students', 'Api\InterviewController@getStudentsForInterview');
+	Route::get('/interviews/sections','Api\InterviewController@getSections');
 });
 
 // Student
@@ -72,8 +75,7 @@ Route::get('/studentall', 'Api\StudentController@index');
 
 // Interview
 
-Route::get('/interviews/students', 'Api\InterviewController@getStudentsForInterview');
-Route::get('/interviews/sections','Api\InterviewController@getSection');
+
 Route::get('/getData/{id}','Api\InterviewController@getData');
 	
 // Hire

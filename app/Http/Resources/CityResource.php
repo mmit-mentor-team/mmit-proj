@@ -21,9 +21,10 @@ class CityResource extends JsonResource
         // return parent::toArray($request);
 
         return [
-            'id'    => $this->id,
-            'name'  => $this->name,
-            'user' => new UserResource(User::find($this->user_id))
+            'id'        => $this->id,
+            'zipcode'   =>  $this->zipcode,
+            'name'      => $this->name,
+            'user'      => new UserResource(User::find($this->user_id))
         ];
     }
 }

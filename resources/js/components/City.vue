@@ -53,6 +53,7 @@
                   <tr class="text-center">
                     <th> No </th>
                     <th> Name </th>
+                    <th> Zip Code </th>
                     <th> Action </th>
                   </tr>
                 </thead>
@@ -60,8 +61,9 @@
                   <tr v-for="(city, index) in cities">
                     <td> {{ index + 1 }} </td>
                     <td> {{ city.name }} </td>
+                    <td> {{ city.zipcode }} </td>
                     <td> 
-                      <button @click="initUpdate(city.id, city.name)" class="btn btn-warning btn-xs">
+                      <button @click="initUpdate(city.id, city.name, city.zipcode)" class="btn btn-warning btn-xs">
                         <i class="fas fa-edit"></i> Edit
                       </button>
                       
@@ -94,6 +96,11 @@
               <ul>
                   <li v-for="error in errors">{{ error }}</li>
               </ul>
+            </div>
+
+            <div class="form-group">
+              <label for="names">Zip Code :</label>
+                <input type="text" name="zipcode" id="zipcode" placeholder="Zip Code" class="form-control" v-model="city.zipcode">
             </div>
             
             <div class="form-group">
@@ -128,6 +135,11 @@
               <ul>
                 <li v-for="error in errors">{{ error }}</li>
               </ul>
+            </div>
+
+            <div class="form-group">
+              <label>Name:</label>
+                <input type="text" placeholder="Zip Code" class="form-control" v-model="update_city.zipcode">
             </div>
             
             <div class="form-group">
@@ -197,6 +209,7 @@
            createCity()
            {
                axios.post('/api/setup/city', {
+                   zipcode : this.city.zipcode,
                    name: this.city.name,
                })
                    .then(response => {
@@ -225,16 +238,18 @@
                        this.cities = response.data.cities;
                    });
            },
-           initUpdate(val_id, val_name)
+           initUpdate(val_id, val_name, val_zipcode)
            {
                this.errors = [];
                $("#update_city_model").modal("show");
                this.update_city.id = val_id;
+               this.update_city.zipcode = val_zipcode;
                this.update_city.name = val_name;
            },
            updateCity()
            {
                axios.patch('/api/setup/city/' + this.update_city.id, {
+                   zipcode : this.update_city.zipcode,
                    name: this.update_city.name,
                })
                    .then(response => {

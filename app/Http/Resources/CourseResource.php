@@ -20,10 +20,11 @@ class CourseResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id'            => $this->id,
+            'codeno'        => $this->codeno,
             'name'          => $this->name,
             'fees'          => $this->fees,
-            'location_id'   =>  $this->location_id,
-            'user_id'       =>  $this->user_id,
+            'location_id'   => $this->location_id,
+            'user_id'       => $this->user_id,
 
             'location'      =>new LocationResource(Location::find($this->location_id)),
             'user'         => new UserResource(User::find($this->user_id)),

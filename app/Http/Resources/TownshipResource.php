@@ -24,10 +24,10 @@ class TownshipResource extends JsonResource
         // return parent::toArray($request);
 
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'    => $this->id,
+            'name'  => $this->name,
             'city' => new CityResource(City::find($this->city_id)),
-            'user' => new UserResource(User::find($this->user_id))
+            'user'  => new UserResource(User::find($this->user_id))
         ];
     }
 }

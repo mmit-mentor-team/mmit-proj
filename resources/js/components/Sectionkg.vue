@@ -65,7 +65,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(section, index) in sections">
+                    <tr v-for="(section, index) in hr_ygn_sections">
                       <td> {{ index + 1 }} </td>
                       <td> {{ section.title  }} </td>
                       <td> {{ section.startdate  }} </td>
@@ -75,7 +75,7 @@
                         <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
                       </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -120,7 +120,7 @@
                         </span>
                       </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -163,7 +163,7 @@
                         <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
                       </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -206,7 +206,7 @@
                         <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
                       </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -249,7 +249,7 @@
                         <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
                       </td>
                       <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.courseid)" class="btn btn-warning" >
+                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
                           <i class="fa fa-edit"></i> Edit
                         </button>
                         
@@ -386,7 +386,7 @@
                <select v-model="update_section.course_id" name="course_id" id="course_id" class="form-control" @change="readDurations">
                   <option disabled value="">Please select one</option>
                   <option v-for ="(course, index) in courses"  :value="course.id" :selected="course.id == update_section.course_id">
-                    {{ course.name }} ( {{ course.cityname }} )
+                    {{ course.name }} ( {{ course.location && course.location.city.name }} )
                   </option>
                 </select>
             </div>
@@ -629,7 +629,7 @@
 
           initUpdate(val_id,val_title,val_startdate,val_enddate,val_duration_id,val_course_id)
            {
-              console.log(val_id);
+              console.log(val_course_id);
 
                 axios.get(`/api/setup/sectionTeacher/${val_id}`)
                   .then(response => {

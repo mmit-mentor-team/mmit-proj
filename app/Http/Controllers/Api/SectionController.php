@@ -41,7 +41,6 @@ class SectionController extends Controller
             $q1->where('course_id', 4);
         })->orderBy('sections.id','DESC')->get();
 
-
         $php_mdy_sections =  Section::whereHas('duration', function($q1){
             $q1->where('course_id', 5);
         })->orderBy('sections.id','DESC')->get();

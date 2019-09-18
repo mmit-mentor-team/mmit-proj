@@ -36,18 +36,20 @@ class CityController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'  => 'required',
+            'zipcode'   =>  'required',
+            'name'      => 'required',
         ]);
 
         $city = City::create([
-            'name'  =>  request('name'),
-            'user_id'    =>  Auth::user()->id,
+            'zipcode'       =>  request('zipcode'),
+            'name'          =>  request('name'),
+            'user_id'       =>  Auth::user()->id,
         ]);
 
         $city = new CityResource($city);
 
         return response()->json([
-            'city'  =>  $city,
+            'city'      =>  $city,
             'message'   =>  'Successfully Added!'
         ],200);
     }
@@ -77,6 +79,7 @@ class CityController extends Controller
         ]);
         $city = City::find($id);
 
+        $city->zipcode = request('zipcode');
         $city->name = request('name');
         $city->user_id=  Auth::user()->id;
         $city->save();

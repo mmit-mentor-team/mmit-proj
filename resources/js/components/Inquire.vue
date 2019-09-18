@@ -1,3 +1,4 @@
+
 <template>
 
   <div class="container">
@@ -39,11 +40,14 @@
               <button @click="initAddInquire()" class="btn btn-primary float-right ">
                 <i class="fa fa-plus"></i> Add New Inquire
               </button>
+              
 
             </h3>
+
           </div>
 
           <div class="card-body">
+            
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn-tab" data-toggle="tab" href="#nav-hr_ygn" role="tab" aria-controls="nav-hr_ygn" aria-selected="true" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( HR - YGN )')">
@@ -73,11 +77,24 @@
 
               <div class="tab-pane fade show" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn" role="tabpanel" aria-labelledby="nav-hr_ygn-tab">
 
-                <div class="form-row form-group">
+                <div class="form-row form-group  ">
                   <div class="col-md-4">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
                   </div>
+                  <div class="col-md-8">
+                    <div class=" dropdown float-right">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="fas fa-users-cog"></i> 
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">All</a>
+                        <a class="dropdown-item" href="#">Leave</a>
+                      </div>
+                    </div>
+                  </div>
+                  
                 </div>
+               
 
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
@@ -111,7 +128,7 @@
                             </button>
                             
                             <button @click="deleteInquire(hr_ygn_inquire.id, hr_ygn_inquire.courseid)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
+                              <i class="fas fa-trash-alt"></i>  Leave
                             </button>
                           </td>
                         </tr>
@@ -119,13 +136,24 @@
                     
                   </table>
                 </div>
+                
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'show active' : '' ]" id="nav-hr_mdy" role="tabpanel" aria-labelledby="nav-hr_mdy-tab">
-
                 <div class="form-row form-group">
                   <div class="col-md-4">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                  <div class="col-md-8">
+                    <div class=" dropdown float-right">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="fas fa-users-cog"></i> 
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">All</a>
+                        <a class="dropdown-item" href="#">Leave</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -161,7 +189,7 @@
                             </button>
                             
                             <button @click="deleteInquire(hr_mdy_inquire.id,hr_mdy_inquire.courseid)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
+                              <i class="fas fa-trash-alt"></i>  Leave
                             </button>
                           </td>
                         </tr>
@@ -169,6 +197,7 @@
                     
                   </table>
                 </div>
+                
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" id="nav-php_bootcamp" role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
@@ -176,6 +205,17 @@
                 <div class="form-row form-group">
                   <div class="col-md-4">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                  <div class="col-md-8">
+                    <div class=" dropdown float-right">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="fas fa-users-cog"></i> 
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">All</a>
+                        <a class="dropdown-item" href="#">Leave</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -193,7 +233,7 @@
                       <tbody>
                         <tr v-for="(php_inquire, index) in filterMembers">
                           <td> {{ index + 1 }} </td>
-                          <td> {{ php_inquire.section.codeno}}</td>
+                          <td> {{ php_inquire.receiveno}}</td>
                           <td> {{ php_inquire.name }} </td>
                           <td> {{ php_inquire.phno}}</td>
                           
@@ -212,7 +252,7 @@
                             </button>
                             
                             <button @click="deleteInquire(php_inquire.id,php_inquire.courseid)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
+                              <i class="fas fa-trash-alt"></i>  Leave
                             </button>
                           </td>
                         </tr>
@@ -229,6 +269,17 @@
                 <div class="form-row form-group">
                   <div class="col-md-4">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                  <div class="col-md-8">
+                    <div class=" dropdown float-right">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="fas fa-users-cog"></i> 
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">All</a>
+                        <a class="dropdown-item" href="#">Leave</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -266,22 +317,36 @@
                             </button>
                             
                             <button @click="deleteInquire(php_mdy_inquire.id,php_mdy_inquire.courseid)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
+                              <i class="fas fa-trash-alt"></i>  Leave
                             </button>
                           </td>
                         </tr>
                       </tbody>
                       
                     </table>
-                  </div>    
+                 </div>
+                   
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'show active' : '' ]" id="nav-ios" role="tabpanel" aria-labelledby="nav-ios-tab">
+
                 <div class="form-row form-group">
                   <div class="col-md-4">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
                   </div>
+                  <div class="col-md-8">
+                    <div class=" dropdown float-right">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="fas fa-users-cog"></i> 
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">All</a>
+                        <a class="dropdown-item" href="#">Leave</a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
                     <thead class="bg-primary text-white">
@@ -314,7 +379,7 @@
                             </button>
                             
                             <button @click="deleteInquire(ios_inquire.id, ios_inquire.courseid)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
+                              <i class="fas fa-trash-alt"></i>  leave
                             </button>
                           </td>
                         </tr>
@@ -322,19 +387,24 @@
                     
                   </table>
                 </div>
+                
               </div>
-            </div>
+
+            </div> 
+
           </div>
+
         </div>
+
       </div>
     </div>
     
-    <div class="modal fade" tabindex="-1" role="dialog" id="add_inquire_model">
-      <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="add_inquire_model">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content ">
           <div class="modal-header">
             <h4 class="modal-title">Add New Inquire</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
             
           <div class="modal-body">
@@ -345,30 +415,38 @@
             </div>
 
             <div class="form-row form-group">
-              <div class="col-md-6">
-                <label for="names">Receiveno:</label>
+              <div class="col-md-4">
+                <label for="names">Inquireno:</label>
                 <input type="text" name="receiveno" id="receiveno" placeholder="receiveno" class="form-control" v-model="receiveno" readonly>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Name:</label>
                 <input type="text" name="name" id="name" placeholder="Inquire Name" class="form-control" v-model="inquire.name">
               </div>
+               <div class="col-md-4">
+                  <label for="names">Age:</label>
+                  <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="inquire.age">
+              </div>
+             
             </div>
             
             <div class="form-row form-group">
-              <div class="col-md-6">
-                <label for="names">Course:</label>
+              <div class="col-md-4">
+                <label for="names">Email:</label>
+                  <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="inquire.email">
+              </div>
+              <div class="col-md-4">
+                  <label for="names">Course:</label>
                  
-                <select v-model="course" name="course_id" id="course_id" class="form-control"
+                  <select v-model="course" name="course_id" id="course_id" class="form-control"
                   @change="readDurations" >
                   <option disabled value="">Please select one</option>
                   <option v-for ="(course, index) in courses"  :value="course.id">
                     {{ course.name }} ( {{ course.cityname }} )
                   </option>
-                </select>
+                  </select>
               </div>
-
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Duration:</label>
                   <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
                     <option disabled value="">Please select one</option>
@@ -379,18 +457,13 @@
                     </option>
                   </select>
               </div>
+                 
             </div>
-            
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="names">Sections:</label>
-                  <select v-model="section" name="section_id" id="section_id" class="form-control" >
-                    <option disabled value="">Please select one</option>
-                    <option v-for ="(section, index) in sections"  :value="section.id">
 
-            <div class="form-group">
-              <label for="names">Sections:</label>
+
+            <div class="form-group form-row">
+              <div class="col-md-6">
+                <label for="names">Sections:</label>
                 <select v-model="section" name="section_id" id="section_id" class="form-control" >
                   <option disabled value="">Please select one</option>
                   <option v-for ="(section, index) in sections"  :value="section.id">
@@ -401,58 +474,37 @@
                       </div>
 
                       <div class="col-md-3">
-                        {{ section.durations.time }}
+                        {{ section.duration && section.duration.time }}
                       </div> 
 
-                        <div class="col-md-3">
-                          {{ section.durations.time }}
-                        </div> 
-
-                        <div class="col-md-3">
-                          {{ section.during }}
-                        </div>
-
-                        <div class="col-md-3">
-                          {{ section.startdate}} - {{ section.enddate }}
-                        </div> 
-
+                      <div class="col-md-3">
+                        {{ section.during }}
                       </div>
 
+                      <div class="col-md-3">
+                        {{ section.startdate}} - {{ section.enddate }}
+                      </div> 
 
-            <div class="form-row form-group camphide d-none">
-              <div class="col-md-6">
-                <label for="names">Camp:</label>
-                <br>
+                    </div>
 
-                <label for="nocamp"  class="mx-2">No Camp:</label>
-                <input type="radio" value="No Camp" id="nocamp"  v-model="inquire.camp">
-
-                <label for="malecamp" class="mx-2">Male Camp:</label>
-                <input type="radio" value="Male Camp"  id="malecamp"  v-model="inquire.camp">
-
-                <label for="femalecamp"  class="mx-2">Female Camp:</label>
-                <input type="radio" value="Female Camp" id="femalecamp" v-model="inquire.camp">
+                  </option>
+                </select>
               </div>
-              <div class="col-md-6">
-                <label for="names">Email:</label>
-                  <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="inquire.email">
-              </div>
-            </div>
+               
+                <div class="col-md-4 form-group camphide d-none">
+                  <label for="names d-block">Camp:</label>
+
+                  <label for="nocamp"  class="mx-2">No Camp:</label>
+                  <input type="radio" value="No Camp" id="nocamp"  v-model="inquire.camp">
+
+                  <label for="malecamp" class="mx-2">Male Camp:</label>
+                  <input type="radio" value="Male Camp"  id="malecamp"  v-model="inquire.camp">
+
+                  <label for="femalecamp"  class="mx-2">Female Camp:</label>
+                  <input type="radio" value="Female Camp" id="femalecamp" v-model="inquire.camp">
+                </div>
+              
             
-            <div class="form-row form-group">
-              <div class="col-md-6">
-                <label for="names">Age:</label>
-                <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="inquire.age">
-              </div>
-
-              <div class="col-md-6">
-                <label class="d-block">Gender:</label>
-                <label for="male" class="mx-2">Male:</label>
-                <input type="radio" value="male"  id="male" placeholder="Male"  v-model="inquire.gender">
-                <label for="female"  class="mx-2">Female:</label>
-                <input type="radio" value="female" id="female" placeholder="Female"  v-model="inquire.gender">
-              </div>
-
             </div>
 
             <!-- <div class="form-group">
@@ -461,46 +513,49 @@
             </div> -->
 
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-md-4">
+                <label class="d-block">Gender:</label>
+                <label for="male" class="mx-2">Male:</label>
+                <input type="radio" value="male"  id="male" placeholder="Male"  v-model="inquire.gender">
+                <label for="female"  class="mx-2">Female:</label>
+                <input type="radio" value="female" id="female" placeholder="Female"  v-model="inquire.gender">
+              </div>
+              <div class="col-md-4">
                 <label for="names">Address:</label>
                   <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="inquire.address">
               </div>
-
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Township:</label> 
                   <select v-model="township_id" name="township" class="form-control">
                       <option disabled value="">Please select one</option>
                     <option v-for ="(township, index) in townships" :value="township.id">{{ township.name }}</option>
                   </select>
               </div>
+              
             </div>
             
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Phone no:</label>
                   <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="inquire.phoneno">
               </div>
-            
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Job Position:</label>
                   <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="inquire.position">
               </div>
+              <div class="col-md-4">
+                <label for="names">Payment Date:</label>
+                  <input type="date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="inquire.paymentdate" >
+              </div>
+
             </div>
             
             <div class="form-row form-group">
-              <div class="col-md-6">
-                <label for="names">Payment Date:</label>
-                  <input type="date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="inquire.paymentdate" readonly="readonly">
-              </div>
-
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Payment Amount:</label>
                 <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="inquire.paymentamount"> 
               </div>
-            </div>
-
-            <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Education:</label>
                   <!-- <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="inquire.education"> -->
                   <select v-model="inquire.education" name="education" class="form-control">
@@ -509,12 +564,13 @@
                   </select>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Accepted Year:</label>
                   <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="inquire.acceptedyear">
               </div>
+
             </div>
-            
+
             <div class="form-row form-group">
               <div class="col-md-12">
                 <label for="names">Remark:</label>
@@ -575,6 +631,7 @@
                   </option>
                 </select>
               </div>
+
               <div class="col-md-6">
                 <label for="names">Duration:</label>
                 <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
@@ -599,7 +656,7 @@
                       </div>
 
                       <div class="col-md-3">
-                        {{ section.duration }}
+                        {{ section.duration && section.duration.time }}
                       </div> 
 
                       <div class="col-md-3">
@@ -739,7 +796,7 @@
             <h4 class="modal-title">{{ detail_inquire.receiveno }}</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
-          <div class="modal-body" >
+          <div class="modal-body">
                    
                    <!-- {{detail_staff}} -->
               <div class="row mt-3">
@@ -812,7 +869,7 @@
                           <h3> {{ detail_inquire.sectiontitle }} </h3>
                         </th>
                         <th>
-                          {{ detail_inquire.section && detail_inquire.section.codeno }}
+                          {{ detail_inquire.s_codeno }}
                         </th>
                       </tr>
                     </thead>
@@ -862,11 +919,8 @@
 </template>
 
 <script>
-
-
    export default {
     props: ["permissions"],
-
        data(){
            return {
                inquire: {
@@ -894,28 +948,18 @@
                section_id:'',
                section:'',
                course_id:'',
-               education_id:'',
-               education:'',
                course:'',
-               fit:'',
-               selected:null,
                duration:'',
                inquires: [],
-               educations:[],
                sections1:[],
                courses:[],
-               selectedId:'',
+               
                receiveno:'',
                lastinquire:{},
                update_inquire: {},
                detail_inquire: {},
-               detail_object : {},
                print_inquire:{},
                teacherlist : [],
-               
-               activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
-
-               b : '',
                sreceiveno:'',
                activetab: '',
            }
@@ -932,7 +976,6 @@
            this.callFunction();
            this.readEducation();
            this.getDate();
-
            this.php_mdy_inquires = this.filterMembers;
        },
       computed: {
@@ -964,6 +1007,7 @@
             },
             deleteInquire(index, courseid)
             {
+              console.log('Index is=>'+index+'Course=>'+courseid);
               let conf = confirm("Do you ready want to delete this city?");
               if (conf === true) 
               {
@@ -1000,7 +1044,6 @@
                     m => m.id === index
                   );
                 }
-
                 axios.delete('/api/setup/inquire/' + inquire_data.id)
                        .then(response => {
                            this.inquires.splice(index, 1);
@@ -1010,12 +1053,12 @@
                        .catch(error => {
                        });
               }
-
             },
             initAddInquire()
             {
                $("#add_inquire_model").modal("show");
             },
+
             getDate()
             {
               var m=new Date();
@@ -1025,7 +1068,6 @@
               
               this.inquire.paymentdate=dateString;
             },
-
             createInquire()
             {
                 axios.post('/api/setup/inquire', {
@@ -1035,6 +1077,7 @@
                    section_id: this.section,
                    camp: this.inquire.camp,
                    age: this.inquire.age,
+                   dob: this.inquire.dob,
                    gender: this.inquire.gender,
                    address: this.inquire.address,
                    township_id: this.township_id,
@@ -1042,7 +1085,7 @@
                    email: this.inquire.email,
                    paymentdate: this.inquire.paymentdate,
                    paymentamount: this.inquire.paymentamount,
-                   education: this.selectedId,
+                   education: this.inquire.education,
                    acceptedyear: this.inquire.acceptedyear,
                    position: this.inquire.position, 
                    remark: this.inquire.remark,
@@ -1050,9 +1093,7 @@
                 })
                 .then(response => {
                    this.reset();
-
                    var courseid = response.course_id;
-
                    let inquire_data=[];
                     
                     if (courseid == 1)  // hr_ygn_sections
@@ -1077,21 +1118,15 @@
                     }
                   console.log('php inquire data => '+this.php_inquires);
                   console.log('A Paw Mhar => '+ inquire_data);
-
                    this.add_noti=true;
                    this.message="New Inquire has been sucessfully added!!";
                    $("#add_inquire_model").modal("hide");
                    this.readInquire();
                    this.callFunction();
-
                    // console.log(inquire_data);
-
                    var id = inquire_data.length - 1;
-
                    // console.log(id);
-
                    // this.printInquire(id, courseid);
-
                 })
                 .catch(error => {
                   this.errors = [];
@@ -1108,10 +1143,7 @@
             { 
                axios.get('/api/setup/inquire')
                    .then(response => {
-                        console.log(response);
-
                        this.inquires = response.data.inquires;
-
                        this.hr_ygn_inquires = response.data.hr_ygn_inquires;
                        this.hr_mdy_inquires = response.data.hr_mdy_inquires;
                        this.php_inquires = response.data.php_inquires;
@@ -1131,20 +1163,16 @@
                        this.courses = response.data.courses;
                        //console.log(response.data.teachers);
                    });
-
             },
-
             readSection()
             {
               axios.get('/api/setup/section')
                .then(response => {
                    // console.log(response.data.sections);
                    this.sections=response.data.sections
-
                });
               this.setZero();
             },
-
         printInquire(index, courseid)
         {
           var inquire_data;
@@ -1184,9 +1212,7 @@
           }
           // console.log(inquire_data);
           this.print(inquire_data);
-
         },
-
         print(index)
            {
             // console.log(index);
@@ -1194,14 +1220,11 @@
             this.print_inquire = index;
             console.log(this.print_inquire);
             console.log(this.print_inquire.course);
-
             let stylesHtml = '';
             for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
               stylesHtml += node.outerHTML;
             }
-
             var currentDate = new Date().toJSON().slice(0,10).replace(/-/g,' / ');
-
             var course = this.print_inquire.course;
             var title = this.print_inquire.codeno;
             var receiveno = this.print_inquire.receiveno;
@@ -1211,8 +1234,6 @@
             var due = parseInt(coursefees) - parseInt(installment);
             var startdate = this.print_inquire.startdate;
             var time = this.print_inquire.time;
-
-
             const WinPrint = window.open();
             WinPrint.document.write(`<!DOCTYPE html>
             <html>
@@ -1229,7 +1250,6 @@
                       <p> <b> Email :  </b> info@myanmaritc.com </p>
                     </div>
                     <div class="col-md-5">
-
                       <div class="row">
                         <div class="col-md-12 border">
                           <p class="pt-3 text-center"> ${receiveno} </p>
@@ -1244,7 +1264,6 @@
                           <p> ${currentDate} </p>  
                         </div>
                       </div>
-
                       <div class="row">
                         <div class="col-md-3 text-uppercase"> 
                           Invoice#
@@ -1254,7 +1273,6 @@
                           (  ${title} ) </p> 
                         </div>
                       </div>
-
                       <div class="row">
                         <div class="col-md-3 text-uppercase">
                           For
@@ -1265,7 +1283,6 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="row mt-5">
                     <div class="col-md-12">
                       <table class="table">
@@ -1281,41 +1298,34 @@
                             <td> ${name} </td>
                             <td> ${coursefees} Kyats </td>  
                           </tr>
-
                           <tr>
                             <td> Padin Amount </td>
                             <td> ${currentDate} </td>
                             <td> ${installment} Kyats </td>
                           </tr>
-
                           <tr>
                             <td colspan="2"> Due </td>
                             <td> ${due} Kyats </td>
                           </tr>
-
                         </tbody>
                       </table>
                     </div>
                   </div>
-
                   <div class="row mt-5">
                     <div class="col-md-12">
                       <i> မှတ်ချက် - သင်တန်းအပ်ပြီး ပြန်ထွက်လျင် သင်တန်းကြေးပြန်မအမ်းပါ။  </i>
                     </div>
                   </div>
-
                   <div class="row mt-5">
                     <div class="col-md-8">
                       <p>
                         <b> Training Start Date : </b>
                         ${startdate}
                       </p> 
-
                       <p>
                         <b> Time : </b>
                         ${time}
                       </p> 
-
                     </div>
                     <div class="col-md-4">
                       <div class="row">
@@ -1323,28 +1333,22 @@
                           <p class="pt-3 text-center text-uppercase font-weight-bold" style="letter-spacing: 10px; font-size:18px"> Paid </p>
                         </div>
                       </div>
-
                     </div>
                   </div>
-
                   <div class="row mt-5"> 
                     <div class="col-md-12">
                       <b style="font-size: 20px"> Bank Account Information : </b>
                       
                       <p style="font-size: 18px"> <b> CB </b> Bank ATM Card Accountant -  0002 6001 0011 0329
                       </p>
-
                       <p style="font-size: 18px"> <b> AYA </b> Bank ATM Card Accountant -  0063 2010 1000 9409
                       </p>
-
                       <p style="font-size: 18px"> <b> KBZ </b> Bank ATM Card Accountant -  999 307 999 2846 6801
                       </p>
                       
                       <p style="font-size: 18px"> Account Holder Name : U Yan Myoe Aung </p>
-
                     </div>
                   </div>
-
                   <div class="row mt-5">
                     <h3 class="font-weight-bold text-uppercase"> Thank You For Your Business! </h3>
                   </div>
@@ -1353,25 +1357,20 @@
                 
               </body>
             </html>`);
-
             WinPrint.document.close();
             WinPrint.focus();
             WinPrint.print();
             WinPrint.close();
-
            },
-
         setZero(){
           // console.log(this.duration);
           this.duration='';
           this.section='';
         },
-
            
         readSections(){
           this.duration_id=this.duration;
           if(this.duration_id){
-
             axios.get(`/api/setup/section/${this.duration_id}`)
                    .then(response => {
                        //console.log(response.data.sections);
@@ -1383,31 +1382,26 @@
                  }
           
         },
-
-            readDurations()
+        readDurations()
             {
                axios.get(`/api/setup/duration/${this.course}`)
                    .then(response => {
                        this.durations = response.data.durations;
                       // console.log(response.data.durations);
                       // console.log(this.course);
-
                    });
                    // // courseid = this.course;
                    // console.log(this.course);
                    if (this.course == 3) {
                     $('.camphide').removeClass('d-none');
                     $('.camphide').show();
-
                    }else{
-
                       $('.camphide').hide();
                    }
             },
            initUpdate(index,courseid)
            {
               this.errors = [];
-
               var inquire_data;
               console.log(courseid);
               if (courseid == 1)  // hr_ygn_sections
@@ -1445,6 +1439,7 @@
                 );
                 // inquire_data = this.php_mdy_inquires[index]
               }
+             
                $("#update_inquire_model").modal("show");
                
                this.update_inquire = inquire_data;
@@ -1452,18 +1447,14 @@
            },
            initDetail(index, c_id, s_id)
            {
-              var inquire_data = {};
-              console.log(index);
               var inquire_data;
               // console.log(index);
                this.errors = [];
-
                axios.get(`/api/setup/inquire/teacherlist/${s_id}`)
                    .then(response => {
                        this.teacherlist = response.data.teacherlist.teachers;
                        // console.log(this.teacherlist);
                    });
-
               if (c_id == 1)  // hr_ygn_sections
               {
                 inquire_data = this.hr_ygn_inquires.find(
@@ -1498,32 +1489,15 @@
                 );
                 // inquire_data = this.php_mdy_inquires[index]
               }
-
               // console.log(inquire_data);
-
                $("#detail_inquire_model").modal("show");
-               // this.detail_inquire = _.cloneDeep(inquire_data);
-
                this.detail_inquire = inquire_data;
-
-
-
-               // b = JSON.parse(JSON.stringify(this.detail_inquire));
-
-
-
-               // this.detail_object = {
-               //  codeno  : inquire_data.section.codeno,
-               //  title   : inquire_data.section.title,
-               //  startdate : inquire_data.section.startdate,   
-               // }
                // this.detail_inquire = JSON.parse(JSON.stringify(inquire_data));
                // this.detail_inquire.push(teacherlist);
            },
            updateInquire()
            {
                axios.patch('/api/setup/inquire/' + this.update_inquire.id, {
-
                  userid: this.update_inquire.userid,
                  receiveno:this.update_inquire.receiveno,
                   name: this.update_inquire.name,
@@ -1538,7 +1512,7 @@
                    remark: this.update_inquire.remark,
                    position: this.update_inquire.position,
                    camp: this.update_inquire.camp,
-                   education: this.selected,
+                   education: this.update_inquire.education,
                    acceptedyear: this.update_inquire.acceptedyear,
                    section_id: this.update_inquire.sectionid, 
                    township_id: this.update_inquire.townshipid,
@@ -1549,7 +1523,6 @@
                        $("#update_inquire_model").modal("hide");
                        this.readInquire();
                    })
-
                    .catch(error => {
                        this.errors = [];
                        if (error.response.data.errors.name) {
@@ -1574,13 +1547,12 @@
                   
                 })
            },
+
           callFunction() {
             /*var currentDate = new Date();
             console.log(currentDate);*/
             
-
             // this.readInquire();
-
              axios.get('/api/setup/lastinquire')
                 .then(response => {
                   /*console.log(response.data.inquire);*/
@@ -1599,7 +1571,8 @@
             var year=datearray[0];
             var date=day+month+year;
             var output='';
-
+            
+            
             if (receiveno == 0) {
               // console.log('0 condition');
               this.receiveno = date+'0001';
@@ -1607,11 +1580,8 @@
               var currentreceiveno=receiveno.substring(0,8);
               // console.log(currentreceiveno+'=='+date);
             }
-
             if(currentreceiveno==date){ // 04092019 == 04092019
-
               let newreceiveno = ++receiveno; // 040920190001 -> 40920190002 (number)
-
               output = newreceiveno.toString();
               if(parseInt(day)<10){
                 output = '0'+newreceiveno.toString();
@@ -1625,4 +1595,3 @@
        }
    }
 </script>
-

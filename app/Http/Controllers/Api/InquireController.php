@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Api;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -10,16 +8,11 @@ use App\Model\Section;
 use App\Model\Township;
 use App\Model\Course;
 use App\Model\Student;
-<<<<<<< HEAD
-use App\Model\Education;
-=======
 use App\Model\Duration;
->>>>>>> origin/YTMN-mmit-proj
 use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\InquireResource;
 use App\Http\Resources\StudentResource;
-
 class InquireController extends Controller
 {
     /**
@@ -29,13 +22,10 @@ class InquireController extends Controller
      */
     public function index()
     {
-
         
         $townships = Township::all();
         $sections = Section::all();
-
         // $inquires = Inquire::all();
-
         // $inquires = Inquire::with(['section' => function($q1){
         //     $q1->with(['duration' => function($q2){
         //         $q2->where('course_id', 1);
@@ -47,16 +37,13 @@ class InquireController extends Controller
             });
         })->get();
         
-        dd($inquires);
-
+        //dd($inquires);
         // $inquires = Inquire::with('section')
                         
         //                 ->get();
         // dd($inquires);
-
         // $hr_ygn_inquires = Inquire::with('section', 'section.duration')->where('inquire.section.duration.course_id',3)->get();
         // dd($hr_ygn_inquires);
-
         $hr_ygn_inquires =  DB::table('inquires')
             ->select(
                 'inquires.*', 
@@ -76,12 +63,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-<<<<<<< HEAD
-                'cities.name as city_name'
-            )
-=======
                 'cities.name as city_name')
->>>>>>> origin/YTMN-mmit-proj
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -92,7 +74,6 @@ class InquireController extends Controller
             ->orderBy('inquires.id','desc')
             ->where('durations.course_id','=',1)
             ->get();
-
         $hr_mdy_inquires =  DB::table('inquires')
             ->select(
                 'inquires.*', 
@@ -112,12 +93,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-<<<<<<< HEAD
-                'cities.name as city_name'
-            )
-=======
                 'cities.name as city_name')
->>>>>>> origin/YTMN-mmit-proj
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -128,7 +104,6 @@ class InquireController extends Controller
             ->orderBy('inquires.id','desc')
             ->where('durations.course_id','=',2)
             ->get();
-
         $php_inquires =  DB::table('inquires')
             ->select(
                 'inquires.*', 
@@ -148,12 +123,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-<<<<<<< HEAD
-                'cities.name as city_name'
-            )
-=======
                 'cities.name as city_name')
->>>>>>> origin/YTMN-mmit-proj
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -164,11 +134,7 @@ class InquireController extends Controller
             ->orderBy('inquires.id','desc')
             ->where('durations.course_id','=',3)
             ->get();
-
-
-
             // $titles = DB::table('inquires')->pluck('name');
-
         $ios_inquires =  DB::table('inquires')
             ->select(
                 'inquires.*', 
@@ -188,12 +154,7 @@ class InquireController extends Controller
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-<<<<<<< HEAD
-                'cities.name as city_name'
-            )
-=======
                 'cities.name as city_name')
->>>>>>> origin/YTMN-mmit-proj
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -204,7 +165,6 @@ class InquireController extends Controller
             ->orderBy('inquires.id','desc')
             ->where('durations.course_id','=',4)
             ->get();
-
         $php_mdy_inquires =  DB::table('inquires')
             ->select(
                 'inquires.*', 
@@ -235,31 +195,16 @@ class InquireController extends Controller
             ->orderBy('inquires.id','desc')
             ->where('durations.course_id','=',5)
             ->get();
-
-
 $inquireAll=Inquire::all();
 $inquiresAlls=InquireResource::collection($inquireAll);
-
             // $titles = DB::table('inquires')->pluck('name');
-
-<<<<<<< HEAD
-        // dd($titles);
-        
-=======
-
         // $php_inquires_new = Inquire::with('section', 'section.duration', 'section.duration.course')->where('section.duration.courseid','=',3)->get();
         // dd($php_inquires_new);
-
->>>>>>> origin/YTMN-mmit-proj
         $hr_ygn_inquires =  InquireResource::collection($hr_ygn_inquires);
         $hr_mdy_inquires =  InquireResource::collection($hr_mdy_inquires);
         $php_inquires =  InquireResource::collection($php_inquires);
         $ios_inquires =  InquireResource::collection($ios_inquires);
         $php_mdy_inquires = InquireResource::collection($php_mdy_inquires);
-
-
-
-
         return response()->json([
             'hr_ygn_inquires' => $hr_ygn_inquires,
             'hr_mdy_inquires'   => $hr_mdy_inquires,
@@ -268,14 +213,11 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             'php_mdy_inquires' => $php_mdy_inquires,
             'inquires'=>$inquiresAlls
         ],200);
-
         
     }
-
     public function print($id)
     {
         $inquire = Inquire::find($id)->toArray();
-
         $design = '<!DOCTYPE html>
         <html>
         <head>
@@ -285,7 +227,6 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             <meta name="viewport" content="width=device-width, initial-scale=1">
             
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
         </head>
         <body>
         
@@ -316,12 +257,10 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         </body>
         </html>
         ';
-
         return response()->json([
             'inquires' => $design,
         ],200);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -335,26 +274,14 @@ $inquiresAlls=InquireResource::collection($inquireAll);
          $this->validate($request, [
             'name'  => 'required',
         ]);
-
         $course_id = request('course');
-        
-
-
         $course = Course::find($course_id);
-
-
-
         $course_fees = $course->fees;
-
-
         $payment = request('paymentamount');
-
-        $education = request('education');
-        // dd($education);
         $inquire = Inquire::create([
             'name'  =>  request('name'),
             'receiveno' =>  request('receiveno'),
-            // 'dob' => request('dob'),    
+            'dob' => request('dob'),    
             'age'  =>  request('age'),
             'gender'  =>  request('gender'),
             'address' => request('address'),
@@ -372,35 +299,24 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             // 'status' => request('status'),
             //'course_id' => request('course_id'),
             'user_id'    =>  Auth::user()->id
-
         ]);
-
         if ($course_fees == $payment) 
         {
             $student = Student::create([
                 'secinstallmentdate'=>request('paymentdate'),
                 'secinstallmentamount'=>0,
                 'remark'=>request('remark'),
-<<<<<<< HEAD
-                'resume'=>'no reume',
-                'status'=>1, 
-=======
                 'resume'=>'no resume',
                 'status'=>1,
->>>>>>> origin/YTMN-mmit-proj
                 'inquire_id'=>$inquire->id,
                 'user_id'=>Auth::user()->id
             ]);   
         }
-
          
-
         $id = $inquire->id;
         // dd($id);
         // $new_inquire = Inquire::find($id);
-
         // $inquire_resource = new InquireResource($inquire);
-
         $inquires =  DB::table('inquires')
         ->select(
                 'inquires.*', 
@@ -420,12 +336,7 @@ $inquiresAlls=InquireResource::collection($inquireAll);
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-<<<<<<< HEAD
-                'cities.name as city_name'
-            )
-=======
                 'cities.name as city_name')
->>>>>>> origin/YTMN-mmit-proj
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -435,21 +346,15 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             ->where('inquires.id','=',$id)
             ->orderBy('inquires.id','desc')
             ->get();
-
         // dd($inquires);
-
         $inquire =  new InquireResource($inquires[0]);
-
         return response()->json([
             'inquire'  =>  $inquire,
             'id'    =>   0,
             'course_id' =>  $course_id,
             'message'   =>  'Successfully Added!'
         ],200);
-
-
    }
-
     /**
      * Display the specified resource.
      *
@@ -487,22 +392,15 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         //     ->orderBy('inquires.id','desc')
         //     ->where('inquires.section_id',$id)
         //     ->get();
-
         $inquires = Inquire::doesntHave('student')
             ->where('section_id',$id)
             ->get();
-
-
             // dd($inquires);
-
         $inquires =  InquireResource::collection($inquires);
-
         return response()->json([
             'inquires' => $inquires,
         ],200);
     }
-
-
     /**
      * Update the specified resource in storage.
      *
@@ -513,16 +411,12 @@ $inquiresAlls=InquireResource::collection($inquireAll);
     public function update(Request $request, $id)
     {
         //
-
          $inquire = Inquire::find($id);
-
-         // dd(request('education'));
         
-
         
         $inquire->name = request('name');
         $inquire->receiveno = request('receiveno');
-        // $inquire->dob = request('dob');
+        $inquire->dob = request('dob');
         $inquire->age = request('age');        
         $inquire->gender = request('gender');
         $inquire->address = request('address');        
@@ -538,12 +432,10 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         $inquire->township_id = request('township_id');
         $inquire->user_id=  Auth::user()->id;
         $inquire->save();
-
         return response()->json([
             'message'   =>  'Inquire updated successfully!'
         ],200);
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -553,15 +445,15 @@ $inquiresAlls=InquireResource::collection($inquireAll);
     public function destroy($id)
     {
         //
-
         $inquire = Inquire::find($id);
-        $inquire->delete();
+        $inquire->actionstatus = 0;
+        $inquire->save();
+        dd($inquire);
 
         return response()->json([
-            'message'   =>  'Staff deleted successfully!'
+            'message'   =>  'Inquire updated successfully!'
         ],200);
     }
-
     public function getInquire($id){
        $inquire =  DB::table('inquires')
             ->select(
@@ -582,12 +474,7 @@ $inquiresAlls=InquireResource::collection($inquireAll);
                 'durations.days as d_days', 
                 'durations.during as d_during', 
                 'courses.name as c_name', 
-<<<<<<< HEAD
-                'cities.name as city_name'
-            )
-=======
                 'cities.name as city_name')
->>>>>>> origin/YTMN-mmit-proj
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
             ->join('durations', 'durations.id', '=', 'sections.duration_id')
@@ -597,40 +484,16 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             ->orderBy('inquires.id','desc')
             ->where('inquires.id',$id)
             ->get();
-
-
             // dd($inquires);
-
         $inquires =  InquireResource::collection($inquire);
-
         return response()->json([
             'inquires' => $inquires,
         ],200);
     }
-
     public function lastinquire(){
-
         $inquire=Inquire::orderBy('id','desc')
-<<<<<<< HEAD
-                ->first();
-                
-        //dd($inquire->receiveno);
-        if($inquire == null){
-            $inquire = [
-                "receiveno" => 0 ,
-            ];
-            return response()->json([
-            'inquire'  =>  $inquire,
-            'message'   =>  'Successfully selected Last Inquired!'
-        ],200);
-        }else{
-            $inquire = new InquireResource($inquire);
-
-=======
                 ->first();     
         // dd($inquire);
-
-
         // if (empty($inquire)) {
         //     return response()->json([
         //         'inquire'  =>  $inquire['receiveno'=>date('dmY').'0001'],
@@ -642,7 +505,6 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         //         'message'   =>  'Successfully selected Last Inquired!'
         //     ],200);
         // }
-
         if ($inquire == null) {
             $inquire = [
                 "receiveno" => 0
@@ -653,7 +515,6 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             ],200);
         }else{
             $inquire = new InquireResource($inquire);
-
             return response()->json([
                 'inquire'  =>  $inquire,
                 'message'   =>  'Successfully selected Last Inquired!'
@@ -661,13 +522,11 @@ $inquiresAlls=InquireResource::collection($inquireAll);
         }
         
     }
-
-
     public function teacherlist($id)
     {
         $teacherlist =  DB::table('sections')
             ->select(
-                    DB::raw('GROUP_CONCAT(users.name) AS teachers'),
+                    DB::raw('GROUP_CONCAT(users.name) AS teachers')
                 )
             ->distinct()
             ->join('section_teacher', 'section_teacher.section_id', '=', 'sections.id')
@@ -683,18 +542,9 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             ->orderBy('sections.id', 'desc')
             ->get();
         // dd($teacherlist);
->>>>>>> origin/YTMN-mmit-proj
         return response()->json([
-            'inquire'  =>  $inquire,
-            'message'   =>  'Successfully selected Last Inquired!'
+            'teacherlist'   =>  $teacherlist[0]
         ],200);
-<<<<<<< HEAD
-        } 
-
-        
-        
-=======
-
     // public function getInquires(Request $request){
     //    // echo request('courseid')." and ".request('sectionid')." and ".request('durationid');
     //     $id=request('sectionid');
@@ -702,7 +552,5 @@ $inquiresAlls=InquireResource::collection($inquireAll);
     //         ->where('section_id',$id)
     //         ->get();
     //         dd($inquires);
-
->>>>>>> origin/YTMN-mmit-proj
     }
 }

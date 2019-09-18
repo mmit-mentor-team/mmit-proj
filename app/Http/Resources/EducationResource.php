@@ -24,3 +24,4 @@ class EducationResource extends JsonResource
             'name' => $this->name,
         ];
     }
+}

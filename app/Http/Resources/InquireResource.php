@@ -26,6 +26,7 @@ class InquireResource extends JsonResource
         // return parent::toArray($request);
          return[
             'id' => $this->id,
+            // 'inquireno'=>$this->inquireno;
             'name' => $this->name,
             'gender' => $this->gender,
             // 'dob' => $this->dob,

@@ -76,15 +76,11 @@ Vue.component('role', require('./components/Role.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('report', require('./components/Report.vue').default);
 Vue.component('profile',require('./components/Profile.vue').default);
-<<<<<<< HEAD
-Vue.component('education',require('./components/education.vue').default);
-=======
 
 Vue.component('interview', require('./components/Interview.vue').default);
 Vue.component('interviewform', require('./components/Interviewform.vue').default);
 Vue.component('hire', require('./components/Hire.vue').default);
 Vue.component('dismiss', require('./components/Dismiss.vue').default);
->>>>>>> origin/YTMN-mmit-proj
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -100,18 +96,7 @@ Vue.use(BootstrapVue);
 import vSelect from 'vue-select';
 Vue.component('v-select', vSelect);
 
-<<<<<<< HEAD
-import VueSelect from 'vue-select';
-Vue.use(VueSelect);
-
-Vue.component('multiselect', Multiselect);
-=======
 import 'vue-select/dist/vue-select.css';
->>>>>>> origin/YTMN-mmit-proj
-
-Vue.component('v-select', VueSelect);
-import 'vue-select/dist/vue-select.css';
-import 'vue-select/src/scss/vue-select.scss';
 
 require('./backend/vendor/fontawesome-free/css/all.min.css');
 require('./backend/css/sb-admin-2.min.css');

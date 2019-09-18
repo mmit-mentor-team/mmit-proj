@@ -196,7 +196,7 @@
                       <tbody>
                         <tr v-for="(php_inquire, index) in filterMembers">
                           <td> {{ index + 1 }} </td>
-                          <td> {{ php_inquire.section.codeno}}</td>
+                          <td> {{ php_inquire.receiveno}}</td>
                           <td> {{ php_inquire.name }} </td>
                           <td> {{ php_inquire.phno}}</td>
                           
@@ -405,7 +405,7 @@
                       </div>
 
                       <div class="col-md-3">
-                        {{ section.durations.time }}
+                        {{ section.duration && section.duration.time }}
                       </div> 
 
                       <div class="col-md-3">
@@ -602,7 +602,7 @@
                       </div>
 
                       <div class="col-md-3">
-                        {{ section.duration }}
+                        {{ section.duration && section.duration.time }}
                       </div> 
 
                       <div class="col-md-3">
@@ -742,7 +742,7 @@
             <h4 class="modal-title">{{ detail_inquire.receiveno }}</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
-          <div class="modal-body" >
+          <div class="modal-body">
                    
                    <!-- {{detail_staff}} -->
               <div class="row mt-3">
@@ -815,7 +815,7 @@
                           <h3> {{ detail_inquire.sectiontitle }} </h3>
                         </th>
                         <th>
-                          {{ detail_inquire.section && detail_inquire.section.codeno }}
+                          {{ detail_inquire.s_codeno }}
                         </th>
                       </tr>
                     </thead>
@@ -907,11 +907,8 @@
                lastinquire:{},
                update_inquire: {},
                detail_inquire: {},
-               detail_object : {},
                print_inquire:{},
                teacherlist : [],
-               activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
-               b : '',
                sreceiveno:'',
                activetab: '',
            }
@@ -1102,8 +1099,6 @@
             { 
                axios.get('/api/setup/inquire')
                    .then(response => {
-                        console.log(response);
-
                        this.inquires = response.data.inquires;
                        this.hr_ygn_inquires = response.data.hr_ygn_inquires;
                        this.hr_mdy_inquires = response.data.hr_mdy_inquires;
@@ -1445,8 +1440,6 @@
            },
            initDetail(index, c_id, s_id)
            {
-              var inquire_data = {};
-              console.log(index);
               var inquire_data;
               // console.log(index);
                this.errors = [];
@@ -1495,21 +1488,8 @@
               // console.log(inquire_data);
 
                $("#detail_inquire_model").modal("show");
-               // this.detail_inquire = _.cloneDeep(inquire_data);
-
                this.detail_inquire = inquire_data;
 
-
-
-               // b = JSON.parse(JSON.stringify(this.detail_inquire));
-
-
-
-               // this.detail_object = {
-               //  codeno  : inquire_data.section.codeno,
-               //  title   : inquire_data.section.title,
-               //  startdate : inquire_data.section.startdate,   
-               // }
                // this.detail_inquire = JSON.parse(JSON.stringify(inquire_data));
                // this.detail_inquire.push(teacherlist);
            },

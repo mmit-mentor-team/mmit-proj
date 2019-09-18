@@ -329,15 +329,21 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
+        //dd($id);
         $student=Student::find($id);
-        $student->delete();
-        return response()->json([
-            "message"=>"successfully deleted"
-        ],200);
+        $student->actionstatus=0;
+        $student->save();
+        //$student->secinstallmentdate=$student->secinstallmentdate;
+        // $student=Student::find($id);
+        // $student->delete();
+        // return response()->json([
+        //     "message"=>"successfully deleted"
+        // ],200);
     }
 
-    public function showstudents($id){
+    public function showstudents(Request $request){
         // dd($id);
+        
         $students =  DB::table('students')
             ->select(
                 'students.*', 
@@ -372,11 +378,12 @@ class StudentController extends Controller
             ->join('courses','courses.id','=','durations.course_id')
             ->join('locations','locations.id','=','courses.location_id')
             ->join('cities','cities.id','=','locations.city_id')
-            ->where('sections.id','=',$id)
+            ->where('sections.id','=',request('sectionId'))
+            ->where('students.actionstatus','=',request('actionstatus'))
             ->orderBy('sections.id', 'desc')
             ->get();
 
-        // dd($students);
+         //dd($students);
         $student=StudentResource::collection($students);
         return response()
         ->json(["students"=>$student],200);

@@ -294,7 +294,7 @@ class InquireController extends Controller
                 'secinstallmentdate'=>request('paymentdate'),
                 'secinstallmentamount'=>0,
                 'remark'=>request('remark'),
-                'resume'=>'',
+                'resume'=>'no reume',
                 'status'=>1, 
                 'inquire_id'=>$inquire->id,
                 'user_id'=>Auth::user()->id

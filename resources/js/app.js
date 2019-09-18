@@ -66,7 +66,8 @@ Vue.use(VueSelect);
 Vue.component('multiselect', Multiselect);
 
 Vue.component('v-select', VueSelect);
-
+import 'vue-select/dist/vue-select.css';
+import 'vue-select/src/scss/vue-select.scss';
 
 require('./backend/vendor/fontawesome-free/css/all.min.css');
 require('./backend/css/sb-admin-2.min.css');

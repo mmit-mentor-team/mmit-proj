@@ -31,8 +31,6 @@
             </button>
         </div>
 
-
-
         <div class="card shadow mb-4">
           <div class="card-header py-3">
             
@@ -44,11 +42,9 @@
 
 
             </h3>
-
           </div>
 
           <div class="card-body">
-            
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn-tab" data-toggle="tab" href="#nav-hr_ygn" role="tab" aria-controls="nav-hr_ygn" aria-selected="true" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - YGN )'">
@@ -119,15 +115,14 @@
                     
                   </table>
                 </div>
-                
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'show active' : '' ]" id="nav-hr_mdy" role="tabpanel" aria-labelledby="nav-hr_mdy-tab">
-                  <div class="col-md-12">
-                    <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="hr_mdy_inquire">
-                    <button class="btn-primary mb-2 " @click="fits(2)" >Search </button>
-                    <span id="error" class="text-danger d-block" ></span>
-                  </div>
+                <div class="col-md-12">
+                  <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="hr_mdy_inquire">
+                  <button class="btn-primary mb-2 " @click="fits(2)" >Search </button>
+                  <span id="error" class="text-danger d-block" ></span>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="hr_mdy_inquires.length>0">
                     <thead class="bg-primary text-white">
@@ -168,15 +163,15 @@
                     
                   </table>
                 </div>
-                
               </div>
+
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" id="nav-php_bootcamp" role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
                   <div class="col-md-12">
                     <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="php_inquires">
                     <button class="btn-primary mb-2 " @click="fits(3)" >Search </button>
                     <span id="error" class="text-danger d-block" v-if="noti==0"></span>
                   </div>
-                 <div class="table-responsive">
+                  <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_inquires.length > 0">
                       <thead class="bg-primary text-white">
                         <tr class="text-center">
@@ -216,16 +211,15 @@
                       </tbody>
                       
                     </table>
-                 </div>
-                   
+                  </div>    
               </div>
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'show active' : '' ]" id="nav-ios" role="tabpanel" aria-labelledby="nav-ios-tab">
-                 <div class="col-md-12">
-                    <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="ios_inquire">
-                    <button class="btn-primary mb-2 " @click="fits(4)" >Search </button>
-                    <span id="error" class="text-danger d-block" v-if="noti==0"></span>
-                  </div>
+                <div class="col-md-12">
+                  <input type="text" name="fit" class="my-2 mr-2" v-model="fit" id="ios_inquire">
+                  <button class="btn-primary mb-2 " @click="fits(4)" >Search </button>
+                  <span id="error" class="text-danger d-block" ></span>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="ios_inquires.length>0">
                     <thead class="bg-primary text-white">
@@ -266,15 +260,10 @@
                     
                   </table>
                 </div>
-                
               </div>
-
-            </div> 
-
+            </div>
           </div>
-
         </div>
-
       </div>
     </div>
     
@@ -283,7 +272,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Add New Inquire</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
             
           <div class="modal-body">
@@ -301,16 +290,12 @@
                 </div>
               </div>
               <div class="col-md-6">  
-
-            
                 <div class="form-group">
                     <label for="names">Name:</label>
                     <input type="text" name="name" id="name" placeholder="Inquire Name" class="form-control" v-model="inquire.name">
                 </div>
-                
               </div>
             </div>  
-            
 
             <div class="row">
               <div class="col-md-6">
@@ -390,7 +375,6 @@
                   <input type="radio" value="Female Camp" id="femalecamp" v-model="inquire.camp">
                 </div>
               </div>
-              
             </div>
 
             <div class="row">
@@ -407,8 +391,6 @@
                 </div>
 
               </div>
-              
-              
             </div>  
 
             <div class="row">
@@ -477,18 +459,18 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                    <label for="names">Education:</label>
-                <!--  <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="inquire.education"> -->
+                  <label for="names">Education:</label>
+                  <!--  <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="inquire.education"> -->
                    
-                    <select v-model="inquire.education_id" name="education" class="form-control">
+                  <!--    <select v-model="inquire.education_id" name="education" class="form-control">
                       <option disabled value="">Please select one</option>
                       <option v-for ="(education, index) in educations" :value="education.id">{{ education.name }}</option>
-                   </select>
+                  </select> -->
                      
-                      <!-- <vue-select class="vue-select2 form-control" name="select2"
-                        :options="options2" :model="result2"
-                        searchable="true" language="en-US">
-                      </vue-select> -->
+                    <v-select label="name" :options="educations" language="en-US" v-model="selected"
+                       @input="selectId" :key="educations.id" >
+                    </v-select>
+                
                 </div>
               </div>  
             </div> 
@@ -685,12 +667,17 @@
                   <div class="form-group">
                     <label for="names">Education:</label>
                      <!-- <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="update_inquire.education"> -->
-                    <select v-model="update_inquire.educationid" name="education" class="form-control">
+                    <!-- <select v-model="update_inquire.educationid" name="education" class="form-control">
                       <option disabled value="">Please select one</option>
                       <option v-for ="(education, index) in educations" :value="education.id" :selected="education.id == update_inquire.educationid">
                       {{ education.name }}</option>
-                    </select>
+                    </select> -->
 
+                    <v-select label="name" :options="educations" :key="selected"
+                              :reduce= "name => name.id" v-model="selected"  >
+                          
+                    </v-select>
+                    
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -892,19 +879,20 @@
                education:'',
                course:'',
                fit:'',
+               selected:null,
                duration:'',
                inquires: [],
                educations:[],
                sections1:[],
                courses:[],
-
-               
+               selectedId:'',
                receiveno:'',
                lastinquire:{},
                update_inquire: {},
                detail_inquire: {},
                print_inquire:{},
                teacherlist : [],
+               
                activetab: 'Accept Student Enquiry ( PHP Bootcamp - YGN )',
                
            }
@@ -923,6 +911,13 @@
            this.getDate();
        },
        methods: {
+            selectId(e) {
+              console.log(e.id);
+              this.inquire.education_id = e.id;
+              this.selectedId = e.id;
+            },
+
+
            deleteInquire(index, courseid)
            {
           
@@ -960,7 +955,7 @@
            },
            fits(courseid){
 
-          // this.readInquire();
+          
               var fit='';
              // console.log(courseid);
               fit = this.fit;
@@ -969,6 +964,7 @@
               if (courseid == 1)  // hr_ygn_sections
                 {
                   inquire_data = this.hr_ygn_inquires;
+                   this.readInquire();
                  
                 }else if(courseid == 2)
 
@@ -979,6 +975,7 @@
                 { 
                    
                   inquire_data = this.php_inquires;
+                   this.readInquire();
 
                 }else{
                   inquire_data = this.ios_inquires;
@@ -986,32 +983,36 @@
                 // console.log(inquire_data);
                 let myarr = [];
                 let myarr1 = [];
+                let myarr2 =[];
+                let myarr3  = [];
                
                 $.each(inquire_data,function(i,v){
                   var rec=v.receiveno;
-                   if(fit==rec){
+                   if( fit==rec ){
 
                       if (v.courseid == 1 ) {
                         
                         myarr.push(v);
                         
-                      }else if (v.courseid == 3) {
+                      }else if (v.courseid == 2) {
                         myarr1.push(v);
+                      }
+                      else if (v.courseid == 3) {
+                        myarr2.push(v);
+                      }else{
+                        myarr3.push(v);
                       }
                       
 
-                  }else{
-                    console.log('doit');
-                      $('#error').html("Receive number not found");
-                    }
-
+                  }
 
                 })
 
                 this.hr_ygn_inquires = myarr;
-                this.php_inquires = myarr1;
+                this.php_inquires = myarr2;
                 console.log(this.php_inquires);
            },
+             
            initAddInquire()
            {
               $("#add_inquire_model").modal("show");
@@ -1041,7 +1042,7 @@
                    email: this.inquire.email,
                    paymentdate: this.inquire.paymentdate,
                    paymentamount: this.inquire.paymentamount,
-                   education: this.inquire.education_id,
+                   education: this.selectedId,
                    acceptedyear: this.inquire.acceptedyear,
                    position: this.inquire.position, 
                    remark: this.inquire.remark,
@@ -1108,6 +1109,7 @@
                axios.get('/api/setup/inquire')
                    .then(response => {
                        this.inquires = response.data.inquires;
+
                        this.hr_ygn_inquires = response.data.hr_ygn_inquires;
                        this.hr_mdy_inquires = response.data.hr_mdy_inquires;
                        this.php_inquires = response.data.php_inquires;
@@ -1417,13 +1419,16 @@
               {
                 inquire_data = this.ios_inquires[index]
               }
-
-             
-
-               $("#update_inquire_model").modal("show");
-               
-               
+                $("#update_inquire_model").modal("show");
                this.update_inquire = inquire_data;
+               this.selected = this.update_inquire.educationid;
+             
+               
+
+               
+               
+              
+               // this.select = this.update_inquire.educationid;
                //console.log(this.update_inquire.section);
            },
            initDetail(index, c_id, s_id)
@@ -1481,7 +1486,7 @@
                    remark: this.update_inquire.remark,
                    position: this.update_inquire.position,
                    camp: this.update_inquire.camp,
-                   education: this.update_inquire.educationid,
+                   education: this.selected,
                    acceptedyear: this.update_inquire.acceptedyear,
                    section_id: this.update_inquire.sectionid, 
                    township_id: this.update_inquire.townshipid,
@@ -1557,3 +1562,4 @@
        }
    }
 </script>
+

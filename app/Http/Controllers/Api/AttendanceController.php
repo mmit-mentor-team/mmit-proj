@@ -72,7 +72,7 @@ class AttendanceController extends Controller
             $att[] = [
                 'name' => $student->name,
                 'attendances' => $student->attendances,
-                'dates' => $dates
+                'dates' => $dates,
             ];
         }
 

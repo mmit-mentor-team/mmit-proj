@@ -74,6 +74,7 @@
                                 <div class="form-group">
                                     <label for="type">Select Type</label>
                                     <select name="type" class="form-control" id="type" v-model="addData.type">
+                                        <option disabled value="">Please Select Year</option>
                                         <option value="PHP">PHP</option>
                                         <option value="Recruitment">Recruitment</option>
                                         <option value="HR">HR</option>
@@ -180,6 +181,7 @@ export default {
                 files: []
             },
             updateData: {},
+            
         }
     },
 

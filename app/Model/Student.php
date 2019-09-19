@@ -13,4 +13,8 @@ class Student extends Model
     public function inquire(){
     	return $this->belongsTo('App\Model\Inquire');
     }
+
+    public function attendances(){
+        return $this->hasMany('App\Model\Attendance');
+    }
 }

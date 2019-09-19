@@ -507,5 +507,7 @@ $inquiresAlls=InquireResource::collection($inquireAll);
             'inquire'  =>  $inquire,
             'message'   =>  'Successfully selected Last Inquired!'
         ],200);
+        
+        
     }
 }

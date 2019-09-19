@@ -78,3 +78,7 @@ Route::resource('/attendance', 'Api\AttendanceController');
 //Location
 Route::resource('/location', 'Api\LocationController');
 
+// Attendance
+Route::get('/attendances/students/{section_id}', 'Api\AttendanceController@getStudents');
+Route::post('/attendances/store', 'Api\AttendanceController@store');
+Route::get('/attendances/{section_id}', 'Api\AttendanceController@getAttendances');

@@ -14,4 +14,8 @@ class Teacher extends Model
     {
         return $this->belongsToMany('App\Model\Section');
     }
+
+    public function staff(){
+        return $this->belongsTo('App\Model\Staff');
+    }
 }

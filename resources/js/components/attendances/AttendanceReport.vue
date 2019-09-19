@@ -5,7 +5,8 @@
             <option disabled value="">Select Course</option>
             <option v-for="section in sections" :key="section.key" :value="section.id">{{section.title}}</option>
         </select>
-        <table class="table table-responsive table-bordered" v-if="attendance_data">
+        <div v-if="attendance_data">
+        <table class="table table-responsive table-bordered">
             <thead>
                 <tr>
                     <th>No.</th>
@@ -30,6 +31,8 @@
                 </tr>
             </tbody>
         </table>
+        <button class="btn btn-primary" @click="exportExcel()">Export Excel</button>
+        </div>
     </div>
 </template>
 <script>
@@ -67,6 +70,7 @@
             getAttendances() {
                 axios.get('/api/attendances/' + this.selected_section)
                     .then(response => {
+                        //return;
                         this.attendances = response.data;
                         this.attendance_dates = this.attendances[0].dates;
                         this.total = this.attendance_dates.length;
@@ -80,9 +84,13 @@
 
             percent(student){
                 return Math.ceil(((this.total - this.absent(student))/this.total) * 100);
+            },
+
+            exportExcel(){
+                window.location = '/attendances/export/' + this.selected_section;
             }
         }
-    }
+    };
 
 </script>
 <style scoped>

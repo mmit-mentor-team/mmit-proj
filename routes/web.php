@@ -76,3 +76,4 @@ Route::get('/export/{month}/{year}', 'ExportController@export');
 Route::get('/report', 'HomeController@report')->name('report');
 Route::get('/attendances/collection', 'AttendanceController@attendanceCollect')->name('attendances.collect');
 Route::get('/attendances/reports', 'AttendanceController@attendanceReport')->name('attendances.reports');
+Route::get('/attendances/export/{section_id}','AttendanceController@Export');

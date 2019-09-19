@@ -5,31 +5,35 @@
             <option disabled value="">Select Course</option>
             <option v-for="section in sections" :key="section.key" :value="section.id">{{section.title}}</option>
         </select>
-        <table class="table table-responsive table-bordered" v-if="attendance_data">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th class="verticaltext" v-for="att_date in attendance_dates" :key="att_date.key">
-                        {{att_date.date}}
-                    </th>
-                    <th>Total</th>
-                    <th>Absent</th>
-                    <th>%</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(attendance, index) in attendances" :key="attendance.key">
-                    <td>{{index+1}}</td>
-                    <td>{{attendance.name}}</td>
-                    <td v-for="temp in attendance.attendances" :key="temp.key"
-                        :class="{'present': (temp.status == 1), 'absent': (temp.status == 0)}"></td>
-                    <td>{{total}}</td>
-                    <td>{{absent(attendance)}}</td>
-                    <td>{{percent(attendance)}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div v-if="attendance_data">
+            <table class="table table-responsive table-bordered">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th class="verticaltext" v-for="att_date in attendance_dates" :key="att_date.key">
+                            {{att_date.date}}
+                        </th>
+                        <th>Total</th>
+                        <th>Absent</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(attendance, index) in attendances" :key="attendance.key">
+                        <td>{{index+1}}</td>
+                        <td>{{attendance.name}}</td>
+                        <td v-for="temp in attendance.attendances" :key="temp.key"
+                            :class="{'present': (temp.status == 1), 'absent': (temp.status == 0)}"></td>
+                        <td>{{total}}</td>
+                        <td>{{absent(attendance)}}</td>
+                        <td>{{percent(attendance)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary" @click="exportExcel()">Export Excel</button>
+        </div>
     </div>
 </template>
 <script>
@@ -74,12 +78,16 @@
                     .catch(error => (console.log(error)));
             },
 
-            absent(student){
+            absent(student) {
                 return student.attendances.filter(attendance => attendance.status == 0).length;
             },
 
-            percent(student){
-                return Math.ceil(((this.total - this.absent(student))/this.total) * 100);
+            percent(student) {
+                return Math.ceil(((this.total - this.absent(student)) / this.total) * 100);
+            },
+
+            exportExcel(){
+                
             }
         }
     }

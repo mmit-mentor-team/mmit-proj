@@ -87,7 +87,7 @@
             },
 
             exportExcel(){
-                
+                window.location = '/attendances/export/' + this.selected_section;
             }
         }
     }

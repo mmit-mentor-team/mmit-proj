@@ -75,6 +75,7 @@ class AttendanceController extends Controller
                 'dates' => $dates,
             ];
         }
+        //dd($att);
 
         
         return response()->json($att);

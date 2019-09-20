@@ -8,6 +8,8 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AttendanceExport;
 
 class AttendanceController extends Controller
 {
@@ -33,5 +35,9 @@ class AttendanceController extends Controller
             $q->where('user_id', Auth::user()->id);
         })->first();
         return $teacher->sections()->where('enddate', '>=', Carbon::now())->get();
+    }
+
+    public function Export($section_id){
+        return Excel::download(new AttendanceExport($section_id), 'Attendance Report.xlsx');
     }
 }

@@ -161,6 +161,8 @@ class InquireController extends Controller
             ->get();
 
 
+$inquireAll=Inquire::all();
+$inquiresAlls=InquireResource::collection($inquireAll);
 
             // $titles = DB::table('inquires')->pluck('name');
 
@@ -175,7 +177,8 @@ class InquireController extends Controller
             'hr_ygn_inquires' => $hr_ygn_inquires,
             'hr_mdy_inquires'   => $hr_mdy_inquires,
             'php_inquires'  =>  $php_inquires,
-            'ios_inquires'  =>  $ios_inquires
+            'ios_inquires'  =>  $ios_inquires,
+            'inquires'=>$inquiresAlls
         ],200);
 
         
@@ -444,7 +447,7 @@ class InquireController extends Controller
     {
         //
 
-          $inquire = Inquire::find($id);
+        $inquire = Inquire::find($id);
         $inquire->delete();
 
         return response()->json([
@@ -496,13 +499,10 @@ class InquireController extends Controller
 
     public function lastinquire(){
         $inquire=Inquire::orderBy('id','desc')
-                ->first();
-                
+                ->first();     
         // dd($inquire);
-
         $inquire = new InquireResource($inquire);
 
-        
         return response()->json([
             'inquire'  =>  $inquire,
             'message'   =>  'Successfully selected Last Inquired!'
@@ -510,11 +510,4 @@ class InquireController extends Controller
         
         
     }
-
-  
-
-
-
-
-
 }

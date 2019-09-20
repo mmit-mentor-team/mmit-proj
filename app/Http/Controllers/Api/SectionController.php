@@ -246,7 +246,10 @@ class SectionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+
     {
+
+
         $section =  DB::table('sections')
             ->select(
 
@@ -276,7 +279,7 @@ class SectionController extends Controller
             ->where('sections.duration_id','=',$id)
             ->orderBy('sections.id', 'desc')
             ->get();
-            // dd($section);
+             //dd($section);
 
             $sections =  SectionResource::collection($section);
 

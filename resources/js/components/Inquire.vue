@@ -97,22 +97,22 @@
                           <td> {{ index + 1 }} </td>
                           <td> {{ hr_ygn_inquire.receiveno}}</td>
                           <td> {{ hr_ygn_inquire.name }} </td>
-                          <td>  {{ hr_ygn_inquire.phno}}</td>
+                          <td> {{ hr_ygn_inquire.phno}}</td>
                           
                           <td> 
-                            <button @click="printInquire(hr_ygn_inquire.id, hr_ygn_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(hr_ygn_inquire.id, hr_ygn_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
-                            <button @click="initDetail(hr_ygn_inquire.id, hr_ygn_inquire.courseid, hr_ygn_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(hr_ygn_inquire.id, hr_ygn_inquire.section.duration.course.id, hr_ygn_inquire.s_id)" class="btn btn-info btn-xs text-white">
                                   <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(hr_ygn_inquire.id, hr_ygn_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(hr_ygn_inquire.id, hr_ygn_inquire.section.duration.course.id)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(hr_ygn_inquire.id, hr_ygn_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(hr_ygn_inquire.id, hr_ygn_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -150,19 +150,19 @@
                           <td>  {{ hr_mdy_inquire.phno}}</td>
                           
                           <td> 
-                            <button @click="printInquire(hr_mdy_inquire.id, hr_mdy_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(hr_mdy_inquire.id, hr_mdy_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
-                            <button @click="initDetail(hr_mdy_inquire.id, hr_mdy_inquire.courseid, hr_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(hr_mdy_inquire.id, hr_mdy_inquire.section.duration.course.id, hr_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
                               <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(hr_mdy_inquire.id,hr_mdy_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(hr_mdy_inquire.id,hr_mdy_inquire.section.duration.course.id)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(hr_mdy_inquire.id,hr_mdy_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(hr_mdy_inquire.id,hr_mdy_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -202,19 +202,19 @@
                           
                          
                           <td> 
-                            <button @click="printInquire(php_inquire.id, php_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(php_inquire.id, php_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
-                            <button @click="initDetail(php_inquire.id, php_inquire.courseid, php_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(php_inquire.id, php_inquire.section.duration.course.id, php_inquire.s_id)" class="btn btn-info btn-xs text-white">
                                 <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(php_inquire.id,php_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(php_inquire.id,php_inquire.section.duration.course.id)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(php_inquire.id,php_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(php_inquire.id,php_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -256,19 +256,19 @@
                           
                          
                           <td> 
-                            <button @click="printInquire(php_mdy_inquire.id, php_mdy_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(php_mdy_inquire.id, php_mdy_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button>
 
-                            <button @click="initDetail(php_mdy_inquire.id, php_mdy_inquire.courseid, php_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(php_mdy_inquire.id, php_mdy_inquire.section.duration.course.id, php_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
                                 <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(php_mdy_inquire.id,php_mdy_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(php_mdy_inquire.id,  php_mdy_inquire.section.duration.course.id )" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(php_mdy_inquire.id,php_mdy_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(php_mdy_inquire.id,php_mdy_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -307,19 +307,19 @@
                           <td> {{ ios_inquire.phno}}</td>
                           
                           <td>
-                            <button @click="printInquire(ios_inquire.id, ios_inquire.courseid)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(ios_inquire.id, ios_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
                             
-                            <button @click="initDetail(ios_inquire.id, ios_inquire.courseid, ios_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(ios_inquire.id, ios_inquire.section.duration.course.id, ios_inquire.s_id)" class="btn btn-info btn-xs text-white">
                                   <i class="fa fa-eye"></i> Detail
                             </button>
                             
-                            <button @click="initUpdate(ios_inquire.id, ios_inquire.courseid)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(ios_inquire.id, ios_inquire.section.duration.course.id)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(ios_inquire.id, ios_inquire.courseid)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(ios_inquire.id, ios_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -369,14 +369,9 @@
             <div class="form-row form-group">
               <div class="col-md-6">
                 <label for="names">Course:</label>
-                 
-                <select v-model="course" name="course_id" id="course_id" class="form-control"
-                  @change="readDurations" >
-                  <option disabled value="">Please select one</option>
-                  <option v-for ="(course, index) in courses"  :value="course.id">
-                    {{ course.name }} ( {{ course.cityname }} )
-                  </option>
-                </select>
+
+                <v-select v-model="selected" :options="courses" :reduce="name => name.id" label="name"></v-select>
+
               </div>
 
               <div class="col-md-6">
@@ -570,13 +565,20 @@
             <div class="form-row form-group">
               <div class="col-md-6">
                 <label for="names">Course:</label>
-                <select v-model="course" name="course_id" id="course_id" class="form-control"
+                <!-- <select v-model="course" name="course_id" id="course_id" class="form-control"
                   @change="readDurations" >
                   <option disabled value="">Please select one</option>
-                  <option v-for ="(course, index) in courses"  :value="course.id" :selected="course.id == update_inquire.courseid">
-                    {{ course.name }} ( {{ course.cityname }} )
+                  <option v-for ="(course, index) in courses" :value="course.id" :selected="course.id == update_inquire.courseid">
+                    {{ course.name }} ( {{ course.location && course.location.city.name }} )
+
+                    {{ course.id == update_inquire.courseid }}
+                    {{ course.id  }}
+                    {{ update_inquire.courseid }}
                   </option>
-                </select>
+                </select> -->
+
+                <v-select v-model="update_inquire.selected" :options="courses" :reduce="name => name.id" label="name" > </v-select>
+
               </div>
               <div class="col-md-6">
                 <label for="names">Duration:</label>
@@ -912,6 +914,8 @@
                print_inquire:{},
                sreceiveno:'',
                activetab: '',
+
+               selected: null
            }
        },
        mounted()
@@ -1190,11 +1194,11 @@
 
             var currentDate = new Date().toJSON().slice(0,10).replace(/-/g,' / ');
 
-            var course = this.print_inquire.course;
-            var title = this.print_inquire.codeno;
+            var course = this.print_inquire.section.duration.course.name;
+            var title = this.print_inquire.section.title;
             var receiveno = this.print_inquire.receiveno;
             var name = this.print_inquire.name;
-            var coursefees = this.print_inquire.coursefees;
+            var coursefees = this.print_inquire.section.duration.course.fees;
             var installment = this.print_inquire.installmentamount;
             var due = parseInt(coursefees) - parseInt(installment);
             var startdate = this.print_inquire.startdate;
@@ -1392,7 +1396,7 @@
                       $('.camphide').hide();
                    }
             },
-           initUpdate(index,courseid)
+           initUpdate(index,courseid,)
            {
               this.errors = [];
 
@@ -1437,6 +1441,7 @@
                $("#update_inquire_model").modal("show");
                
                this.update_inquire = inquire_data;
+               this.update_inquire.selected = courseid;
                // console.log(this.update_inquire);
            },
            initDetail(index, c_id, s_id)

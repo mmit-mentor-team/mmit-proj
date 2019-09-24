@@ -147,16 +147,17 @@
             
             <div class="form-group">
               <label>Name:</label>
-                <input type="text" placeholder="township Name" class="form-control" v-model="clone_update_township.name">
+                <input type="text" placeholder="township Name" class="form-control" v-model="update_township.name">
             </div>
 
             <div class="form-group">
               <label for="names"> City :</label>
-                <!-- <select class="form-control"  name="city_id" v-model="clone_update_township.city_id" id="cityid">
+                <!-- <select class="form-control"  name="city_id" v-model="update_township.city_id" id="cityid">
                   
-                  <option v-for="(city, index) in cities" :value="city.id" :selected="city.id == clone_update_township.city_id"> {{ city.name }}  </option>
+                  <option v-for="(city, index) in cities" :value="city.id" :selected="city.id == update_township.city_id"> {{ city.name }}  </option>
                 </select> -->
-                <v-select v-model="selected" :options="cities" :reduce="name => name.id" label="name" :key="selected"></v-select>
+                
+                <v-select v-model="update_township.selected" :options="cities" :reduce="name => name.id" label="name" > </v-select>
                 <!-- {{selected}} -->
             </div>
             
@@ -195,7 +196,7 @@
                delete_noti:false,
                message:'',
                update_township: {},
-               clone_update_township: {},
+               
                selected: null
            }
        },
@@ -274,20 +275,20 @@
            {
                this.errors = [];
                this.update_township = this.townships[index];
-               this.selected = this.update_township.city_id;
+               this.update_township.selected = this.update_township.city.id;
 
                $("#update_township_model").modal("show");
 
                var clonedata = this.townships.slice(index);
-               this.clone_update_township = clonedata[0];
+               this.update_township = clonedata[0];
 
            },
 
            updateTownship()
            {
-               axios.patch('/api/setup/township/' + this.clone_update_township.id, {
-                   name: this.clone_update_township.name,
-                   city_id : this.selected,
+               axios.patch('/api/setup/township/' + this.update_township.id, {
+                   name: this.update_township.name,
+                   city_id : this.update_township.selected,
                })
                    .then(response => {
                         this.update_noti=true;

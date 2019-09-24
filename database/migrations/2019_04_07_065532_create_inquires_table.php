@@ -15,8 +15,9 @@ class CreateInquiresTable extends Migration
     {
         Schema::create('inquires', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigIncrements('inquireno');
+            $table->bigIncrements('receiveno');
             $table->string('name');
-            $table->string('receiveno');
             $table->string('gender');
             $table->date('dob')->nullable();
             $table->string('age');
@@ -30,6 +31,7 @@ class CreateInquiresTable extends Migration
             $table->string('camp');
             $table->string('education');
             $table->string('acceptedyear')->nullable();
+            $table->string('actionstatus')->default(0);
 
             //section
             $table->unsignedBigInteger('section_id');

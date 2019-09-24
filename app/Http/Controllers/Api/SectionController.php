@@ -154,7 +154,9 @@ class SectionController extends Controller
 
     {
 
-        $section = Section::where('duration_id', '=', $id)->orderBy('sections.id','DESC')->get();
+        $sections = Section::where('duration_id', '=', $id)->orderBy('sections.id','DESC')->get();
+        $sections =  SectionResource::collection($sections);
+
 
         return response()->json([
             'sections' => $sections,

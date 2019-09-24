@@ -76,19 +76,19 @@
             </div>
             <div class="form-group">
               <label for="names">City:</label>
-                
-                <select class="form-control" name="city_id" v-model="city_id" id="cityid">
-                  <option disabled value="">Please select one</option>
-                  <option v-for="(city, index) in cities" :value="city.id" > {{ city.name }}  </option>
-                </select>
+                <v-select v-model="selected" :options="cities" :reduce="name => name.id" label="name"></v-select>
             </div>
             
           </div>
           
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              <i class="fa fa-times"></i> Close
+            </button>
             
-            <button type="button" @click="createLocation" class="btn btn-primary">Submit</button>
+            <button type="button" @click="createLocation" class="btn btn-primary">
+              <i class="fa fa-save pr-2">  </i> Save
+            </button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -115,19 +115,20 @@
             </div>
             <div class="form-group">
               <label for="names">City:</label>
-                
-                <select class="form-control"  name="city_id" v-model="update_location.city && update_location.city.id" id="cityid">
-                  
-                  <option v-for="(city, index) in cities" :value="city.id" :selected="city.id == update_location.city && update_location.city.id"> {{ city.name }}  </option>
-                </select>
+
+                <v-select v-model="update_location.selected" :options="cities" :reduce="name => name.id" label="name" > </v-select>
             </div>
             
           </div>
               
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              <i class="fa fa-times"></i> Close
+            </button>
                 
-            <button type="button" @click="updateLocation" class="btn btn-primary">Submit</button>
+            <button type="button" @click="updateLocation" class="btn btn-primary">
+              <i class="fa fa-upload pr-2">  </i> Update
+            </button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -146,7 +147,8 @@
                city_id: '',
                errors: [],
                locations: [],
-               update_location: {}
+               update_location: {},
+               selected: null
            }
        },
 
@@ -177,7 +179,7 @@
            {
                axios.post('api/setup/location', {
                    name: this.location.name,
-                   city_id: this.city_id,
+                   city_id: this.selected,
 
                })
                    .then(response => {
@@ -216,12 +218,13 @@
                this.errors = [];
                $("#update_location_model").modal("show");
                this.update_location = this.locations[index];
+               this.update_location.selected = this.update_location.city.id;
            },
            updateLocation()
            {
                axios.patch('api/setup/location/' + this.update_location.id, {
                    name: this.update_location.name,
-                   city_id: this.update_location.city.id,
+                   city_id: this.update_location.selected,
 
                })
                    .then(response => {

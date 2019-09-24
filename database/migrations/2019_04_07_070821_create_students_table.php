@@ -20,6 +20,7 @@ class CreateStudentsTable extends Migration
             $table->longText('remark')->nullable();
             $table->longText('resume');
             $table->boolean('status')->default(true);
+            $table->string('actionstatus')->default(0);
 
             //inquire
             $table->unsignedBigInteger('inquire_id');

@@ -22,18 +22,18 @@ class AttendanceController extends Controller
     }
     //
     public function getStudents($section_id){
-        
+
         $students = [];
         $studentList = Student::whereHas('inquire', function($q) use ($section_id){
             $q->where('section_id', $section_id);
         })->whereDoesntHave('attendances', function($query){
             $query->where('date', Carbon::today());
-        })->paginate(2);
-        
+        })->paginate(10);
+
         return MyStudentResource::collection($studentList);
-        
+
     }
-    
+
     public function store(Request $request){
         DB::beginTransaction();
         try{
@@ -48,23 +48,23 @@ class AttendanceController extends Controller
             }
             DB::commit();
             return response()->json(['message' => 'Attendances are stored successfully']);
-            
+
         } catch(\Exception $e){
-            
+
             DB::rollBack();
             return response()->json(['message' => 'Something is wrong. Please try again', 'exception' => $e]);
         }
     }
-    
+
     public function getAttendances($section_id){
-        
+
         $attendances = DB::table('attendances')
         ->join('students', 'students.id', '=', 'attendances.student_id')
         ->join('inquires', 'inquires.id', '=', 'students.inquire_id')
         ->where('inquires.section_id', $section_id)
         ->distinct('inquires.name')
         ->get();
-        
+
         $students = Inquire::where('section_id', $section_id)->with('student.attendances')->get();
         $dates = Attendance::select('date')->distinct()->get();
         $att = [];
@@ -77,7 +77,7 @@ class AttendanceController extends Controller
         }
         //dd($att);
 
-        
+
         return response()->json($att);
     }
 }

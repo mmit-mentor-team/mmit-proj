@@ -1,10 +1,10 @@
 <template>
-  
+
 
 
   <div class="container">
     <div class="row">
-     
+
 
 
       <!-- ayechanoo start-->
@@ -12,15 +12,15 @@
         <h1 class="h3 mb-2 text-gray-800"> Student List </h1>
         <div class="card shadow mb-4">
           <div class="card-header py-3">
-            
+
             <button @click="addStudent()" class="btn btn-primary float-right" style="padding:8px">
               <i class="fa fa-plus"> </i> Add New Student
             </button>
-            
+
             <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="noti==1">
-            
-            <strong>{{ message }}</strong> 
-            
+
+            <strong>{{ message }}</strong>
+
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -40,15 +40,15 @@
               </a>
 
               <a class="nav-item nav-link " v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'active' : '' ]" data-id="3" v-on:click="showDuration(3)" id="nav-php_bootcamp-tab" data-toggle="tab" href="#nav-php_bootcamp" role="tab" aria-controls="nav-php_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'">
-                PHP Bootcamp(YGN) 
+                PHP Bootcamp(YGN)
               </a>
 
               <a class="nav-item nav-link " v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'active' : '' ]" data-id="5" v-on:click="showDuration(5)" id="nav-php_bootcamp_mdy-tab" data-toggle="tab" href="#nav-php_bootcamp_mdy" role="tab" aria-controls="nav-php_bootcamp_mdy" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'">
-                PHP Bootcamp(MDY) 
+                PHP Bootcamp(MDY)
               </a>
 
               <a class="nav-item nav-link " v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" data-id="4" v-on:click="showDuration(4)" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'">
-                iOS 
+                iOS
               </a>
 
             </div>
@@ -75,19 +75,19 @@
                                   </option>
                                 </select>
                             </div>
-                      
-                    
+
+
                     <!-- durations end -->
 
                     <!-- seciton start -->
-                    
+
                         <div class="form-group  col-md-6 col-sm-12">
                         <label for="names">Sections:</label>
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -145,7 +145,7 @@
                                   <i class="fas fa-pen"></i>
                                   Edit
                                 </button>
-                                  
+
                                 <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
                                   <i class="fas fa-trash"></i>
                                   Delete
@@ -153,11 +153,11 @@
                               </td>
                             </tr>
                           </tbody>
-                          
+
                         </table>
                       </div>
                     <!-- tabel end -->
-                
+
                 </div>
               <!-- for ygn hr batch end -->
 
@@ -179,19 +179,19 @@
                                   </option>
                                 </select>
                             </div>
-                      
-                    
+
+
                     <!-- durations end -->
 
                     <!-- seciton start -->
-                    
+
                         <div class="form-group  col-md-6 col-sm-12">
                         <label for="names">Sections:</label>
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -249,7 +249,7 @@
                                   <i class="fas fa-pen"></i>
                                   Edit
                                 </button>
-                                  
+
                                 <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
                                   <i class="fas fa-trash"></i>
                                   Delete
@@ -257,11 +257,11 @@
                               </td>
                             </tr>
                           </tbody>
-                          
+
                         </table>
                       </div>
                     <!-- tabel end -->
-                
+
                 </div>
               <!-- for mdy hr batch end -->
 
@@ -284,19 +284,19 @@
                                   </option>
                                 </select>
                             </div>
-                      
-                    
+
+
                     <!-- durations end -->
 
                     <!-- seciton start -->
-                    
+
                         <div class="form-group  col-md-6 col-sm-12">
                         <label for="names">Sections:</label>
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -353,7 +353,7 @@
                                   <i class="fas fa-pen"></i>
                                   Edit
                                 </button>
-                                  
+
                                 <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
                                   <i class="fas fa-trash"></i>
                                   Delete
@@ -361,11 +361,11 @@
                               </td>
                             </tr>
                           </tbody>
-                          
+
                         </table>
                       </div>
                     <!-- tabel end -->
-                
+
                 </div>
               <!-- for php bootcamp ygn batch end -->
 
@@ -389,19 +389,19 @@
                                   </option>
                                 </select>
                             </div>
-                      
-                    
+
+
                     <!-- durations end -->
 
                     <!-- seciton start -->
-                    
+
                         <div class="form-group  col-md-6 col-sm-12">
                         <label for="names">Sections:</label>
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -458,7 +458,7 @@
                                   <i class="fas fa-pen"></i>
                                   Edit
                                 </button>
-                                  
+
                                 <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
                                   <i class="fas fa-trash"></i>
                                   Delete
@@ -466,11 +466,11 @@
                               </td>
                             </tr>
                           </tbody>
-                          
+
                         </table>
                       </div>
                     <!-- tabel end -->
-                
+
                 </div>
               <!-- for php bootcamp mdy batch end -->
 
@@ -493,19 +493,19 @@
                                   </option>
                                 </select>
                             </div>
-                      
-                    
+
+
                     <!-- durations end -->
 
                     <!-- seciton start -->
-                    
+
                         <div class="form-group  col-md-6 col-sm-12">
                         <label for="names">Sections:</label>
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -562,7 +562,7 @@
                                   <i class="fas fa-pen"></i>
                                   Edit
                                 </button>
-                                  
+
                                 <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
                                   <i class="fas fa-trash"></i>
                                   Delete
@@ -570,11 +570,11 @@
                               </td>
                             </tr>
                           </tbody>
-                          
+
                         </table>
                       </div>
                     <!-- tabel end -->
-                
+
                 </div>
               <!-- for ios  batch end -->
 
@@ -582,7 +582,7 @@
            <!-- tab content end -->
 
 
-            
+
           </div>
 
         </div>
@@ -591,9 +591,9 @@
       </div>
 
 
-     
 
-        <!-- 
+
+        <!--
     adding student start
 
      -->
@@ -606,7 +606,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
 
-            
+
           <div class="modal-body">
 
             <div class="alert alert-danger" v-if="errors.length > 0">
@@ -618,7 +618,7 @@
             <!-- selection start -->
             <div class="form-group">
               <label for="course_id">Course:</label>
-               
+
                <select v-model="course" name="course_id" id="course_id" class="form-control" @change="readDurations">
                   <option value="">Please select one</option>
                   <option v-for ="(course, index) in courses"  :value="course.id" :data-fee="course.fees">
@@ -626,7 +626,7 @@
                   </option>
                 </select>
 
-                
+
             </div>
 
             <div class="form-group">
@@ -646,8 +646,8 @@
                 <select v-model="section" name="section_id" id="section_id" class="form-control" @change="readInquires" >
                   <option disabled value="">Please select one</option>
                   <option v-for ="(section, index) in sections"  :value="section.id">
-                    {{ section.title }} ( {{ section.durations.time }} )
-                    [ {{ section.during }} ]
+                    {{ section.title }} ( {{ section.duration.time }} )
+                    [ {{ section.duration.during }} ]
 
                   </option>
                 </select>
@@ -660,7 +660,7 @@
               <option v-for="inq in inquireArray" :value="inq.id">
                 {{inq.name}}
               </option>
-              
+
             </select>
             </div>
 
@@ -683,10 +683,10 @@
             <label>Going for Full-Paid?</label>
 
             <div class="form-group">
-              
+
 
                   <!-- 0 means not full paid -->
-              
+
                     <div class="form-check form-check-inline">
                     <input type="radio" class="form-check-input" @change="makeDecision(decision)"  id="decisionTwo" value="Noadd" v-model="decision">
                       <label class="form-check-label" for="decisionTwo">No</label>
@@ -696,8 +696,8 @@
                     <input type="radio" class="form-check-input" @change="makeDecision(decision)" id="decisioOne" value="add" v-model="decision">
                         <label class="form-check-label" for="decisioOne">Yes</label>
                   </div>
-                     
-              
+
+
            </div>
 
            <div class="fullpaid d-none">
@@ -713,7 +713,7 @@
               <label for="remark">Remark</label>
               <textarea name="remark" class="form-control" id="remark" v-model="student.remark"></textarea>
             </div>
-<!-- 
+<!--
             <div class="form-group ">
               <label for="resume">Resume</label>
               <input type="file" name="resume"  ref="files" class="form-control">
@@ -722,9 +722,9 @@
             <label>Please find me a job!</label>
 
             <div class="form-group">
-              
 
-              
+
+
                     <div class="form-check form-check-inline">
                     <input type="radio" class="form-check-input" id="one" checked="checked" value="1" v-model="studentstatus">
                       <label class="form-check-label"  for="one">Yes</label>
@@ -733,23 +733,23 @@
                     <input type="radio" class="form-check-input" id="zero" value="0" v-model="studentstatus">
                         <label class="form-check-label" for="zero">No</label>
                   </div>
-                     
-              
+
+
            </div>
 
-           
-      
-
-      
 
 
-           
+
+
+
+
+
 
           </div>
-          
+
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            
+
             <button type="button" @click="creatStudent" class="btn btn-primary">Submit</button>
           </div>
         </div><!-- /.modal-content -->
@@ -758,7 +758,7 @@
     <!-- end of add student model -->
 
 
-    <!-- 
+    <!--
     updating student start
 
      -->
@@ -771,8 +771,8 @@
               <button type="button" class="close" data-dismiss="modal"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
 
-           
-            
+
+
           <div class="modal-body">
             <div class="alert alert-danger" v-if="errors.length > 0">
                         <ul>
@@ -786,7 +786,7 @@
               <option v-for="inq in inquireArray1" :value="inq.id" :selected="inq.id==update_Student.inquire_id">
                 {{inq.name}}
               </option>
-              
+
             </select>
             </div>
 
@@ -820,31 +820,31 @@
 
 
            <div class="form-check form-check-inline">
-            
+
             <input type="radio" class="form-check-input" id="one" value="1" v-model="update_Student.status">
       <label for="one" class="form-check-label">Yes</label>
 
            </div>
 
            <div class="form-check form-check-inline">
-            
+
             <input type="radio" class="form-check-input" id="two" value="0" v-model="update_Student.status">
       <label for="two" class="form-check-label">No</label>
 
            </div>
             </div>
-      
-
-      
 
 
-           
+
+
+
+
 
           </div>
-          
+
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            
+
             <button type="button" v-on:click="updating()" class="btn btn-primary">Submit</button>
           </div>
         </div><!-- /.modal-content -->
@@ -853,7 +853,7 @@
     <!-- end of add student model -->
 
 
-    <!-- 
+    <!--
     secondpaying student start
 
      -->
@@ -866,8 +866,8 @@
               <button type="button" class="close" data-dismiss="modal"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
 
-           
-            
+
+
           <div class="modal-body">
             <div class="alert alert-danger" v-if="errors.length > 0">
                         <ul>
@@ -909,19 +909,19 @@
             <!-- <label>Please find me a job </label>
 
            <div class="form-group">
-            
+
             <input type="radio" id="one" value="1" v-model="update_Student.status">
             <label for="one">Yes</label>
 
           </div>
 
            <div class="form-group">
-            
+
             <input type="radio" id="two" value="0" v-model="update_Student.status">
             <label for="two">No</label>
 
            </div> -->
-      
+
 
       <div class="form-group">
 
@@ -930,18 +930,18 @@
               <option v-for="inq in inquireArray1" :value="inq.id" :selected="inq.id==update_Student.inquire_id">
                 {{inq.name}}
               </option>
-              
+
             </select>
             </div>
 
 
-           
+
 
           </div>
-          
+
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            
+
             <button type="button" v-on:click="secondpayupdating()" class="btn btn-primary">Submit</button>
           </div>
         </div><!-- /.modal-content -->
@@ -956,8 +956,8 @@
   </div>
 
 
-   
-</div> 
+
+</div>
 
 
 
@@ -1021,7 +1021,7 @@
 
           print_Student:{},
           detail_Student:{},
-          
+
         }
       },
       mounted(){
@@ -1030,13 +1030,13 @@
       //  this.readStudent();
     //     this.readDurations();
     //    this.readSections();
-        
+
         this.readInquire();
         // this.getDate();
        //  this.getStudent();
        // this.getCourse();
 
-      
+
       },
       methods:{
         showPrint(inq,sec,fee){
@@ -1075,7 +1075,7 @@
           $('.fullpaid').hide();
           this.student.secondSecinstallmentamount=0;
         }
-          
+
         },
 
         readInquire(){
@@ -1090,18 +1090,18 @@
           console.log('this is muse is active');
           var d=$('.active.tab-pane').data('id');
           this.showDuration(d);
-         } 
+         }
          else if($('.active.tab-pane').hasClass('hr-mdy')){
           console.log('this is muse is active');
           var d=$('.active.tab-pane').data('id');
           this.showDuration(d);
-         } 
+         }
          else if($('.active.tab-pane').hasClass('bootcamp-ygn')){
           console.log('this is muse is active');
           var d=$('.active.tab-pane').data('id');
           this.showDuration(d);
          }else if($('.active.tab-pane').hasClass('bootcamp-mdy')){
-          
+
           var d=$('.active.tab-pane').data('id');
           console.log('this is muse is active '+d);
           this.showDuration(d);
@@ -1125,7 +1125,7 @@
           console.log("the second pay is "+index);
           $('#secondpaying_modal').modal('show');
           this.update_Student=this.students1[index];
-          
+
           this.getDate();
           this.update_Student.secinstallmentdate=this.today;
           $('#updateStudentdate').val(this.today);
@@ -1148,14 +1148,14 @@
                    });
                    this.setZero();
 
-          
+
         },
 
         getDate(){
           var d=new Date();
           //this.today=d.getDate()+"-"+d.getMonth()+"-"+d.getFullYear();
           this.today=d.toLocaleDateString();
-          
+
         },
         setZero(){
           console.log('heo');
@@ -1165,8 +1165,8 @@
         settimeout(){
           setTimeout(function(){ $('.alert').fadeOut() },6000 );
           console.log(this.noti);
-          
-          
+
+
         },
           onImageChange() {
             this.files=this.$refs.file.files[0];
@@ -1189,7 +1189,7 @@
                 };
                 reader.readAsDataURL(file);
             },
-       
+
             readCourse(){
               axios.get('/api/setup/course')
                    .then(response => {
@@ -1198,14 +1198,14 @@
                    });
             },
         getStudent(){
-          
+
           axios.get(`/api/setup/getinquirebyId/${this.student.inquire_id}`)
                    .then(response => {
                     this.oneinquire=response.data.inquires;
                     var t=0;
                     $.each(this.oneinquire,function(i,v){
                       t=v.installmentamount;
-                     
+
                     })
                     this.amount=t;
                     this.student.secinstallmentamount=t;
@@ -1217,15 +1217,15 @@
                    //    // $('#addSecInstallAmount').val(this.amount);
                    //    this.student.secinstallmentamount=v.installmentamount;
                    //    // this.amount=this.needMoney;
-                      
+
 
                    //   }
-                      
+
                    //   })
 
-                    
 
-                      
+
+
                     });
 
         },
@@ -1237,7 +1237,7 @@
 
                        });
                  },
-        
+
         readInquires(){
                   axios.get(`/api/setup/inquire/${this.section}`)
                   .then(response=>{
@@ -1256,7 +1256,7 @@
                     // this.inquireArray=response.data.inquires;
                   })
 
-                 
+
 
         },
 
@@ -1281,11 +1281,11 @@
                        //console.log(response.data.sections);
                        this.sections=response.data.sections
                    });
-                   
+
                  }else{
                   console.log('nothing');
                  }
-          
+
         }
            ,
            readSections2(){
@@ -1299,11 +1299,11 @@
                        //console.log(response.data.sections);
                        this.sections2=response.data.sections
                    });
-                   
+
                  }else{
                   console.log('nothing');
                  }
-          
+
         }
            ,
 
@@ -1384,23 +1384,23 @@
                           <p class="pt-3 text-center"> ${receiveno} </p>
                         </div>
                       </div>
-                      
+
                       <div class="row">
-                        <div class="col-md-3 text-uppercase"> 
+                        <div class="col-md-3 text-uppercase">
                           Date :
                         </div>
                         <div class="col-md-9">
-                          <p> ${currentDate} </p>  
+                          <p> ${currentDate} </p>
                         </div>
                       </div>
 
                       <div class="row">
-                        <div class="col-md-3 text-uppercase"> 
+                        <div class="col-md-3 text-uppercase">
                           Invoice#
                         </div>
                         <div class="col-md-9">
-                          <p> ${course} <br> 
-                          (  ${title} ) </p> 
+                          <p> ${course} <br>
+                          (  ${title} ) </p>
                         </div>
                       </div>
 
@@ -1409,7 +1409,7 @@
                           For
                         </div>
                         <div class="col-md-9 img-fluid">
-                          <img src="img/mmit_receivelogo_one.png" style="width:200px; height:200px;">  
+                          <img src="img/mmit_receivelogo_one.png" style="width:200px; height:200px;">
                         </div>
                       </div>
                     </div>
@@ -1419,7 +1419,7 @@
                     <div class="col-md-12">
                       <table class="table">
                         <thead class="text-white bg-dark">
-                          <tr> 
+                          <tr>
                             <th class="text-uppercase" colspan="2"> Description </th>
                             <th class="text-uppercase"> Amount </th>
                           </tr>
@@ -1428,7 +1428,7 @@
                           <tr>
                             <td> Training Fess  </td>
                             <td> ${name} </td>
-                            <td> ${coursefees} Kyats </td>  
+                            <td> ${coursefees} Kyats </td>
                           </tr>
 
                           <tr>
@@ -1464,12 +1464,12 @@
                       <p>
                         <b> Training Start Date : </b>
                         ${startdate}
-                      </p> 
+                      </p>
 
                       <p>
                         <b> Time : </b>
                         ${time}
-                      </p> 
+                      </p>
 
                     </div>
                     <div class="col-md-4">
@@ -1482,10 +1482,10 @@
                     </div>
                   </div>
 
-                  <div class="row mt-5"> 
+                  <div class="row mt-5">
                     <div class="col-md-12">
                       <b style="font-size: 20px"> Bank Account Information : </b>
-                      
+
                       <p style="font-size: 18px"> <b> CB </b> Bank ATM Card Accountant -  0002 6001 0011 0329
                       </p>
 
@@ -1494,7 +1494,7 @@
 
                       <p style="font-size: 18px"> <b> KBZ </b> Bank ATM Card Accountant -  999 307 999 2846 6801
                       </p>
-                      
+
                       <p style="font-size: 18px"> Account Holder Name : U Yan Myoe Aung </p>
 
                     </div>
@@ -1503,9 +1503,9 @@
                   <div class="row mt-5">
                     <h3 class="font-weight-bold text-uppercase"> Thank You For Your Business! </h3>
                   </div>
-    
+
                 </div>
-                
+
               </body>
             </html>`);
 
@@ -1537,7 +1537,7 @@
                 formdata.append('status',this.studentstatus);
                 formdata.append('enquire',this.student.inquire_id);
                 // formdata.append('resume',this.$refs.files.files[0]);
-              
+
               axios.post('api/setup/student',formdata,{
                 headers: {
                   'Content-Type': 'multipart/form-data'
@@ -1546,17 +1546,17 @@
               .then(response=>{
                 console.log(response);
 
-              
+
                 if(response.data.failed){
                   this.noti=1;
                 //  console.log(this.noti);
                   this.message=response.data.failed;
                   this.students.push(response.data.student);
                 $('#add_student_modal').modal('hide');
-                
+
                 this.showStudent();
                 this.files='';
-                
+
                 }
                 if(response.data.succsssful){
                   this.noti=1;
@@ -1564,19 +1564,19 @@
                   this.message=response.data.succsssful;
                   this.students.push(response.data.student);
                 $('#add_student_modal').modal('hide');
-                
+
                 this.showStudent();
                 this.files='';
-            
-                }
-              
-                
 
-                
+                }
+
+
+
+
 
               })
               .catch(error=>{
-                        
+
                        if (error.response.data.errors && error.response.data.errors.installmentdate){
                            this.errors.push('The Date of installment data is required');
                        }
@@ -1593,18 +1593,18 @@
               });
               this.reset();
               this.settimeout();
-              
-              
+
+
               this.errors=[];
               },
 
-              
+
 
               deleteStudent(index)
              {
-             
+
                 let conf = confirm("Do you ready want to delete this city?");
-                if (conf === true) 
+                if (conf === true)
 
                 {
                   axios.delete('/api/setup/student/' + this.students1[index].id)
@@ -1622,14 +1622,14 @@
              secondpayupdating:function(){
                // var value=parseInt(this.update_Student.secinstallmentamount)+parseInt(this.update_Student.secondSecinstallmentamount);
                var value=parseInt(this.update_Student.secondSecinstallmentamount);
-               
+
                this.update_Student.secinstallmentamount=value;
                this.payamount();
               // this.updating();
                 $('#secondpaying_modal').modal("hide");
                  this.showStudent();
                this.update_Student="";
-                
+
              },
              payamount(){
               this.noti=0;
@@ -1638,9 +1638,9 @@
                 formdatas.append('installmentdate',this.update_Student.secinstallmentdate);
                 formdatas.append('installmentamount',this.update_Student.secondSecinstallmentamount);
                 //formdatas.append('installmentamount',this.update_Student.secinstallmentamount);
-                
+
                 formdatas.append('enquire',this.update_Student.inquire_id);
-              
+
                 formdatas.append('_method','PATCH');
 
                 axios.post('api/setup/updateamountstudent/'+this.update_Student.id,formdatas)
@@ -1660,7 +1660,7 @@
               this.noti=0;
                console.log(this.files);
                 var formdatas=new FormData();
-                
+
                 formdatas.append('installmentdate',this.update_Student.secinstallmentdate);
                 formdatas.append('installmentamount',this.update_Student.secinstallmentamount);
                 formdatas.append('remark',this.update_Student.remark);
@@ -1671,12 +1671,12 @@
                 formdatas.append('_method','PATCH');
 
                 //                 Data.append('_method', 'PATCH');
-                // axios.post('/url' , Data ). then( Response => { 
+                // axios.post('/url' , Data ). then( Response => {
                 //    // do stuff
                 // });
 
                 console.log(formdatas);
-              
+
               // axios.patch('api/student/'+this.update_Student.id,formdatas,{
               //    headers: {
               //       'Content-Type': `multipart/form-data; boundary=${formdatas._boundary}`,
@@ -1690,10 +1690,10 @@
                       this.message='Student has been updated sucessfully!!'+response.data.errors;
                        $("#update_student_modal").modal("hide");
 
-                       
+
                        this.settimeout();
-  
-                        
+
+
                 }
                 if(response.data.successful){
                   this.noti=1;
@@ -1701,10 +1701,10 @@
                    $("#update_student_modal").modal("hide");
                    this.showStudent();
                        this.settimeout();
-                       
+
 
                 }
-                      
+
                 //this.student=response.data.student
               })
               .catch(error=>{
@@ -1715,12 +1715,12 @@
 
               this.files='';
 
-              
-              
+
+
               })
 
 
-              
+
               },
               reset(){
                 this.student.secinstallmentdate='';
@@ -1740,9 +1740,9 @@
 
 
 
-                 
+
       }
     }
 
-  
+
 </script>

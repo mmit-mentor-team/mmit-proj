@@ -81,6 +81,9 @@ Vue.component('interview', require('./components/Interview.vue').default);
 Vue.component('interviewform', require('./components/Interviewform.vue').default);
 Vue.component('hire', require('./components/Hire.vue').default);
 Vue.component('dismiss', require('./components/Dismiss.vue').default);
+Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('attendance-collect', require('./components/attendances/AttendanceCollect.vue').default);
+Vue.component('attendance-report', require('./components/attendances/AttendanceReport.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

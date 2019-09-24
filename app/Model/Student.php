@@ -31,4 +31,8 @@ class Student extends Model
     public function dismiss(){
     	return $this->belongsTo('App\Model\Dismiss');
     }
+
+    public function attendances(){
+        return $this->hasMany('App\Model\Attendance');
+    }
 }

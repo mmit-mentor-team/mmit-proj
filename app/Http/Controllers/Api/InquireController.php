@@ -26,7 +26,7 @@ class InquireController extends Controller
     public function index()
     {
 
-        
+
         $townships = Township::all();
         $sections = Section::all();
 
@@ -92,7 +92,7 @@ class InquireController extends Controller
             'inquires'=>$inquiresAlls
         ],200);
 
-        
+
     }
 
     public function print($id)
@@ -106,36 +106,36 @@ class InquireController extends Controller
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <title>Page Title</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            
+
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
         </head>
         <body>
-        
+
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-        
+
                         <div class="card shadow mb-4">
-        
+
                             <div class="card-header py-3">
-        
+
                             <h3 class="m-0 font-weight-bold text-danger">
-        
+
                                 '.$inquire["name"].'
-        
+
                             </h3>
-        
-        
-        
+
+
+
                             </div>
-        
+
                         </div>
-        
+
                     </div>
                 </div>
             </div>
-            
+
         </body>
         </html>
         ';
@@ -169,7 +169,7 @@ class InquireController extends Controller
         $inquire = Inquire::create([
             'name'  =>  request('name'),
             'receiveno' =>  request('receiveno'),
-            'dob' => request('dob'),    
+            'dob' => request('dob'),
             'age'  =>  request('age'),
             'gender'  =>  request('gender'),
             'address' => request('address'),
@@ -190,7 +190,7 @@ class InquireController extends Controller
 
         ]);
 
-        if ($course_fees == $payment) 
+        if ($course_fees == $payment)
         {
             $student = Student::create([
                 'secinstallmentdate'=>request('paymentdate'),
@@ -200,10 +200,10 @@ class InquireController extends Controller
                 'status'=>1,
                 'inquire_id'=>$inquire->id,
                 'user_id'=>Auth::user()->id
-            ]);   
+            ]);
         }
 
-         
+
 
         $id = $inquire->id;
         // dd($id);
@@ -213,23 +213,23 @@ class InquireController extends Controller
 
         $inquires =  DB::table('inquires')
         ->select(
-                'inquires.*', 
-                'townships.name as townshipname', 
-                'sections.title as sectiontitle', 
-                'sections.codeno as codeno', 
-                'courses.name as course', 
-                'courses.fees as fees', 
+                'inquires.*',
+                'townships.name as townshipname',
+                'sections.title as sectiontitle',
+                'sections.codeno as codeno',
+                'courses.name as course',
+                'courses.fees as fees',
                 'courses.id as courseid',
                 'sections.startdate as startdate',
-                'sections.id as s_id', 
-                'sections.codeno as s_codeno', 
-                'sections.title as s_title', 
-                'sections.startdate as s_startdate', 
-                'sections.enddate as s_enddate', 
-                'durations.time as d_time', 
-                'durations.days as d_days', 
-                'durations.during as d_during', 
-                'courses.name as c_name', 
+                'sections.id as s_id',
+                'sections.codeno as s_codeno',
+                'sections.title as s_title',
+                'sections.startdate as s_startdate',
+                'sections.enddate as s_enddate',
+                'durations.time as d_time',
+                'durations.days as d_days',
+                'durations.during as d_during',
+                'courses.name as c_name',
                 'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -265,22 +265,22 @@ class InquireController extends Controller
     {
         // $inquires =  DB::table('inquires')
         //     ->select(
-        //         'inquires.*', 
-        //         'townships.name as townshipname', 
-        //         'sections.title as sectiontitle', 
-        //         'sections.codeno as codeno', 
-        //         'courses.name as course', 
-        //         'courses.fees as fees', 
+        //         'inquires.*',
+        //         'townships.name as townshipname',
+        //         'sections.title as sectiontitle',
+        //         'sections.codeno as codeno',
+        //         'courses.name as course',
+        //         'courses.fees as fees',
         //         'sections.startdate as startdate',
-        //         'sections.id as s_id', 
-        //         'sections.codeno as s_codeno', 
-        //         'sections.title as s_title', 
-        //         'sections.startdate as s_startdate', 
-        //         'sections.enddate as s_enddate', 
-        //         'durations.time as d_time', 
-        //         'durations.days as d_days', 
-        //         'durations.during as d_during', 
-        //         'courses.name as c_name', 
+        //         'sections.id as s_id',
+        //         'sections.codeno as s_codeno',
+        //         'sections.title as s_title',
+        //         'sections.startdate as s_startdate',
+        //         'sections.enddate as s_enddate',
+        //         'durations.time as d_time',
+        //         'durations.days as d_days',
+        //         'durations.during as d_during',
+        //         'courses.name as c_name',
         //         'cities.name as city_name',
         //     )
         //     ->join('townships', 'townships.id', '=', 'inquires.township_id')
@@ -320,21 +320,21 @@ class InquireController extends Controller
         //
 
          $inquire = Inquire::find($id);
-        
 
-        
+
+
         $inquire->name = request('name');
         $inquire->receiveno = request('receiveno');
         $inquire->dob = request('dob');
-        $inquire->age = request('age');        
+        $inquire->age = request('age');
         $inquire->gender = request('gender');
-        $inquire->address = request('address');        
+        $inquire->address = request('address');
         $inquire->phno = request('phno');
-        $inquire->installmentdate = request('installmentdate');        
+        $inquire->installmentdate = request('installmentdate');
         $inquire->installmentamount = request('installmentamount');
-        $inquire->remark = request('remark');       
+        $inquire->remark = request('remark');
         $inquire->position = request('position');
-        $inquire->camp = request('camp'); 
+        $inquire->camp = request('camp');
         $inquire->education = request('education');
         $inquire->acceptedyear = request('acceptedyear');
         $inquire->section_id = request('section_id');
@@ -368,23 +368,23 @@ class InquireController extends Controller
     public function getInquire($id){
        $inquire =  DB::table('inquires')
             ->select(
-                'inquires.*', 
-                'townships.name as townshipname', 
-                'sections.title as sectiontitle', 
-                'sections.codeno as codeno', 
-                'courses.name as course', 
-                'courses.fees as fees', 
+                'inquires.*',
+                'townships.name as townshipname',
+                'sections.title as sectiontitle',
+                'sections.codeno as codeno',
+                'courses.name as course',
+                'courses.fees as fees',
                 'courses.id as courseid',
                 'sections.startdate as startdate',
-                'sections.id as s_id', 
-                'sections.codeno as s_codeno', 
-                'sections.title as s_title', 
-                'sections.startdate as s_startdate', 
-                'sections.enddate as s_enddate', 
-                'durations.time as d_time', 
-                'durations.days as d_days', 
-                'durations.during as d_during', 
-                'courses.name as c_name', 
+                'sections.id as s_id',
+                'sections.codeno as s_codeno',
+                'sections.title as s_title',
+                'sections.startdate as s_startdate',
+                'sections.enddate as s_enddate',
+                'durations.time as d_time',
+                'durations.days as d_days',
+                'durations.during as d_during',
+                'courses.name as c_name',
                 'cities.name as city_name')
             ->join('townships', 'townships.id', '=', 'inquires.township_id')
             ->join('sections', 'sections.id', '=', 'inquires.section_id')
@@ -408,7 +408,7 @@ class InquireController extends Controller
 
     public function lastinquire(){
         $inquire=Inquire::orderBy('id','desc')
-                ->first();     
+                ->first();
         // dd($inquire);
 
 
@@ -440,9 +440,14 @@ class InquireController extends Controller
                 'message'   =>  'Successfully selected Last Inquired!'
             ],200);
         }
-        
+        return response()->json([
+            'inquire'  =>  $inquire,
+            'message'   =>  'Successfully selected Last Inquired!'
+        ],200);
+
+
     }
 
 
-    
+
 }

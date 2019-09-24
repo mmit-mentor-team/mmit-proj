@@ -28,4 +28,10 @@ class Inquire extends Model
     {
         return $this->belongsTo('App\Model\Township', 'township_id');
     }
+
+    public function attendances(){
+        return $this->hasManyThrough('App\Model\Attendance', 'App\Model\Student');
+    }
+
+
 }

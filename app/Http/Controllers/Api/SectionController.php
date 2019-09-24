@@ -100,7 +100,6 @@ class SectionController extends Controller
         // replace days for weekends
         
         $enddate = Carbon::parse($secd->copy()->addDays($weekends)); // 15112019
-
         // dd($enddate);
         
         // Find weekends from secd

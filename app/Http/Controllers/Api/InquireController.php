@@ -446,6 +446,12 @@ class InquireController extends Controller
         ],200);
 
 
+       // echo request('courseid')." and ".request('sectionid')." and ".request('durationid');
+        $id=request('sectionid');
+        $inquires = Inquire::doesntHave('student')
+            ->where('section_id',$id)
+            ->get();
+            
     }
 
 

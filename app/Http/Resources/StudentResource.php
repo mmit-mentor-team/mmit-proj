@@ -26,6 +26,7 @@ class StudentResource extends JsonResource
             "secinstallmentamount"=>$this->secinstallmentamount,
             "remark"=>$this->remark,
             "status"=>$this->status,
+            "actionstatus"=>$this->actionstatus,
             "resume"=>$this->resume,
             "inquire_id"=>$this->inquire_id,
             'inquire_name' => $this->inquire_name,

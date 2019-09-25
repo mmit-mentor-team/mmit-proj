@@ -16,10 +16,31 @@
         
         <div class="card shadow mb-4">
           <div class="card-header py-3">
-            
+            <!-- 
             <button @click="addStudent()" class="btn btn-primary float-right addstudentBtn" style="padding:8px">
               <i class="fa fa-plus"> </i> Add New Student
-            </button>
+            </button> -->
+
+            <!-- select leave or active stage start -->
+
+            <div class="form-group">
+              <label for="actionstatus_id">Course:</label>
+               
+               <select name="actionstatus" id="actionstatus_id" class="form-control" @click="getStatus" >
+                  <option value="">Please select one</option>
+                  <option  data-actionstatus="1" selected="selected"> Active</option>
+                  <option  data-actionstatus="0"> Leave</option>
+                </select>
+
+                
+            </div>
+
+            <!-- select leave or active stage end -->
+
+
+
+
+
             <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="noti==1">
             
             <strong>{{ message }}</strong> 
@@ -89,8 +110,8 @@
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -129,30 +150,37 @@
                               </td>
 
                               <td>
+                                <div v-if="student.actionstatus==1">
+                                    <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    Pay
+                                  </button>
 
-                                <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-hand-holding-usd"></i>
-                                  Pay
-                                </button>
+                                  <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fa fa-print"></i>
+                                    Print
+                                  </button>
 
-                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
-                                  <i class="fa fa-print"></i>
-                                  Print
-                                </button>
+                                  <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eye"></i>
+                                  </button> -->
 
-                                <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-eye"></i>
-                                </button> -->
-
-                                <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-pen"></i>
-                                  Edit
-                                </button>
+                                  <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-pen"></i>
+                                    Edit
+                                  </button>
+                                    
                                   
-                                <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-trash"></i>
-                                  Delete
-                                </button>
+                                  </div>
+
+                                  <div v-else>
+
+                                    <button class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eyes"></i>
+                                    Detail
+                                    </button>
+                                    
+                                  </div>
                               </td>
                             </tr>
                           </tbody>
@@ -193,8 +221,8 @@
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -233,30 +261,37 @@
                               </td>
 
                               <td>
-                                <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-hand-holding-usd"></i>
-                                  Pay
-                                </button>
+                                <div v-if="student.actionstatus==1">
+                                    <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    Pay
+                                  </button>
 
-                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
-                                  <i class="fa fa-print"></i>
-                                  Print
-                                </button>
+                                  <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fa fa-print"></i>
+                                    Print
+                                  </button>
 
-                                <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-eye"></i>
-                                  Detail
-                                </button> -->
+                                  <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eye"></i>
+                                  </button> -->
 
-                                <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-pen"></i>
-                                  Edit
-                                </button>
+                                  <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-pen"></i>
+                                    Edit
+                                  </button>
+                                    
                                   
-                                <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-trash"></i>
-                                  Delete
-                                </button>
+                                  </div>
+
+                                  <div v-else>
+
+                                    <button class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eyes"></i>
+                                    Detail
+                                    </button>
+                                    
+                                  </div>
                               </td>
                             </tr>
                           </tbody>
@@ -298,8 +333,8 @@
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -338,29 +373,37 @@
                               </td>
 
                               <td>
-                                <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-hand-holding-usd"></i>
-                                  Pay
-                                </button>
+                                <div v-if="student.actionstatus==1">
+                                    <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    Pay
+                                  </button>
 
-                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
-                                  <i class="fa fa-print"></i>
-                                  Print
-                                </button>
+                                  <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fa fa-print"></i>
+                                    Print
+                                  </button>
 
-                                <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-eye"></i>
-                                </button> -->
+                                  <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eye"></i>
+                                  </button> -->
 
-                                <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-pen"></i>
-                                  Edit
-                                </button>
+                                  <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-pen"></i>
+                                    Edit
+                                  </button>
+                                    
                                   
-                                <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-trash"></i>
-                                  Delete
-                                </button>
+                                  </div>
+
+                                  <div v-else>
+
+                                    <button class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eyes"></i>
+                                    Detail
+                                    </button>
+                                    
+                                  </div>
                               </td>
                             </tr>
                           </tbody>
@@ -376,7 +419,7 @@
 
                 <div class="tab-pane bootcamp-mdy fade " v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" data-id="5" id="nav-php_bootcamp_mdy"   role="tabpanel" aria-labelledby="nav-php_bootcamp_mdy-tab">
 
-                  <!-- <h1>helo  i am mdy bootcamp</h1> -->
+                  <h1>helo  i am mdy bootcamp</h1>
 
                   <!-- durations -->
                     <div class="row">
@@ -403,8 +446,8 @@
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -443,30 +486,39 @@
                               </td>
 
                               <td>
-                                <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-hand-holding-usd"></i>
-                                  Pay
-                                </button>
+                                <div v-if="student.actionstatus==1">
+                                    <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    Pay
+                                  </button>
 
-                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
-                                  <i class="fa fa-print"></i>
-                                  Print
-                                </button>
+                                  <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fa fa-print"></i>
+                                    Print
+                                  </button>
 
-                                <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-eye"></i>
-                                </button> -->
+                                  <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eye"></i>
+                                  </button> -->
 
-                                <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-pen"></i>
-                                  Edit
-                                </button>
+                                  <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-pen"></i>
+                                    Edit
+                                  </button>
+                                    
                                   
-                                <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-trash"></i>
-                                  Delete
-                                </button>
+                                  </div>
+
+                                  <div v-else>
+
+                                    <button class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eyes"></i>
+                                    Detail
+                                    </button>
+                                    
+                                  </div>
                               </td>
+                             
                             </tr>
                           </tbody>
                           
@@ -507,8 +559,8 @@
                           <select v-model="section1" name="section_id" id="section_id" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -547,29 +599,37 @@
                               </td>
 
                               <td>
-                                <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-hand-holding-usd"></i>
-                                  Pay
-                                </button>
+                                <div v-if="student.actionstatus==1">
+                                    <button @click="secondpay(index)" v-if="check(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-secondary btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    Pay
+                                  </button>
 
-                                <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
-                                  <i class="fa fa-print"></i>
-                                  Print
-                                </button>
+                                  <button @click="printStudent(index)" v-if="showPrint(student.secinstallmentamount,student.i_installmentamount,student.course_fee)" class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fa fa-print"></i>
+                                    Print
+                                  </button>
 
-                                <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-eye"></i>
-                                </button> -->
+                                  <!-- <button @click="detailStudent(index)" class="btn btn-info btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eye"></i>
+                                  </button> -->
 
-                                <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-pen"></i>
-                                  Edit
-                                </button>
+                                  <button @click="updateStudent(index)" class="btn btn-warning btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-pen"></i>
+                                    Edit
+                                  </button>
+                                    
                                   
-                                <button @click="deleteStudent(index)" class="btn btn-danger btn-xs d-inline" style="padding:8px">
-                                  <i class="fas fa-trash"></i>
-                                  Delete
-                                </button>
+                                  </div>
+
+                                  <div v-else>
+
+                                    <button class="btn btn-success btn-xs d-inline" style="padding:8px">
+                                    <i class="fas fa-eyes"></i>
+                                    Detail
+                                    </button>
+                                    
+                                  </div>
                               </td>
                             </tr>
                           </tbody>
@@ -656,8 +716,8 @@
                           <select v-model="section1" name="section_id" id="section_id" disabled="disabled" class="form-control" @change="showStudent" >
                             <option disabled value="">Please select one</option>
                             <option v-for ="(section, index) in sections2"  :value="section.id">
-                              {{ section.title }} ( {{ section.durations.time }} )
-                              [ {{ section.during }} ]
+                              {{ section.title }} ( {{ section.duration.time }} )
+                              [ {{ section.duration.during }} ]
 
                             </option>
                           </select>
@@ -687,8 +747,8 @@
                 <select v-model="section" name="section_id" id="section_id" class="form-control" @change="readInquires" >
                   <option disabled value="">Please select one</option>
                   <option v-for ="(section, index) in sections"  :value="section.id">
-                    {{ section.title }} ( {{ section.durations.time }} )
-                    [ {{ section.during }} ]
+                    {{ section.title }} ( {{ section.duration.time }} )
+                    [ {{ section.duration.during }} ]
 
                   </option>
                 </select>
@@ -704,6 +764,7 @@
               
             </select>
             </div>
+            <!-- <v-select :options="inquireArray" label="student name" v-model="student.inquire_id" @input="getStudent" :key="inquireArray.id"></v-select> -->
 
             <!-- selection end -->
 
@@ -712,7 +773,7 @@
 
             <div class="form-group">
               <label for="installmentdate">Installment Date</label>
-              <input type="text" id="addSecInstallDate" name="installmentdate" :required="student.secinstallmentdate < 0" class="form-control" v-model="student.secinstallmentdate"  :placeholder="today" readonly="readonly" >
+              <input type="date" id="addSecInstallDate" name="installmentdate" :required="student.secinstallmentdate < 0" class="form-control" v-model="student.secinstallmentdate"  :placeholder="today" readonly="readonly" >
             </div>
 
             <div class="form-group">
@@ -849,8 +910,8 @@
                 <select v-model="section" name="section_id" id="section_id" class="form-control" @change="readInquires" >
                   <option disabled value="">Please select one</option>
                   <option v-for ="(section, index) in sections"  :value="section.id">
-                    {{ section.title }} ( {{ section.durations.time }} )
-                    [ {{ section.during }} ]
+                    {{ section.title }} ( {{ section.duration.time }} )
+                    [ {{ section.duration.during }} ]
 
                   </option>
                 </select>
@@ -1077,7 +1138,7 @@
 
             <div class="form-group">
               <label id="installmentdate">Installment Date</label>
-              <input  type="text" name="installmentdate" id="updateStudentdate" :placeholder="today" readonly="readonly" class="form-control"  v-model="update_Student.secinstallmentdate">
+              <input  type="date" name="installmentdate" id="updateStudentdate" :placeholder="today" readonly="readonly" class="form-control"  v-model="update_Student.secinstallmentdate">
             </div>
 
             <div class="form-group">
@@ -1224,6 +1285,7 @@
           detail_Student:{},
           inquireCoursefee:0,
           
+          
         }
       },
       mounted(){
@@ -1235,13 +1297,20 @@
     //    this.readSections();
         
         this.readInquire();
-        // this.getDate();
+         this.getDate();
        //  this.getStudent();
        // this.getCourse();
+
+
 
       
       },
       methods:{
+        getStatus(){
+          this.section1='';
+          this.duration1='';
+          this.students1='';
+        },
         showPrint(inq,sec,fee){
           var v=parseInt(inq)+parseInt(sec);
           console.log("this value is "+ v+ " and the fee is "+ fee);
@@ -1360,9 +1429,15 @@
         },
 
         getDate(){
-          var d=new Date();
+          var m = new Date();
+          var dateString =
+              m.getUTCFullYear() + "-" +
+              ("0" + (m.getUTCMonth()+1)).slice(-2) + "-" +
+              ("0" + m.getUTCDate()).slice(-2) ;
+              this.today=dateString;
+          // var d=new Date();
           //this.today=d.getDate()+"-"+d.getMonth()+"-"+d.getFullYear();
-          this.today=d.toLocaleDateString();
+          // this.today=d.toLocaleDateString();
           
         },
         setZero(){
@@ -1371,7 +1446,7 @@
           this.section1='';
         },
         settimeout(){
-          setTimeout(function(){ $('.alert').fadeOut() },6000 );
+          setTimeout(function(){ $('.alert').fadeOut() },2000 );
           console.log(this.noti);
           
           
@@ -1461,7 +1536,10 @@
 
         showStudent(){
           var data='';
-            axios.get(`/api/setup/showstudent/${this.section1}`)
+          var stage=$('#actionstatus_id option:selected').data('actionstatus');
+          console.log("the action status is "+ stage);
+          
+            axios.get(`/api/setup/showstudent/`,{params:{sectionId:this.section1,actionstatus:stage}})
                   .then(response=>{
                     console.log(response.data.students);
                     this.students1 = response.data.students;
@@ -1834,7 +1912,7 @@
                          .then(response => {
                              this.students1.splice(index, 1);
                              this.delete_noti=true;
-                             this.message="Existing city has been sucessfully deleted!!";
+                             this.message="Existing student has been sucessfully set as leave stage!!";
                          })
                          .catch(error => {
                           console.log(error);
@@ -1969,7 +2047,8 @@
 
 
                  
-      }
+      },
+      
     }
 
   

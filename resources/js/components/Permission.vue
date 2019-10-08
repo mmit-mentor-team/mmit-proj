@@ -98,6 +98,7 @@
               <label for="names">Name:</label>
                 <input type="text" name="name" id="name" placeholder="Permission Name" class="form-control" v-model="permission.name">
             </div>
+
           </div>
           
           <div class="modal-footer">

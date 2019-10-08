@@ -16,255 +16,64 @@
               </button>
 
             </h3>
-            
           </div>
 
           <div class="card-body">
-            
             <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
-              <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn-tab" data-toggle="tab" href="#nav-hr_ygn" role="tab" aria-controls="nav-hr_ygn" aria-selected="true" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - YGN )'">
-                HR/ Admin (YGN)
-              </a>
+                <a class="nav-item nav-link" :class="[activetab == course.id ? 'active' : '']" :id="`nav-tab${course.id}`" data-toggle="tab" :href="`#nav-${course.id}`" role="tab" @click="readSections(course.id)" v-for="(course,index) in courses">
+                  {{course.name}} ({{course.location.city.name}})
+                </a>
 
-              <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'active' : '' ]" id="nav-hr_mdy-tab" data-toggle="tab" href="#nav-hr_mdy" role="tab" aria-controls="nav-hr_mdy" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - MDY )'">
-                HR/ Admin (MDY)
-              </a>
-
-              <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'active' : '' ]" id="nav-php_bootcamp-tab" data-toggle="tab" href="#nav-php_bootcamp" role="tab" aria-controls="nav-php_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'">
-                PHP Bootcamp (YGN)
-              </a>
-
-              <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'active' : '' ]" id="nav-php_mdy_bootcamp-tab" data-toggle="tab" href="#nav-php_mdy_bootcamp" role="tab" aria-controls="nav-php_mdy_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - MDY )'">
-                PHP Bootcamp (MDY)
-              </a>
-
-              <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'">
-                iOS 
-              </a>
-
-            </div>
-          </nav>
-          <div class="tab-content mt-3" id="nav-tabContent">
-
-            <div class="tab-pane fade show" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn" role="tabpanel" aria-labelledby="nav-hr_ygn-tab">
-
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="sections.length>0">
-                  <thead class="bg-primary text-white">
-                    <tr>
-                      <th> No </th>
-                      <th> Title  </th>
-                      <th> Start_Date   </th>
-                      <th> End_Date   </th>
-                      <th> Duration  </th>
-                      <th> Teacher  </th>
-                      <th> Action  </th>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(section, index) in hr_ygn_sections">
-                      <td> {{ index + 1 }} </td>
-                      <td> {{ section.title  }} </td>
-                      <td> {{ section.startdate  }} </td>
-                      <td> {{ section.enddate  }} </td>
-                      <td> {{ section.duration.days }} | {{section.duration.time}} </td>
-                      <td> 
-                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
-                      </td>
-                      <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
-                          <i class="fa fa-edit"></i> Edit
-                        </button>
-                        
-                        <button @click="deleteSection(index)" class="btn btn-danger">
-                          <i class="fa fa-trash"></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  
-                </table>
               </div>
-              
-            </div>
+            </nav>
+            <div class="tab-content mt-3" id="nav-tabContent">
 
-            <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'show active' : '' ]" id="nav-hr_mdy" role="tabpanel" aria-labelledby="nav-hr_mdy-tab">
+              <div class="tab-pane fade show" :class="[activetab == course.id ? 'active' : '']" :id="`nav-${course.id}`" role="tabpanel" v-for="(course,index) in courses">
 
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="hr_mdy_sections.length>0">
-                  <thead class="bg-primary text-white">
-                    <tr>
-                      <th> No </th>
-                      <th> Title  </th>
-                      <th> Start_Date   </th>
-                      <th> End_Date   </th>
-                      <th> Duration  </th>
-                      <th> Teacher  </th>
-                      <th> Action  </th>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="sections.length>0">
+                    <thead class="bg-primary text-white">
+                      <tr>
+                        <th> No </th>
+                        <th> Title  </th>
+                        <th> Start_Date   </th>
+                        <th> End_Date   </th>
+                        <th> Duration  </th>
+                        <th> Teacher  </th>
+                        <th> Action  </th>
 
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(section, index) in hr_mdy_sections">
-                      <td> {{ index + 1 }} </td>
-                      <td> {{ section.title  }} </td>
-                      <td> {{ section.startdate  }} </td>
-                      <td> {{ section.enddate  }} </td>
-                      <td> {{ section.duration.days }} | {{section.duration.time}} </td>
-                      <td> 
-                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> 
-                          {{ section_teacher.staff.user.name }} <br>
-                        </span>
-                      </td>
-                      <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
-                          <i class="fa fa-edit"></i> Edit
-                        </button>
-                        
-                        <button @click="deleteSection(index)" class="btn btn-danger">
-                          <i class="fa fa-trash"></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  
-                </table>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(section, index) in sections">
+                        <td> {{ index + 1 }} </td>
+                        <td> {{ section.title  }} </td>
+                        <td> {{ section.startdate  }} </td>
+                        <td> {{ section.enddate  }} </td>
+                        <td> {{ section.duration.days }} | {{section.duration.time}} </td>
+                        <td> 
+                          <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
+                        </td>
+                        <td> 
+                          <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
+                            <i class="fa fa-edit"></i> Edit
+                          </button>
+                          
+                          <button @click="deleteSection(index)" class="btn btn-danger">
+                            <i class="fa fa-trash"></i> Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                    
+                  </table>
+                </div>
+                
               </div>
-              
+
             </div>
-
-            <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" id="nav-php_bootcamp" role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
-
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_sections.length>0">
-                  <thead class="bg-primary text-white">
-                    <tr>
-                      <th> No </th>
-                      <th> Title  </th>
-                      <th> Start_Date   </th>
-                      <th> End_Date   </th>
-                      <th> Duration  </th>
-                      <th> Teacher  </th>
-                      <th> Action  </th>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(section, index) in php_sections">
-                      <td> {{ index + 1 }} </td>
-                      <td> {{ section.title  }} </td>
-                      <td> {{ section.startdate  }} </td>
-                      <td> {{ section.enddate  }} </td>
-                      <td> {{ section.duration.days }} | {{section.duration.time}} </td>
-                      <td> 
-                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
-                      </td>
-                      <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
-                          <i class="fa fa-edit"></i> Edit
-                        </button>
-                        
-                        <button @click="deleteSection(index)" class="btn btn-danger">
-                          <i class="fa fa-trash"></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  
-                </table>
-              </div>
-              
-            </div>
-
-            <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" id="nav-php_mdy_bootcamp" role="tabpanel" aria-labelledby="nav-php_mdy_bootcamp-tab">
-
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="php_mdy_sections.length>0">
-                  <thead class="bg-primary text-white">
-                    <tr>
-                      <th> No </th>
-                      <th> Title  </th>
-                      <th> Start_Date   </th>
-                      <th> End_Date   </th>
-                      <th> Duration  </th>
-                      <th> Teacher  </th>
-                      <th> Action  </th>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(section, index) in php_mdy_sections">
-                      <td> {{ index + 1 }} </td>
-                      <td> {{ section.title  }} </td>
-                      <td> {{ section.startdate  }} </td>
-                      <td> {{ section.enddate  }} </td>
-                      <td> {{ section.duration.days }} | {{section.duration.time}} </td>
-                      <td> 
-                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
-                      </td>
-                      <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
-                          <i class="fa fa-edit"></i> Edit
-                        </button>
-                        
-                        <button @click="deleteSection(index)" class="btn btn-danger">
-                          <i class="fa fa-trash"></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  
-                </table>
-              </div>
-              
-            </div>
-
-            <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'show active' : '' ]" id="nav-ios" role="tabpanel" aria-labelledby="nav-ios-tab">
-
-              <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="ios_sections.length>0">
-                  <thead class="bg-primary text-white">
-                    <tr>
-                      <th> No </th>
-                      <th> Title  </th>
-                      <th> Start_Date   </th>
-                      <th> End_Date   </th>
-                      <th> Duration  </th>
-                      <th> Teacher  </th>
-                      <th> Action  </th>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(section, index) in ios_sections">
-                      <td> {{ index + 1 }} </td>
-                      <td> {{ section.title  }} </td>
-                      <td> {{ section.startdate  }} </td>
-                      <td> {{ section.enddate  }} </td>
-                      <td> {{ section.duration.days  }} | {{section.duration.time}} </td>
-                      <td> 
-                        <span v-if="section.teachers.length>0" v-for="section_teacher in section.teachers"> {{ section_teacher.staff.user.name }} <br> </span>
-                      </td>
-                      <td> 
-                        <button @click="initUpdate(section.id,section.title,section.startdate,section.enddate,section.duration_id,section.duration && section.duration.course_id)" class="btn btn-warning" >
-                          <i class="fa fa-edit"></i> Edit
-                        </button>
-                        
-                        <button @click="deleteSection(index)" class="btn btn-danger">
-                          <i class="fa fa-trash"></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  
-                </table>
-              </div>
-              
-            </div>
-          </div>
           </div>
         </div>
 
@@ -475,8 +284,8 @@
        mounted()
        {
           console.log(this.permissions);
-          this.activetab = this.permissions[0].name;
-          this.readSections();
+          this.activetab = this.permissions[0].id;
+          this.readSections(this.activetab);
           this.readDurations();
           this.readTeachers();
           this.readCourses();
@@ -573,16 +382,31 @@
                this.section.name = '';
            },        
            
-           readSections()
+           readSections(course_id)
            {
                axios.get('/api/setup/section')
                    .then(response => {
                        this.sections = response.data.sections;
-                       this.hr_ygn_sections = response.data.hr_ygn_sections;
-                       this.hr_mdy_sections = response.data.hr_mdy_sections;
-                       this.php_sections = response.data.php_sections;
-                       this.php_mdy_sections = response.data.php_mdy_sections;
-                       this.ios_sections = response.data.ios_sections;
+                       
+                       // this.hr_mdy_sections = response.data.hr_mdy_sections;
+                       // this.php_sections = response.data.php_sections;
+                       // this.php_mdy_sections = response.data.php_mdy_sections;
+                       // this.ios_sections = response.data.ios_sections;
+
+                        if (course_id == 1) {
+                          this.sections = response.data.hr_ygn_sections;
+                          console.log('1'+this.sections);
+                        }else if (course_id == 2) {
+                          this.sections = response.data.hr_mdy_sections;
+                          console.log('2 ha ha '+this.sections);
+
+                        }else if (course_id == 3) {
+                          this.sections = response.data.php_sections;
+                        }else if (course_id == 4) {
+                          this.sections = response.data.ios_sections;
+                        }else {
+                          this.sections = response.data.php_mdy_sections;
+                        }
 
                        this.noti=false;
                        this.notiup=false;

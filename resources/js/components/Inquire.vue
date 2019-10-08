@@ -67,7 +67,6 @@
                 <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( iOS - YGN )')">
                   iOS 
                 </a>
-
               </div>
             </nav>
 
@@ -406,65 +405,69 @@
             </div>
 
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Receiveno:</label>
                 <input type="text" name="receiveno" id="receiveno" placeholder="receiveno" class="form-control" v-model="receiveno" readonly>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Name:</label>
                 <input type="text" name="name" id="name" placeholder="Inquire Name" class="form-control" v-model="inquire.name">
+              </div>
+              <div class="col-md-4">
+                <label for="names">Phone no:</label>
+                  <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="inquire.phoneno">
               </div>
             </div>
             
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Course:</label>
-
-                <v-select v-model="selected" :options="courses" :reduce="name => name.id" label="name"></v-select>
-
+                <v-select v-model="selected" title="Select Course" :options="courses" :reduce="name => name.id" label="scname">
+                  <template slot="option" slot-scope="option">
+                    {{ option.name }} ({{option.location.city.name}})
+                  </template>
+                </v-select>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Duration:</label>
                   <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
                     <option disabled value="">Please select one</option>
                     <option v-for ="(duration, index) in durations"  :value="duration.id">
                       {{ duration.days }} ( {{ duration.time }} )
                       [ {{ duration.during }} ]
+                    </option>
+                  </select>
+              </div>
+
+              <div class="col-md-4">
+                <label for="names">Sections:</label>
+                  <select v-model="section" name="section_id" id="section_id" class="form-control" >
+                    <option disabled value="">Please select one</option>
+                    <option v-for ="(section, index) in sections"  :value="section.id">
+
+                      <div class="row">
+                        <div class="col-md-3">
+                          {{ section.title }}
+                        </div>
+
+                        <div class="col-md-3">
+                          {{ section.duration && section.duration.time }}
+                        </div> 
+
+                        <div class="col-md-3">
+                          {{ section.during }}
+                        </div>
+
+                        <div class="col-md-3">
+                          {{ section.startdate}} - {{ section.enddate }}
+                        </div> 
+
+                      </div>
 
                     </option>
                   </select>
               </div>
-            </div>
-
-
-            <div class="form-group">
-              <label for="names">Sections:</label>
-                <select v-model="section" name="section_id" id="section_id" class="form-control" >
-                  <option disabled value="">Please select one</option>
-                  <option v-for ="(section, index) in sections"  :value="section.id">
-
-                    <div class="row">
-                      <div class="col-md-3">
-                        {{ section.title }}
-                      </div>
-
-                      <div class="col-md-3">
-                        {{ section.duration && section.duration.time }}
-                      </div> 
-
-                      <div class="col-md-3">
-                        {{ section.during }}
-                      </div>
-
-                      <div class="col-md-3">
-                        {{ section.startdate}} - {{ section.enddate }}
-                      </div> 
-
-                    </div>
-
-                  </option>
-                </select>
             </div>
 
             <div class="form-row form-group camphide d-none">
@@ -488,12 +491,12 @@
             </div>
             
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Age:</label>
                 <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="inquire.age">
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label class="d-block">Gender:</label>
                 <label for="male" class="mx-2">Male:</label>
                 <input type="radio" value="male"  id="male" placeholder="Male"  v-model="inquire.gender">
@@ -501,6 +504,10 @@
                 <input type="radio" value="female" id="female" placeholder="Female"  v-model="inquire.gender">
               </div>
 
+              <div class="col-md-4">
+                <label for="names">Job Position:</label>
+                  <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="inquire.position">
+              </div>
             </div>
 
             <!-- <div class="form-group">
@@ -509,46 +516,19 @@
             </div> -->
 
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Address:</label>
                   <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="inquire.address">
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Township:</label> 
                   <select v-model="township_id" name="township" class="form-control">
                       <option disabled value="">Please select one</option>
                     <option v-for ="(township, index) in townships" :value="township.id">{{ township.name }}</option>
                   </select>
               </div>
-            </div>
-            
-            <div class="form-row form-group">
-              <div class="col-md-6">
-                <label for="names">Phone no:</label>
-                  <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="inquire.phoneno">
-              </div>
-            
-              <div class="col-md-6">
-                <label for="names">Job Position:</label>
-                  <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="inquire.position">
-              </div>
-            </div>
-            
-            <div class="form-row form-group">
-              <div class="col-md-6">
-                <label for="names">Payment Date:</label>
-                  <input type="date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="inquire.paymentdate" readonly="readonly">
-              </div>
-
-              <div class="col-md-6">
-                <label for="names">Payment Amount:</label>
-                <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="inquire.paymentamount"> 
-              </div>
-            </div>
-
-            <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="names">Education:</label>
                   <!-- <input type="text" name="education" id="education" placeholder="Education" class="form-control" v-model="inquire.education"> -->
                   <select v-model="inquire.education" name="education" class="form-control">
@@ -556,10 +536,22 @@
                     <option v-for ="(education, index) in educations" :value="education.id">{{ education.name }}</option>
                   </select>
               </div>
+            </div>
+            
+            <div class="form-row form-group">
+              <div class="col-md-4">
+                <label for="names">Payment Date:</label>
+                  <input type="date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="inquire.paymentdate">
+              </div>
 
-              <div class="col-md-6">
-                <label for="names">Accepted Year:</label>
-                  <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="inquire.acceptedyear">
+              <div class="col-md-4">
+                <label for="names">Payment Amount:</label>
+                <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="inquire.paymentamount"> 
+              </div>
+
+              <div class="col-md-4">
+                <label for="names">Degree Accepted Year:</label>
+                <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="inquire.acceptedyear">
               </div>
             </div>
             
@@ -585,7 +577,7 @@
     </div><!-- /.modal -->
 
     <div class="modal fade" tabindex="-1" role="dialog" id="update_inquire_model">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Update Inquire</h4>
@@ -602,18 +594,22 @@
             <input type="hidden" class="form-control" v-model="update_inquire.userid" name="userid" id="userid">
             
             <div class="form-group form-row">
-              <div class="col-md-6">
+              <div class="col-sm-4">
                 <label for="names">Receiveno:</label>
                 <input type="text" name="receiveno" placeholder="receiveno" class="form-control" v-model="update_inquire.receiveno" readonly>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-4">
                 <label>Name:</label>
                 <input type="text" placeholder="Name" class="form-control" v-model="update_inquire.name">
+              </div>
+              <div class="col-sm-4">
+                <label for="names">Phone no:</label>
+                  <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="update_inquire.phno">
               </div>
             </div>
 
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-sm-4">
                 <label for="names">Course:</label>
                 <!-- <select v-model="course" name="course_id" id="course_id" class="form-control"
                   @change="readDurations" >
@@ -628,9 +624,9 @@
                 </select> -->
 
                 <v-select v-model="update_inquire.selected" :options="courses" :reduce="name => name.id" label="name" > </v-select>
-
               </div>
-              <div class="col-md-6">
+
+              <div class="col-sm-4">
                 <label for="names">Duration:</label>
                 <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
                   <option disabled value="">Please select one</option>
@@ -640,10 +636,8 @@
                   </option>
                 </select>
               </div>
-            </div>
 
-            <div class="form-row form-group">
-              <div class="col-md-12">
+              <div class="col-sm-4">
                 <label for="names"> Section :</label>
                 <select class="form-control"  name="section_id" v-model="update_inquire.sectionid">
                   <option disabled value="">Please select one</option>
@@ -672,7 +666,7 @@
             </div>
 
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-sm-6">
                 <label for="names">Camp:</label>
                 <br>
 
@@ -685,18 +679,18 @@
                 <label for="femalecamp"  class="mx-2">Female Camp:</label>
                 <input type="radio" value="Female Camp" id="femalecamp" v-model="update_inquire.camp">
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-6">
                 <label for="names">email:</label>
                   <input type="email" name="email" id="email" placeholder="Email" class="form-control" v-model="update_inquire.email">
               </div>
             </div>
 
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-sm-4">
                 <label for="names">Age:</label>
                   <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="update_inquire.age">
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-4">
                 <label class="d-block">Gender:</label>
                 <label for="gender" class="mx-2">Male:</label>
                 <input type="radio" value="male"  id="male" placeholder="Male"  v-model="update_inquire.gender">
@@ -704,6 +698,10 @@
                 <input type="radio" value="female" id="female" placeholder="Female"  v-model="update_inquire.gender">
                 <label for="gender"  class="mx-2">Other:</label>
                 <input type="radio" value="other" id="other" placeholder="Other"  v-model="update_inquire.gender">
+              </div>
+              <div class="col-sm-4">
+                <label for="names">Job Position:</label>
+                  <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="update_inquire.position">
               </div>
             </div>
             
@@ -714,59 +712,44 @@
             </div> -->
 
             <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-sm-4">
                 <label for="names">Address:</label>
                   <input type="text" name="address" id="address" placeholder="Address" class="form-control" v-model="update_inquire.address">
               </div>
 
-              <div class="col-md-6">
+              <div class="col-sm-4">
                 <label for="names"> Township :</label>
                 <select class="form-control"  name="township_id" v-model="update_inquire.townshipid" id="townshipid">
                   
                   <option v-for="(township, index) in townships" :value="township.id" :selected="township.id == update_inquire.townshipid"> {{ township.name }}  </option>
                 </select>
               </div>
-            </div>
-            
-
-            <div class="form-row form-group">
-              <div class="col-md-6">
-                <label for="names">Phone no:</label>
-                  <input type="text" name="phoneno" id="phoneno" placeholder="Phone number" class="form-control" v-model="update_inquire.phno">
-              </div>
-              <div class="col-md-6">
-                <label for="names">Job Position:</label>
-                  <input type="text" name="position" id="position" placeholder="Position" class="form-control" v-model="update_inquire.position">
-              </div>
-            </div>
-            
-            <div class="form-row form-group">
-              <div class="col-md-6">
-                <label for="names">Payment Date:</label>
-                <input type="date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="update_inquire.installmentdate" readonly="readonly">
-              </div>
-              <div class="col-md-6">
-                <label for="names">Payment Amount:</label>
-                <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="update_inquire.installmentamount">
-              </div>
-            </div> 
-            
-            <div class="form-row form-group">
-              <div class="col-md-6">
+              <div class="col-sm-4">
                 <label for="names">Education:</label>
                 <select v-model="update_inquire.education" name="education" class="form-control">
                   <option disabled value="">Please select one</option>
                   <option v-for ="(education, index) in educations" :value="education.id" :selected="education.id == update_inquire.education">{{ education.name }}</option>
                 </select>
               </div>
-              <div class="col-md-6">
+            </div>
+            
+            <div class="form-row form-group">
+              <div class="col-sm-4">
+                <label for="names">Payment Date:</label>
+                <input type="date" name="paymentdate" id="paymentdate" placeholder="Payment Date" class="form-control" v-model="update_inquire.installmentdate">
+              </div>
+              <div class="col-sm-4">
+                <label for="names">Payment Amount:</label>
+                <input type="number" name="paymentamount" id="paymentamount" placeholder="Payment Amount" class="form-control" v-model="update_inquire.installmentamount">
+              </div>
+              <div class="col-sm-4">
                 <label for="names">Accepted Year:</label>
                 <input type="Date" name="acceptedyear" id="acceptedyear" placeholder="Accepted Year" class="form-control" v-model="update_inquire.acceptedyear">
               </div>
             </div>
 
             <div class="form-row form-group">
-              <div class="col-md-12">
+              <div class="col-sm-12">
                 <label for="names">Remark:</label>
                 <textarea  name="remark" id="remark" placeholder="Remark" class="form-control" v-model="update_inquire.remark"></textarea>
               </div>
@@ -964,23 +947,22 @@
                print_inquire:{},
                sreceiveno:'',
                activetab: '',
-
-               selected: null
+               selected: ''
            }
        },
        mounted()
        {
-           this.activetab = this.permissions[0].name;
-           this.readInquire();
-           this.readTownship();
-           // this.readSections();
-           this.readSection();
-           this.readCourses();
-           this.readDurations();
-           this.callFunction();
-           this.readEducation();
-           this.getDate();
-           this.php_mdy_inquires = this.filterMembers;
+          this.activetab = this.permissions[0].name;
+          this.readInquire();
+          this.readTownship();
+          // this.readSections();
+          this.readSection();
+          this.readCourses();
+          this.readDurations();
+          this.callFunction();
+          this.readEducation();
+          this.getDate();
+          this.php_mdy_inquires = this.filterMembers;
        },
       computed: {
         filterMembers: function() {
@@ -1171,8 +1153,23 @@
             {
                axios.get('/api/setup/course')
                    .then(response => {
-                       this.courses = response.data.courses;
-                       //console.log(response.data.teachers);
+                        var courses = response.data.courses;
+
+                        var reformattedArray = courses.map(obj =>{ 
+                          var rObj = {};
+                          rObj['id'] = obj.id;
+                          rObj['codeno'] = obj.codeno;
+                          rObj['name'] = obj.name;
+                          rObj['fees'] = obj.fees;
+                          rObj['location'] = obj.location;
+                          rObj['user'] = obj.user;
+                          rObj['scname'] = obj.name+'('+obj.location.city.name+')';
+                          return rObj;
+                        });
+
+                        this.courses = reformattedArray;
+
+                    console.log(response.data.courses);
                    });
             },
 
@@ -1433,7 +1430,6 @@
                        this.durations = response.data.durations;
                       // console.log(response.data.durations);
                       // console.log(this.course);
-
                    });
                    // // courseid = this.course;
                    // console.log(this.course);
@@ -1580,7 +1576,7 @@
                    });
            },
           
-             readTownship()
+            readTownship()
            {
             axios.get('/api/setup/township')
                    .then(response => {

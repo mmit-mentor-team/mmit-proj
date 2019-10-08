@@ -27,10 +27,8 @@ class StaffController extends Controller
         //
         $locations = Location::all();
 
-        
         $staffs = Staff::where('status', '=', 0)->get();
         $staffs =  StaffResource::collection($staffs);
-
 
         $leavestaffs = Staff::where('status', '=', 1)->get();
         $leavestaffs =  StaffResource::collection($leavestaffs);
@@ -40,8 +38,8 @@ class StaffController extends Controller
                 $q2->where('name', "Teacher");
             });
         })->get();
-        $teacherstaffs =  StaffResource::collection($teacherstaffs);
 
+        $teacherstaffs =  StaffResource::collection($teacherstaffs);
 
         return response()->json([
             'staffs' => $staffs,
@@ -110,6 +108,11 @@ class StaffController extends Controller
 
         $user->assignRole($rolename);
 
+        if ($rolename == 'Teacher') {
+          $status = 0;
+        }else{
+          $status = 1;
+        }
         // Permissions
         $new_permissions = request('permissions_id');
 
@@ -131,6 +134,12 @@ class StaffController extends Controller
             'location_id'  =>  request('location_id'),
             'user_id'    =>  $user->id,
         ]);
+
+        // Courses
+        $courses = request('courses_id');
+        for ($i=0; $i < count($courses); $i++) { 
+          $staff->courses()->attach($courses[$i], ['status' => $status]);
+        }
 
         $staff = new StaffResource($staff);
 
@@ -176,7 +185,7 @@ class StaffController extends Controller
         // dd(request('location_id'));
         
         if($request->get('image'))
-       {
+        {
           $image = $request->get('image');
           $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
           \Image::make($request->get('image'))->save(public_path('mmit_image/staff/').$name);
@@ -196,6 +205,12 @@ class StaffController extends Controller
         $new_role = Role::find($new_roleid);
         $new_rolename = $new_role->name;
 
+        if ($new_rolename == 'Teacher') {
+          $status = 0;
+        }else{
+          $status = 1;
+        }
+
         if ($old_roleid == $new_roleid) 
         {}
         else
@@ -209,13 +224,10 @@ class StaffController extends Controller
           $user->role_id = $new_roleid;
           $user->password = request('userpassword');
           $user->save();
-
         }
 
-
-
+        // permissions
         $new_permissions = request('permissions_id');
-        //dd($new_permissions);
         $old_permissions = DB::table('model_has_permissions')->where('model_id', '=', $userid)->get();
 
         foreach ($old_permissions as $permission) {
@@ -227,13 +239,13 @@ class StaffController extends Controller
           //dd($permissionName);
           $user->revokePermissionTo($permissionName);
         }
+
         for ($i=0; $i < count($new_permissions); $i++) { 
           //$permissionArray[$i] == permission's id;
           $permission = Permission::find($new_permissions[$i]);
           /*dd($new_permissions[$i]);*/
           $permissionName = $permission->name;
           /*dd($permissionName);*/
-
           $user->givePermissionTo($permissionName);
         }
         
@@ -249,6 +261,15 @@ class StaffController extends Controller
         $staff->location_id = request('location_id');
         $staff->user_id=  request('userid');
         $staff->save();
+
+        // permissions
+        $new_courses = request('courses_id');
+        $old_courses = DB::table('teachers')->where('staff_id', '=', $staff->id)->pluck('course_id');
+        $staff->courses()->detach($old_courses);
+        
+        for ($i=0; $i < count($new_courses); $i++) { 
+          $staff->courses()->attach($new_courses[$i], ['status' => $status]);
+        }
 
         return response()->json([
             'message'   =>  'Staff updated successfully!'

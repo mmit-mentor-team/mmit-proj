@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 use App\Http\Resources\PermissionResource;
 use Illuminate\Support\Facades\DB;
+use App\User;
 use Auth;
 
 class PermissionController extends Controller
@@ -63,6 +65,11 @@ class PermissionController extends Controller
             // 'user_id'    =>  Auth::user()->id,
         ]);
 
+        $users = User::where('role_id',1)->get();
+        // $role->permissions()->attach($permission);
+        foreach ($users as $user) {
+            $user->givePermissionTo($permission->name);
+        }
         Auth::user()->givePermissionTo($permission->name);
 
         $permission = new PermissionResource($permission);

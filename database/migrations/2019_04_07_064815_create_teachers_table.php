@@ -25,6 +25,8 @@ class CreateTeachersTable extends Migration
             //user
             $table->unsignedBigInteger('user_id');
 
+            $table->smallInteger('status')->default(0);
+
             $table->timestamps();
         });
     }

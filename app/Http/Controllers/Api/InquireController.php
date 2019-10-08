@@ -15,6 +15,8 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\InquireResource;
 use App\Http\Resources\StudentResource;
+use Carbon\Carbon;
+
 
 class InquireController extends Controller
 {
@@ -166,16 +168,60 @@ class InquireController extends Controller
         $course_fees = $course->fees;
         $payment = request('paymentamount');
 
+        $request_paymentdate = request('paymentdate');
+
+        if ($payment > 0) 
+        {
+            $paymentdate = Carbon::parse($request_paymentdate)->format('dmy');
+            $day = Carbon::parse($request_paymentdate)->format('d');
+
+            $course_codeno = $course->codeno;
+            $city_zipcode = $course->location->city->zipcode;
+
+            $temp_receiveno = $paymentdate.$course_codeno.$city_zipcode;
+
+            $lastinquire=Inquire::where('receiveno','like', '%' .$temp_receiveno. '%')->orderBy('receiveno','desc')
+                ->first();
+
+            if($lastinquire == null)
+            {
+                $receiveno = $temp_receiveno.'001';
+            }
+
+            else
+            {
+                $lastinquire_receiveno = $lastinquire->receiveno;
+
+                if($day < 10)
+                {
+                    $receiveno = '0'.++$lastinquire_receiveno;
+                }
+                else
+                {
+                    $receiveno = ++$lastinquire_receiveno;
+                }
+                
+            }
+
+        }
+        else
+        {
+            $receiveno = 0;
+        }
+
+        // dd($receiveno);
+
         $inquire = Inquire::create([
             'name'  =>  request('name'),
-            'receiveno' =>  request('receiveno'),
+            'inquireno' =>  request('inquireno'),
+            'receiveno' =>  $receiveno,
             'dob' => request('dob'),
             'age'  =>  request('age'),
             'gender'  =>  request('gender'),
             'address' => request('address'),
             'phno' => request('phoneno'),
             'email' => request('email'),
-            'installmentdate' => request('paymentdate'),
+            'installmentdate' => $request_paymentdate,
             'installmentamount' => $payment,
             'remark' => request('remark'),
             'position' => request('position'),
@@ -426,7 +472,7 @@ class InquireController extends Controller
 
         if ($inquire == null) {
             $inquire = [
-                "receiveno" => 0
+                "inquireno" => 0
             ];
             return response()->json([
                 'inquire'  =>  $inquire,

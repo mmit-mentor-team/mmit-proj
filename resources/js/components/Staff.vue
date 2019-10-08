@@ -483,8 +483,12 @@
 
        },
        methods: {
-        getImage(image){
-              return "mmit_image/staff/" + image;
+        getImage(image)
+            {
+              if (image) 
+              {
+                return "mmit_image/staff/" + image;
+              }
             },
             onImageChange(e) {
                     let files = e.target.files || e.dataTransfer.files;

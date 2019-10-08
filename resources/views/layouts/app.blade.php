@@ -20,6 +20,16 @@
   <!-- Scripts -->
   <script src="{{ asset('js/app.js') }}" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js" defer></script>
+  <style type="text/css">
+    
+    .modal-xl .modal-content
+    {
+      min-width: 90%;
+      max-width: 1140px;
+    }
+
+
+  </style>
 </head>
 
   @if(Request::segment(1) == '' || Request::segment(1) == 'login' || Request::segment(1) == 'register' || Request::segment(1) == 'print' )

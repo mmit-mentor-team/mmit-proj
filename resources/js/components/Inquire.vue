@@ -36,7 +36,7 @@
             
             <h3 class="m-0 font-weight-bold text-primary"> Inquire List
 
-              <button @click="initAddInquire()" class="btn btn-primary float-right ">
+              <button @click="initAddInquire()" class="btn btn-primary float-right">
                 <i class="fa fa-plus"></i> Add New Inquire
               </button>
 
@@ -48,7 +48,7 @@
             
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn-tab" data-toggle="tab" href="#nav-hr_ygn" role="tab" aria-controls="nav-hr_ygn" aria-selected="true" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( HR - YGN )')">
+                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn-tab" data-toggle="tab" href="#nav-hr_ygn" role="tab" aria-controls="nav-hr_ygn" aria-selected="true" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( HR - YGN )')"  aria-haspopup="true" aria-expanded="false">
                   HR/ Admin (YGN)
                 </a>
 
@@ -76,8 +76,18 @@
               <div class="tab-pane fade show" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn" role="tabpanel" aria-labelledby="nav-hr_ygn-tab">
 
                 <div class="form-row form-group">
-                  <div class="col-md-4">
+                  <div class="col-md-8">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                  <div class="col-md-4">
+                    <select name="actionstatus" id="actionstatus_id" class="form-control">
+                      <option value="">Please select one</option>
+                      <option  data-actionstatus="1" selected="selected"> All </option>
+                      <option  data-actionstatus="0"> Enroll </option>
+                      <option  data-actionstatus="0"> Leave </option>
+                      <option  data-actionstatus="0"> Cancel </option>
+
+                    </select>
                   </div>
                 </div>
 
@@ -126,8 +136,18 @@
 
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'show active' : '' ]" id="nav-hr_mdy" role="tabpanel" aria-labelledby="nav-hr_mdy-tab">
                 <div class="form-row form-group">
-                  <div class="col-md-4">
+                  <div class="col-md-8">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                  <div class="col-md-4">
+                    <select name="actionstatus" id="actionstatus_id" class="form-control">
+                      <option value="">Please select one</option>
+                      <option  data-actionstatus="1" selected="selected"> All </option>
+                      <option  data-actionstatus="0"> Enroll </option>
+                      <option  data-actionstatus="0"> Leave </option>
+                      <option  data-actionstatus="0"> Cancel </option>
+
+                    </select>
                   </div>
                 </div>
 
@@ -177,8 +197,18 @@
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" id="nav-php_bootcamp" role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
                 <!-- For Receiveno Search -->
                 <div class="form-row form-group">
-                  <div class="col-md-4">
+                  <div class="col-md-8">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                  <div class="col-md-4">
+                    <select name="actionstatus" id="actionstatus_id" class="form-control">
+                      <option value="">Please select one</option>
+                      <option  data-actionstatus="1" selected="selected"> All </option>
+                      <option  data-actionstatus="0"> Enroll </option>
+                      <option  data-actionstatus="0"> Leave </option>
+                      <option  data-actionstatus="0"> Cancel </option>
+
+                    </select>
                   </div>
                 </div>
 
@@ -230,8 +260,18 @@
 
                 <!-- For Receiveno Search -->
                 <div class="form-row form-group">
-                  <div class="col-md-4">
+                  <div class="col-md-8">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                  <div class="col-md-4">
+                    <select name="actionstatus" id="actionstatus_id" class="form-control">
+                      <option value="">Please select one</option>
+                      <option  data-actionstatus="1" selected="selected"> All </option>
+                      <option  data-actionstatus="0"> Enroll </option>
+                      <option  data-actionstatus="0"> Leave </option>
+                      <option  data-actionstatus="0"> Cancel </option>
+
+                    </select>
                   </div>
                 </div>
 
@@ -283,8 +323,18 @@
               <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'show active' : '' ]" id="nav-ios" role="tabpanel" aria-labelledby="nav-ios-tab">
 
                 <div class="form-row form-group">
-                  <div class="col-md-4">
+                  <div class="col-md-8">
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
+                  </div>
+                  <div class="col-md-4">
+                    <select name="actionstatus" id="actionstatus_id" class="form-control">
+                      <option value="">Please select one</option>
+                      <option  data-actionstatus="1" selected="selected"> All </option>
+                      <option  data-actionstatus="0"> Enroll </option>
+                      <option  data-actionstatus="0"> Leave </option>
+                      <option  data-actionstatus="0"> Cancel </option>
+
+                    </select>
                   </div>
                 </div>
 
@@ -1025,8 +1075,8 @@
             {
                 axios.post('/api/setup/inquire', {
                    name: this.inquire.name,
-                   receiveno:this.receiveno,
-                   course: this.course,
+                   inquireno:this.receiveno,
+                   course: this.selected,
                    section_id: this.section,
                    camp: this.inquire.camp,
                    age: this.inquire.age,
@@ -1559,10 +1609,10 @@
                    this.lastinquire = response.data.inquire;
                    // console.log("last inquire"+this.lastinquire.receiveno);
                     
-                    this.caculatedate(this.lastinquire.receiveno);
+                    this.caculatedate(this.lastinquire.inquireno);
                 });
           },
-          caculatedate(receiveno){
+          caculatedate(inquireno){
 
             var currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
 
@@ -1576,18 +1626,18 @@
             
             
 
-            if (receiveno == 0) {
+            if (inquireno == 0) {
               // console.log('0 condition');
-              this.receiveno = date+'0001';
+              this.inquireno = date+'0001';
             }else{
-              var currentreceiveno=receiveno.substring(0,8);
+              var currentreceiveno=inquireno.substring(0,8);
               // console.log(currentreceiveno+'=='+date);
             }
 
 
             if(currentreceiveno==date){ // 04092019 == 04092019
 
-              let newreceiveno = ++receiveno; // 040920190001 -> 40920190002 (number)
+              let newreceiveno = ++inquireno; // 040920190001 -> 40920190002 (number)
 
               output = newreceiveno.toString();
               if(parseInt(day)<10){

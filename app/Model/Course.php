@@ -29,5 +29,10 @@ class Course extends Model
     {
         return $this->hasOne('App\Model\Teacher');
     }
+
+    public function staffs()
+    {
+        return $this->belongsToMany('App\Model\Staff','teachers');
+    }
     
 }

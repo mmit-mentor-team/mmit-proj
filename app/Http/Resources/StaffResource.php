@@ -36,7 +36,7 @@ class StaffResource extends JsonResource
             'status'        => $this->status,
             'location_id'   => $this->location_id,
             'user_id'       => $this->user_id,
-
+            'courses' => CourseResource::collection(Staff::find($this->id)->courses),
             'location'     => new LocationResource(Location::find($this->location_id)),
             'user'         => new UserResource(User::find($this->user_id)),
         ];

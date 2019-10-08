@@ -26,4 +26,10 @@ class Staff extends Model
     {
     	return $this->hasOne('App\Model\Teacher');
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany('App\Model\Course','teachers')
+                        ->withTimestamps();;
+    }
 }

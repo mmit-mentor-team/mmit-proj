@@ -164,6 +164,14 @@
 
                       </div>
 
+                      <div class="form-group">
+                        <label class="d-block">Courses:</label>
+                          <div class="custom-control custom-checkbox custom-control-inline" v-for="(course, index) in courses">
+                            <input type="checkbox" :id="`customCourse${course.id}`" name="customCourse" class="custom-control-input" :value="course.id" v-model="checkedCourses">
+                            <label class="custom-control-label" :for="`customCourse${course.id}`" >{{course.name}} ({{course.location.city.name}})</label>
+                        </div>
+                      </div>
+
                        <div class="form-group">
                            <label for="names">Date of Birth:</label>
                            <input type="date" name="dob" id="dob" placeholder="Date of Birth" class="form-control"
@@ -246,19 +254,28 @@
                               <option v-for="(role, index) in roles" :value="role.id" :selected="role.id == update_staff.user && update_staff.user.roles[0].id"> {{ role.name }}  </option>
                              </select>
                         </div>
+
                         <div class="form-group">
-                        <label class="d-block">Permission:</label>
-                       <!--  <p  v-for="(user_permission, index) in user_permissions">
+                          <label class="d-block">Permission:</label>
+                          <!--  <p  v-for="(user_permission, index) in user_permissions">
                               {{user_permission.id}}</p> -->
                           <div class="custom-control custom-checkbox custom-control-inline" v-for="(permission, index) in permissions">
                            
                             <input type="checkbox" :id="`updated_customRadioInline${permission.id}`" name="updated_customRadioInline" class="custom-control-input" :value="permission.id" v-model="updated_checkedPermissions" v-for="(user_permission, index) in user_permissions">
                             <label class="custom-control-label" :for="`updated_customRadioInline${permission.id}`" >{{permission.name}}</label>
-
+                          </div>
                         </div>
-                          
 
-                      </div>
+                        <div class="form-group">
+                          <label class="d-block">Couses:</label>
+                          <!--  <p  v-for="(user_permission, index) in user_permissions">
+                              {{user_permission.id}}</p> -->
+                          <div class="custom-control custom-checkbox custom-control-inline" v-for="(course, index) in courses">
+                           
+                            <input type="checkbox" :id="`updated_customCourse${course.id}`" name="updated_customCourse" class="custom-control-input" :value="course.id" v-model="updated_checkedCourses" v-for="(user_course, index) in user_courses">
+                            <label class="custom-control-label" :for="`updated_customCourse${course.id}`" >{{course.name}} ({{course.location.city.name}})</label>
+                          </div>
+                        </div>
 
                        <!-- {{update_staff}} -->
                        <input type="hidden" class="form-control" v-model="update_staff.userid" name="userid" id="userid">
@@ -335,6 +352,7 @@
                </div>
            </div>
        </div>
+
        <div class="modal fade" tabindex="-1" role="dialog" id="detail_staff_model">
            <div class="modal-dialog modal-lg" role="document">
                <div class="modal-content">
@@ -462,7 +480,9 @@
                locations: [],
                roles:[],
                permissions:[],
+               courses: [],
                user_permissions:[],
+               user_courses:[],
                user_permission:[],
                location_id: '',
                role_id:'',
@@ -471,19 +491,21 @@
                update_staff: {},
                detail_staff: {},
                checkedPermissions: [],
-               updated_checkedPermissions:[]
+               updated_checkedPermissions:[],
+               checkedCourses: [],
+               updated_checkedCourses:[]
            }
        },
        mounted()
        {
-           this.readStaffs();
-           this.readLocations();
-           this.readRoles();
-           this.readPermissions();
-
+          this.readStaffs();
+          this.readLocations();
+          this.readRoles();
+          this.readPermissions();
+          this.readCourses();
        },
        methods: {
-        getImage(image){
+            getImage(image) {
               return "mmit_image/staff/" + image;
             },
             onImageChange(e) {
@@ -533,7 +555,8 @@
                    ldate: this.staff.ldate,
                    location_id: this.location_id,
                    role_id:this.role_id,
-                   permissions_id:this.checkedPermissions
+                   permissions_id:this.checkedPermissions,
+                   courses_id:this.checkedCourses
                })
                    .then(response => {
                        this.reset();
@@ -585,7 +608,6 @@
                        /*console.log(response.data.staffs[0]);*/
                    });
            },
-           
            readLocations()
            {
                axios.get('/api/setup/location')
@@ -607,22 +629,38 @@
                        this.permissions = response.data.permissions;
                    });
            },
+           readCourses()
+           {
+               axios.get('/api/setup/course')
+                   .then(response => {
+                       this.courses = response.data.courses;
+                       console.log(this.courses);
+                   });
+           },
            initUpdate(index)
            {
-               this.errors = [];
-               $("#update_staff_model").modal("show");
-               this.update_staff = this.staffs[index];
-               //console.log(this.staffs[index]);
+              this.errors = [];
+              $("#update_staff_model").modal("show");
+              this.update_staff = this.staffs[index];
+              console.log(this.staffs[index]);
 
-               var temp = [];
+              // permissions
+              var temp = [];
+              this.user_permissions = this.update_staff.user.permissions;
+              for (var i = 0; i < this.user_permissions.length; i++) 
+              {
+                temp.push(this.user_permissions[i].id);
+              }
+              this.updated_checkedPermissions = temp;
 
-               this.user_permissions = this.update_staff.user.permissions;
-               for (var i = 0; i < this.user_permissions.length; i++) 
-                {
-                  temp.push(this.user_permissions[i].id);
-                }
-
-                this.updated_checkedPermissions = temp;
+              // courses
+              var temp2 = [];
+              this.user_courses = this.update_staff.courses;
+              for (var i = 0; i < this.user_courses.length; i++) 
+              {
+                temp2.push(this.user_courses[i].id);
+              }
+              this.updated_checkedCourses = temp2;
            },
            initDetail(index)
            {
@@ -632,32 +670,33 @@
            },
            updateStaff()
            {
-               axios.patch('/api/setup/staff/' + this.update_staff.id, {
-                   userid: this.update_staff.user.id,
-                   username : this.update_staff.user.name,
-                   useremail : this.update_staff.user.email,
-                   userpassword : this.update_staff.user.password, 
-                   dob: this.update_staff.dob,
-                   fname: this.update_staff.fathername,
-                   nrc: this.update_staff.nrc,
-                   image: this.image,
-                   oldimage: this.update_staff.photo,
-                   jdate: this.update_staff.joineddate,
-                   ldate: this.update_staff.leavedate,
-                   location_id: this.update_staff.location_id,
-                   roleid : this.update_staff.user.roles[0].id,
-                   old_roleid : this.update_staff.user.role_id,
-                   permissions_id:this.updated_checkedPermissions
-               })
-                   .then(response => {
-                      this.noti=true;
-                      this.message='Staff has been updated sucessfully!!';
-                       $("#update_staff_model").modal("hide");
-                       this.readStaffs();
-                       this.readLocations();
-                       this.readRoles();
-                   })
-                   .catch(error => {
+              axios.patch('/api/setup/staff/' + this.update_staff.id, {
+                userid: this.update_staff.user.id,
+                username : this.update_staff.user.name,
+                useremail : this.update_staff.user.email,
+                userpassword : this.update_staff.user.password, 
+                dob: this.update_staff.dob,
+                fname: this.update_staff.fathername,
+                nrc: this.update_staff.nrc,
+                image: this.image,
+                oldimage: this.update_staff.photo,
+                jdate: this.update_staff.joineddate,
+                ldate: this.update_staff.leavedate,
+                location_id: this.update_staff.location_id,
+                roleid : this.update_staff.user.roles[0].id,
+                old_roleid : this.update_staff.user.role_id,
+                permissions_id:this.updated_checkedPermissions,
+                courses_id:this.updated_checkedCourses
+              })
+              .then(response => {
+                this.noti=true;
+                this.message='Staff has been updated sucessfully!!';
+                $("#update_staff_model").modal("hide");
+                this.readStaffs();
+                this.readLocations();
+                this.readRoles();
+              })
+              .catch(error => {
                        this.errors = [];
                        if (error.response.data.errors && error.response.data.errors.dob){
                            this.errors.push('The Date of Birth field is required');
@@ -678,7 +717,7 @@
                        if (error.response.data.errors && error.response.data.errors.location_id){
                            this.errors.push('The Location field is required');
                        }
-                   });
+              });
            }
        }
    }

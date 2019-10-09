@@ -96,17 +96,17 @@
                             <div class="dropdown-menu">
                               <a class="dropdown-item" href="#" @click="printInquire(hr_ygn_inquire.id)">Print</a>
 
-                              <a class="dropdown-item" href="#" @click="initDetail(hr_ygn_inquire.id,'')">Detail</a>
+                              <a class="dropdown-item" href="#" @click="initDetail(hr_ygn_inquire.id,'',course.id)">Detail</a>
                             
                               <a class="dropdown-item" href="#" v-if="hr_ygn_inquire.actionstatus == 0">Enroll</a>
 
-                              <a class="dropdown-item" href="#" v-if="hr_ygn_inquire.actionstatus == 0" @click="initDetail(hr_ygn_inquire.id,2)">Postpone</a>
+                              <a class="dropdown-item" href="#" v-if="hr_ygn_inquire.actionstatus == 0" @click="initDetail(hr_ygn_inquire.id,2,course.id)">Postpone</a>
 
-                              <a class="dropdown-item" href="#" v-if="(hr_ygn_inquire.actionstatus == 0) | (hr_ygn_inquire.actionstatus == 2)" @click="initDetail(hr_ygn_inquire.id,3)">Cancel</a>
+                              <a class="dropdown-item" href="#" v-if="(hr_ygn_inquire.actionstatus == 0) | (hr_ygn_inquire.actionstatus == 2)" @click="initDetail(hr_ygn_inquire.id,3,course.id)">Cancel</a>
 
                               <a class="dropdown-item" href="#" v-if="hr_ygn_inquire.actionstatus == 2">Inquiry</a>
 
-                              <a class="dropdown-item" href="#" @click="initUpdate(hr_ygn_inquire.id)" v-if="(hr_ygn_inquire.actionstatus == 0) | (hr_ygn_inquire.actionstatus == 1)">Edit</a>
+                              <a class="dropdown-item" href="#" @click="initUpdate(hr_ygn_inquire.id,course.id)" v-if="(hr_ygn_inquire.actionstatus == 0) | (hr_ygn_inquire.actionstatus == 1)">Edit</a>
                             </div>
 
                             <!-- <button @click="printInquire(hr_ygn_inquire.id)" class="btn btn-success btn-xs text-white">
@@ -175,7 +175,7 @@
             <div class="form-row form-group">
               <div class="col-md-4">
                 <label for="names">Course:</label>
-                <v-select v-model="selected" title="Select Course" :options="courses" :reduce="name => name.id" label="scname">
+                <v-select v-model="selected" title="Select Course" :options="courses" :reduce="name => name.id" label="scname" @input="readDurations">
                   <template slot="option" slot-scope="option">
                     {{ option.name }} ({{option.location.city.name}})
                   </template>
@@ -184,7 +184,7 @@
 
               <div class="col-md-4">
                 <label for="names">Duration:</label>
-                  <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
+                  <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections" :disabled="disableDuration">
                     <option disabled value="">Please select one</option>
                     <option v-for ="(duration, index) in durations"  :value="duration.id">
                       {{ duration.days }} ( {{ duration.time }} )
@@ -195,7 +195,7 @@
 
               <div class="col-md-4">
                 <label for="names">Sections:</label>
-                  <select v-model="section" name="section_id" id="section_id" class="form-control" >
+                  <select v-model="section" name="section_id" id="section_id" class="form-control" :disabled="disableSection">
                     <option disabled value="">Please select one</option>
                     <option v-for ="(section, index) in sections"  :value="section.id">
 
@@ -246,7 +246,7 @@
             <div class="form-row form-group">
               <div class="col-md-4">
                 <label for="names">Age:</label>
-                <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="inquire.age">
+                <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model.number="inquire.age">
               </div>
 
               <div class="col-md-4">
@@ -364,6 +364,7 @@
             <div class="form-row form-group">
               <div class="col-sm-4">
                 <label for="names">Course:</label>
+
                 <!-- <select v-model="course" name="course_id" id="course_id" class="form-control"
                   @change="readDurations" >
                   <option disabled value="">Please select one</option>
@@ -376,14 +377,21 @@
                   </option>
                 </select> -->
 
-                <v-select v-model="update_inquire.selected" :options="courses" :reduce="name => name.id" label="name" > </v-select>
+                <!-- <v-select v-model="update_inquire.selected" :options="courses" :reduce="name => name.id" label="name" > </v-select> -->
+
+                <v-select v-model="selected" title="Select Course" :options="courses" :reduce="name => name.id" label="scname" @input="readDurations">
+                  <template slot="option" slot-scope="option">
+                    {{ option.name }} ({{option.location.city.name}})
+                  </template>
+                </v-select>
+
               </div>
 
               <div class="col-sm-4">
                 <label for="names">Duration:</label>
-                <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections">
+                <select v-model="duration" name="duration_id" id="duration_id" class="form-control" @change="readSections" :disabled="disableDuration">
                   <option disabled value="">Please select one</option>
-                  <option v-for ="(duration, index) in durations"  :value="duration.id" :selected="duration.id == update_inquire.durationid">
+                  <option v-for ="(duration, index) in durations"  :value="duration.id" :selected="duration.id == duration">
                     {{ duration.days }} ( {{ duration.time }} )
                     [ {{ duration.during }} ]
                   </option>
@@ -392,7 +400,7 @@
 
               <div class="col-sm-4">
                 <label for="names"> Section :</label>
-                <select class="form-control"  name="section_id" v-model="update_inquire.sectionid">
+                <select class="form-control"  name="section_id" v-model="update_inquire.sectionid" :disabled="disableSection">
                   <option disabled value="">Please select one</option>
                   <option v-for="(section, index) in sections" :value="section.id" :selected="section.id == update_inquire.sectionid">
                     <div class="row">
@@ -441,7 +449,7 @@
             <div class="form-row form-group">
               <div class="col-sm-4">
                 <label for="names">Age:</label>
-                  <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model="update_inquire.age">
+                  <input type="number" name="name" id="name" placeholder="Age" class="form-control" v-model.number="update_inquire.age">
               </div>
               <div class="col-sm-4">
                 <label class="d-block">Gender:</label>
@@ -458,7 +466,6 @@
               </div>
             </div>
             
-
             <!-- <div class="form-group">
                 <label for="names">date of Birth:</label>
                 <input type="date" name="status" id="dob" placeholder="Date of Birth" class="form-control" v-model="update_inquire.dob">
@@ -473,8 +480,7 @@
               <div class="col-sm-4">
                 <label for="names"> Township :</label>
                 <select class="form-control"  name="township_id" v-model="update_inquire.townshipid" id="townshipid">
-                  
-                  <option v-for="(township, index) in townships" :value="township.id" :selected="township.id == update_inquire.townshipid"> {{ township.name }}  </option>
+                  <option v-for="(township, index) in townships" :value="township.id"> {{ township.name }}  </option>
                 </select>
               </div>
               <div class="col-sm-4">
@@ -515,7 +521,7 @@
               <i class="fa fa-times"></i> Close
             </button>
                 
-            <button type="button" @click="updateInquire(update_inquire.actionstatus)" class="btn btn-primary">
+            <button type="button" @click="updateInquire(update_inquire.actionstatus,courseid)" class="btn btn-primary">
               <i class="fa fa-upload"></i> Update
             </button>
           </div>
@@ -648,11 +654,11 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
             <div v-if="type_id == 3">
-              <button type="button" class="btn btn-primary" @submit="updateInquire(type_id)">Make Cancel</button>
+              <button type="button" class="btn btn-primary" @click="updateInquire(type_id,courseid)">Make Cancel</button>
             </div>
 
             <div v-if="type_id == 2">
-              <button type="button" class="btn btn-primary" @submit="updateInquire(type_id)">Make Postpone</button>
+              <button type="button" class="btn btn-primary" @click="updateInquire(type_id,courseid)">Make Postpone</button>
             </div>
           </div>
         </div>
@@ -663,8 +669,6 @@
 </template>
 
 <script>
-
-
    export default {
     props: ["permissions"],
 
@@ -710,7 +714,10 @@
                activetab: '',
                selected: '',
                allInquires: [],
-               type_id: ''
+               type_id: '',
+               disableDuration: true,
+               disableSection: true,
+               courseid: ''
            }
        },
        mounted()
@@ -842,7 +849,7 @@
                    this.add_noti=true;
                    this.message="New Inquire has been sucessfully added!!";
                    $("#add_inquire_model").modal("hide");
-                   this.readInquire();
+                   this.readInquire(this.activetab);
                    this.callFunction();
 
                    // console.log(inquire_data);
@@ -889,16 +896,16 @@
             },
             getInquiresData(course_id){
               if (course_id == 1) {
-                  this.inquires = this.allInquires.hr_ygn_inquires;
-                }else if (course_id == 2) {
-                  this.inquires = this.allInquires.hr_mdy_inquires;
-                }else if (course_id == 3) {
-                  this.inquires = this.allInquires.php_inquires;
-                }else if (course_id == 4) {
-                  this.inquires = this.allInquires.ios_inquires;
-                }else {
-                  this.inquires = this.allInquires.php_mdy_inquires;
-                }
+                this.inquires = this.allInquires.hr_ygn_inquires;
+              }else if (course_id == 2) {
+                this.inquires = this.allInquires.hr_mdy_inquires;
+              }else if (course_id == 3) {
+                this.inquires = this.allInquires.php_inquires;
+              }else if (course_id == 4) {
+                this.inquires = this.allInquires.ios_inquires;
+              }else {
+                this.inquires = this.allInquires.php_mdy_inquires;
+              }
             },
             selectInquireType(course_id){
               console.log(this.type_id);
@@ -919,11 +926,10 @@
                   m => m.actionstatus == this.type_id
                 );
               }
-              
             },
             readCourses()
             {
-               axios.get('/api/setup/course')
+              axios.get('/api/setup/course')
                    .then(response => {
                         var courses = response.data.courses;
 
@@ -1142,53 +1148,45 @@
             },   
             readSections(){
               this.duration_id=this.duration;
-              if(this.duration_id){
-
-                axios.get(`/api/setup/section/${this.duration_id}`)
-                       .then(response => {
-                           //console.log(response.data.sections);
-                           this.sections=response.data.sections
-                       });
-                       
-                     }else{
-                      console.log('nothing');
-                     }    
+              console.log(this.duration_id);
+              axios.get(`/api/setup/section/${this.duration_id}`)
+                 .then(response => {
+                     this.sections=response.data.sections
+                 });
+              this.disableSection = false; 
             },
-
             readDurations()
             {
-               axios.get(`/api/setup/duration/${this.course}`)
-                   .then(response => {
-                       this.durations = response.data.durations;
-                      // console.log(response.data.durations);
-                      // console.log(this.course);
-                   });
-                   // // courseid = this.course;
-                   // console.log(this.course);
-                   if (this.course == 3) {
+              console.log(this.selected);
+
+              axios.get(`/api/setup/duration/${this.selected}`)
+                  .then(response => {
+                    this.durations = response.data.durations;
+                  });
+                  this.disableDuration = false;
+                   
+                  if (this.selected == 3) {
                     $('.camphide').removeClass('d-none');
                     $('.camphide').show();
-
-                   }else{
-
-                      $('.camphide').hide();
-                   }
+                  }else{
+                    $('.camphide').hide();
+                  }
             },
-            initUpdate(index)
+            initUpdate(index,courseid)
             {
               this.errors = [];
-
-              var inquire_data = this.hr_ygn_inquires.find(
+              var inquire_data = this.inquires.find(
                 m => m.id === index
               );
-             
-              $("#update_inquire_model").modal("show");
-               
               this.update_inquire = inquire_data;
-              this.update_inquire.selected = courseid;
               // console.log(this.update_inquire);
+              this.selected = this.update_inquire.section.duration.course.id;
+              this.duration = this.update_inquire.section.duration.id;
+              this.update_inquire.sectionid = this.update_inquire.section.id;
+              this.update_inquire.townshipid = this.update_inquire.township.id;
+              $("#update_inquire_model").modal("show");
             },
-            initDetail(index,id)
+            initDetail(index,id,courseid)
             {
               var inquire_data = this.inquires.find(
                 m => m.id === index
@@ -1196,45 +1194,48 @@
               
               $("#detail_inquire_model").modal("show");
               this.type_id = id;
+              this.courseid = courseid;
               this.detail_inquire = inquire_data;
               this.update_inquire = inquire_data;
+              this.update_inquire.sectionid = this.update_inquire.section.id;
+              this.update_inquire.townshipid = this.update_inquire.township.id;
             },
-            updateInquire(type_id)
+            updateInquire(type_id,courseid)
             {
-               axios.patch('/api/setup/inquire/' + this.update_inquire.id, {
-                 userid: this.update_inquire.userid,
-                 receiveno:this.update_inquire.receiveno,
-                  name: this.update_inquire.name,
-                   gender: this.update_inquire.gender,
-                   dob: this.update_inquire.dob,
-                   age: this.update_inquire.age,
-                   address: this.update_inquire.address,
-                   phno: this.update_inquire.phno,
-                   email: this.update_inquire.email,
-                   installmentdate: this.update_inquire.installmentdate,
-                   installmentamount: this.update_inquire.installmentamount,
-                   remark: this.update_inquire.remark,
-                   position: this.update_inquire.position,
-                   camp: this.update_inquire.camp,
-                   education: this.update_inquire.education,
-                   acceptedyear: this.update_inquire.acceptedyear,
-                   section_id: this.update_inquire.sectionid, 
-                   township_id: this.update_inquire.townshipid,
-                   actionstatus: type_id
-               })
-                   .then(response => {
-                       this.update_noti=true;
-                       this.message="Existing city has been sucessfully updated!!";
-                       $("#update_inquire_model").modal("hide");
-                       this.readInquire();
-                   })
-
-                   .catch(error => {
-                       this.errors = [];
-                       if (error.response.data.errors.name) {
-                           this.errors.push(error.response.data.errors.name[0]);
-                       }
-                   });
+              axios.patch('/api/setup/inquire/' + this.update_inquire.id, {
+                userid: this.update_inquire.userid,
+                receiveno:this.update_inquire.receiveno,
+                name: this.update_inquire.name,
+                gender: this.update_inquire.gender,
+                dob: this.update_inquire.dob,
+                age: this.update_inquire.age,
+                address: this.update_inquire.address,
+                phno: this.update_inquire.phno,
+                email: this.update_inquire.email,
+                installmentdate: this.update_inquire.installmentdate,
+                installmentamount: this.update_inquire.installmentamount,
+                remark: this.update_inquire.remark,
+                position: this.update_inquire.position,
+                camp: this.update_inquire.camp,
+                education: this.update_inquire.education,
+                acceptedyear: this.update_inquire.acceptedyear,
+                section_id: this.update_inquire.sectionid, 
+                township_id: this.update_inquire.townshipid,
+                actionstatus: type_id
+              })
+              .then(response => {
+                this.update_noti=true;
+                this.message="Existing city has been sucessfully updated!!";
+                $("#update_inquire_model").modal("hide");
+                $("#detail_inquire_model").modal("hide");
+                this.readInquire(courseid);
+              })
+              .catch(error => {
+                this.errors = [];
+                if (error.response.data.errors.name) {
+                  this.errors.push(error.response.data.errors.name[0]);
+                }
+              });
             },
             readTownship()
             {
@@ -1247,9 +1248,8 @@
             {
              axios.get(`/api/setup/education`)
                 .then(response => {
-                  // console.log(response.data.educations);
                   this.educations = response.data.educations;
-                  
+                  console.log(this.educations);
                 })
             },
             callFunction() {

@@ -365,9 +365,7 @@ class InquireController extends Controller
     {
         //
 
-         $inquire = Inquire::find($id);
-
-
+        $inquire = Inquire::find($id);
 
         $inquire->name = request('name');
         $inquire->receiveno = request('receiveno');
@@ -385,6 +383,7 @@ class InquireController extends Controller
         $inquire->acceptedyear = request('acceptedyear');
         $inquire->section_id = request('section_id');
         $inquire->township_id = request('township_id');
+        $inquire->actionstatus = request('actionstatus');
         $inquire->user_id=  Auth::user()->id;
         $inquire->save();
 

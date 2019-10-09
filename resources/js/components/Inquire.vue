@@ -63,12 +63,12 @@
                     <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
                   </div>
                   <div class="col-md-4">
-                    <select name="actionstatus" id="actionstatus_id" class="form-control">
-                      <option value="">Please select one</option>
-                      <option  data-actionstatus="1" selected="selected"> All </option>
-                      <option  data-actionstatus="0"> Enroll </option>
-                      <option  data-actionstatus="0"> Leave </option>
-                      <option  data-actionstatus="0"> Cancel </option>
+                    <select name="actionstatus" id="actionstatus_id" class="form-control" @change="selectInquireType(course.id)" v-model="type_id">
+                      <option value=""> All </option>
+                      <option value="0"> Inquire </option>
+                      <option value="1"> Enroll / Student </option>
+                      <option value="2"> Postpone </option>
+                      <option value="3"> Cancel </option>
                     </select>
                   </div>
                 </div>
@@ -91,8 +91,25 @@
                           <td> {{ hr_ygn_inquire.name }} </td>
                           <td> {{ hr_ygn_inquire.phno}}</td>
                           
-                          <td> 
-                            <button @click="printInquire(hr_ygn_inquire.id)" class="btn btn-success btn-xs text-white">
+                          <td class="text-center"> 
+                            <button class="btn btn-outline-secondary dropdown-toggle btn-sm" type="button" data-toggle="dropdown">Actions</button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="#" @click="printInquire(hr_ygn_inquire.id)">Print</a>
+
+                              <a class="dropdown-item" href="#" @click="initDetail(hr_ygn_inquire.id,'')">Detail</a>
+                            
+                              <a class="dropdown-item" href="#" v-if="hr_ygn_inquire.actionstatus == 0">Enroll</a>
+
+                              <a class="dropdown-item" href="#" v-if="hr_ygn_inquire.actionstatus == 0" @click="initDetail(hr_ygn_inquire.id,2)">Postpone</a>
+
+                              <a class="dropdown-item" href="#" v-if="(hr_ygn_inquire.actionstatus == 0) | (hr_ygn_inquire.actionstatus == 2)" @click="initDetail(hr_ygn_inquire.id,3)">Cancel</a>
+
+                              <a class="dropdown-item" href="#" v-if="hr_ygn_inquire.actionstatus == 2">Inquiry</a>
+
+                              <a class="dropdown-item" href="#" @click="initUpdate(hr_ygn_inquire.id)" v-if="(hr_ygn_inquire.actionstatus == 0) | (hr_ygn_inquire.actionstatus == 1)">Edit</a>
+                            </div>
+
+                            <!-- <button @click="printInquire(hr_ygn_inquire.id)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
@@ -106,7 +123,7 @@
                             
                             <button @click="deleteInquire(hr_ygn_inquire.id)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
-                            </button>
+                            </button> -->
                           </td>
                         </tr>
                       </tbody>
@@ -498,7 +515,7 @@
               <i class="fa fa-times"></i> Close
             </button>
                 
-            <button type="button" @click="updateInquire" class="btn btn-primary">
+            <button type="button" @click="updateInquire(update_inquire.actionstatus)" class="btn btn-primary">
               <i class="fa fa-upload"></i> Update
             </button>
           </div>
@@ -629,6 +646,14 @@
               
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            <div v-if="type_id == 3">
+              <button type="button" class="btn btn-primary" @submit="updateInquire(type_id)">Make Cancel</button>
+            </div>
+
+            <div v-if="type_id == 2">
+              <button type="button" class="btn btn-primary" @submit="updateInquire(type_id)">Make Postpone</button>
+            </div>
           </div>
         </div>
       </div>
@@ -687,6 +712,7 @@
                allInquires: [],
                permission_courses : '',
                courseid_arr : {},
+               type_id: ''
            }
        },
        mounted()
@@ -853,6 +879,27 @@
                 }else {
                   this.inquires = this.allInquires.php_mdy_inquires;
                 }
+            },
+            selectInquireType(course_id){
+              console.log(this.type_id);
+              if (course_id == 1) {
+                this.inquires = this.allInquires.hr_ygn_inquires;
+              }else if (course_id == 2) {
+                this.inquires = this.allInquires.hr_mdy_inquires;
+              }else if (course_id == 3) {
+                this.inquires = this.allInquires.php_inquires;
+              }else if (course_id == 4) {
+                this.inquires = this.allInquires.ios_inquires;
+              }else {
+                this.inquires = this.allInquires.php_mdy_inquires;
+              }
+              
+              if (this.type_id != '') {
+                this.inquires = this.inquires.filter(
+                  m => m.actionstatus == this.type_id
+                );
+              }
+              
             },
             readCourses()
             {
@@ -1121,16 +1168,18 @@
               this.update_inquire.selected = courseid;
               // console.log(this.update_inquire);
             },
-            initDetail(index)
+            initDetail(index,id)
             {
               var inquire_data = this.inquires.find(
                 m => m.id === index
               );
               
               $("#detail_inquire_model").modal("show");
+              this.type_id = id;
               this.detail_inquire = inquire_data;
+              this.update_inquire = inquire_data;
             },
-            updateInquire()
+            updateInquire(type_id)
             {
                axios.patch('/api/setup/inquire/' + this.update_inquire.id, {
                  userid: this.update_inquire.userid,
@@ -1151,6 +1200,7 @@
                    acceptedyear: this.update_inquire.acceptedyear,
                    section_id: this.update_inquire.sectionid, 
                    township_id: this.update_inquire.townshipid,
+                   actionstatus: type_id
                })
                    .then(response => {
                        this.update_noti=true;

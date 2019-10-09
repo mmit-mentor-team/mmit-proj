@@ -32,6 +32,19 @@ class CourseController extends Controller
         ],200);
     }
 
+    public function permissioncourse(Request $request)
+    {
+        $permissioncourse = Auth::user()->staff->courses;
+
+        $courses =  CourseResource::collection($permissioncourse);
+
+        return response()->json([
+            'courses' => $courses,
+        ],200);
+        
+        // dd($permissioncourse);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

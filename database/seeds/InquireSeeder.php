@@ -204,7 +204,7 @@ class InquireSeeder extends Seeder
     	{
 	        DB::table('inquires')->insert([
 	            'inquireno'			=> '12092019000'+$sec3_a,
-	            'receiveno'			=> '12091900311181000'+$sec3_b,
+	            'receiveno'			=> '12091900505011000'+$sec3_b,
 	            'name'				=> $faker->name,
 	            'gender'    		=> $gender,
 	            'dob'				=> $faker->date($format = 'Y-m-d', $max = 'now'),
@@ -234,7 +234,7 @@ class InquireSeeder extends Seeder
     	{
 	        DB::table('inquires')->insert([
 	            'inquireno'			=> '25092019000'+$sec3_c,
-	            'receiveno'			=> '25091900311181000'+$sec3_d,
+	            'receiveno'			=> '25091900505011000'+$sec3_d,
 	            'name'				=> $faker->name,
 	            'gender'    		=> $gender,
 	            'dob'				=> $faker->date($format = 'Y-m-d', $max = 'now'),
@@ -266,7 +266,7 @@ class InquireSeeder extends Seeder
     	{
 	        DB::table('inquires')->insert([
 	            'inquireno'			=> '05092019000'+$sec4_a,
-	            'receiveno'			=> '05091900311181000'+$sec4_b,
+	            'receiveno'			=> '05091900111181000'+$sec4_b,
 	            'name'				=> $faker->name,
 	            'gender'    		=> $gender,
 	            'dob'				=> $faker->date($format = 'Y-m-d', $max = 'now'),
@@ -298,7 +298,7 @@ class InquireSeeder extends Seeder
     	{
 	        DB::table('inquires')->insert([
 	            'inquireno'			=> '11092019000'+$sec5_a,
-	            'receiveno'			=> '11091900311181000'+$sec5_b,
+	            'receiveno'			=> '11091900111181000'+$sec5_b,
 	            'name'				=> $faker->name,
 	            'gender'    		=> $gender,
 	            'dob'				=> $faker->date($format = 'Y-m-d', $max = 'now'),
@@ -330,7 +330,7 @@ class InquireSeeder extends Seeder
     	{
 	        DB::table('inquires')->insert([
 	            'inquireno'			=> '11092019000'+$sec6_a,
-	            'receiveno'			=> '11091900311181000'+$sec6_b,
+	            'receiveno'			=> '11091900111181000'+$sec6_b,
 	            'name'				=> $faker->name,
 	            'gender'    		=> $gender,
 	            'dob'				=> $faker->date($format = 'Y-m-d', $max = 'now'),
@@ -362,7 +362,7 @@ class InquireSeeder extends Seeder
     	{
 	        DB::table('inquires')->insert([
 	            'inquireno'			=> '05092019000'+$sec7_a,
-	            'receiveno'			=> '05091900311181000'+$sec7_b,
+	            'receiveno'			=> '05091900111181000'+$sec7_b,
 	            'name'				=> $faker->name,
 	            'gender'    		=> $gender,
 	            'dob'				=> $faker->date($format = 'Y-m-d', $max = 'now'),
@@ -394,7 +394,7 @@ class InquireSeeder extends Seeder
     	{
 	        DB::table('inquires')->insert([
 	            'inquireno'			=> '11092019000'+$sec8_a,
-	            'receiveno'			=> '11091900311181000'+$sec8_b,
+	            'receiveno'			=> '11091900111181000'+$sec8_b,
 	            'name'				=> $faker->name,
 	            'gender'    		=> $gender,
 	            'dob'				=> $faker->date($format = 'Y-m-d', $max = 'now'),
@@ -426,7 +426,7 @@ class InquireSeeder extends Seeder
     	{
 	        DB::table('inquires')->insert([
 	            'inquireno'			=> '11092019000'+$sec9_a,
-	            'receiveno'			=> '11091900311181000'+$sec9_b,
+	            'receiveno'			=> '11091900111181000'+$sec9_b,
 	            'name'				=> $faker->name,
 	            'gender'    		=> $gender,
 	            'dob'				=> $faker->date($format = 'Y-m-d', $max = 'now'),

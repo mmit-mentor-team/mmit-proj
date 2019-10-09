@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\User;
+use App\Model\Course;
 
 class UsersTableSeeder extends Seeder
 {
@@ -11,15 +14,102 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        //Yin Min Ei
-        DB::table('users')->insert([
-            'name'       => 'Yin Min Ei',
-            'email'      => 'yinmim.mic@gmail.com',
-            'role_id'    => 2,
+
+      $userArray = array(
+          [
+            'name'       => 'Administrator',
+            'email'      => 'developer@gmail.com',
+            'role_id'    => 1,
             'password'   => Hash::make('123456789'),
             'created_at' => now(),
             'updated_at' => now()
-        ]);
+          ],
+          [
+            'name'       => 'Yan Myoe Aune',
+            'email'      => 'yanmyoe@gmail.com',
+            'role_id'    => 1,
+            'password'   => Hash::make('123456789'),
+            'created_at' => now(),
+            'updated_at' => now()
+          ],
+          [
+            'name'       => 'Zar Chi Lin',
+            'email'      => 'zarchi@gmail.com',
+            'role_id'    => 1,
+            'password'   => Hash::make('123456789'),
+            'created_at' => now(),
+            'updated_at' => now()
+          ]
+      );
+
+      $staffArray = array(
+          [
+            'dob' => '1993-02-01',
+            'fathername' => 'U MG Gyi',
+            'nrc' => '14/kkn(C) 144550',
+            'phone' => '0987654321',
+            'photo' => '1568536960.jpeg',
+            'joineddate' => '2015-03-12',
+            'leavedate' => '2019-09-15',
+            'status' => 0,
+            'location_id' => 1,
+            'user_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+          ],
+          [
+            'dob' => '1993-02-01',
+            'fathername' => 'U Ba',
+            'nrc' => '14/kkn(C) 144550',
+            'phone' => '0987654321',
+            'photo' => '1568536960.jpeg',
+            'joineddate' => '2015-03-12',
+            'leavedate' => '2019-09-15',
+            'status' => 0,
+            'location_id' => 1,
+            'user_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+          ],
+          [
+            'dob' => '1993-02-01',
+            'fathername' => 'U Gaw',
+            'nrc' => '14/kkn(C) 144550',
+            'phone' => '0987654321',
+            'photo' => '1568536960.jpeg',
+            'joineddate' => '2015-03-12',
+            'leavedate' => '2019-09-15',
+            'status' => 0,
+            'location_id' => 1,
+            'user_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+          ]
+      );
+
+      $i=0;
+      foreach ($userArray as $value) {
+        // user create
+        $user = User::create($value);
+        $user->assignRole('Boss');
+
+        // staff create
+        $staff = $user->staff()->create($staffArray[$i]);
+        $i++;
+
+        $courses = Course::all();
+        $staff->courses()->attach($courses,['user_id'=>1]);
+      }
+      
+        //Yin Min Ei
+        // DB::table('users')->insert([
+        //     'name'       => 'Yin Min Ei',
+        //     'email'      => 'yinmim.mic@gmail.com',
+        //     'role_id'    => 2,
+        //     'password'   => Hash::make('123456789'),
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
 
         // //Yin Min Ei
         // DB::table('users')->insert([

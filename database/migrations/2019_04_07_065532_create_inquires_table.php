@@ -15,8 +15,8 @@ class CreateInquiresTable extends Migration
     {
         Schema::create('inquires', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigIncrements('inquireno');
-            $table->bigIncrements('receiveno');
+            $table->string('inquireno');
+            $table->string('receiveno');
             $table->string('name');
             $table->string('gender');
             $table->date('dob')->nullable();

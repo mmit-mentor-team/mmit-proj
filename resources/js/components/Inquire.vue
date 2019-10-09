@@ -48,31 +48,15 @@
             
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn-tab" data-toggle="tab" href="#nav-hr_ygn" role="tab" aria-controls="nav-hr_ygn" aria-selected="true" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( HR - YGN )')"  aria-haspopup="true" aria-expanded="false">
-                  HR/ Admin (YGN)
-                </a>
-
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'active' : '' ]" id="nav-hr_mdy-tab" data-toggle="tab" href="#nav-hr_mdy" role="tab" aria-controls="nav-hr_mdy" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( HR - MDY )'" @click.stop.prevent="setActive('Accept Student Enquiry ( HR - MDY )')">
-                  HR/ Admin (MDY)
-                </a>
-
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'active' : '' ]" id="nav-php_bootcamp-tab" data-toggle="tab" href="#nav-php_bootcamp" role="tab" aria-controls="nav-php_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( PHP Bootcamp - YGN )')">
-                  PHP Bootcamp (YGN)
-                </a>
-
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'active' : '' ]" id="nav-php_mdy_bootcamp-tab" data-toggle="tab" href="#nav-php_mdy_bootcamp" role="tab" aria-controls="nav-php_mdy_bootcamp" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( PHP Bootcamp - MDY )'" @click.stop.prevent="setActive('Accept Student Enquiry ( PHP Bootcamp - MDY )')">
-                  PHP Bootcamp (MDY)
-                </a>
-
-                <a class="nav-item nav-link" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'active' : '' ]" id="nav-ios-tab" data-toggle="tab" href="#nav-ios" role="tab" aria-controls="nav-ios" aria-selected="false" v-for="(permission,index) in permissions" v-if="permission.name == 'Accept Student Enquiry ( iOS - YGN )'" @click.stop.prevent="setActive('Accept Student Enquiry ( iOS - YGN )')">
-                  iOS 
+                <a class="nav-item nav-link" :class="[activetab == course.id ? 'active' : '']" :id="`nav-tab${course.id}`" data-toggle="tab" :href="`#nav-${course.id}`" role="tab" @click="getInquiresData(course.id)" v-for="(course,index) in courses">
+                  {{course.name}} ({{course.location.city.name}})
                 </a>
               </div>
             </nav>
 
             <div class="tab-content mt-3" id="nav-tabContent">
 
-              <div class="tab-pane fade show" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - YGN )' ? 'active' : '' ]" id="nav-hr_ygn" role="tabpanel" aria-labelledby="nav-hr_ygn-tab">
+              <div class="tab-pane fade show" :class="[activetab == course.id ? 'active' : '']" :id="`nav-${course.id}`" role="tabpanel" v-for="(course,index) in courses">
 
                 <div class="form-row form-group">
                   <div class="col-md-8">
@@ -85,13 +69,12 @@
                       <option  data-actionstatus="0"> Enroll </option>
                       <option  data-actionstatus="0"> Leave </option>
                       <option  data-actionstatus="0"> Cancel </option>
-
                     </select>
                   </div>
                 </div>
 
                 <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
+                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="inquires && (inquires.length > 0)">
                      <thead class="bg-primary text-white">
                         <tr class="text-center">
                           <th> No </th>
@@ -102,273 +85,26 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(hr_ygn_inquire, index) in filterMembers">
+                        <tr v-for="(hr_ygn_inquire, index) in inquires">
                           <td> {{ index + 1 }} </td>
                           <td> {{ hr_ygn_inquire.receiveno}}</td>
                           <td> {{ hr_ygn_inquire.name }} </td>
                           <td> {{ hr_ygn_inquire.phno}}</td>
                           
                           <td> 
-                            <button @click="printInquire(hr_ygn_inquire.id, hr_ygn_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
+                            <button @click="printInquire(hr_ygn_inquire.id)" class="btn btn-success btn-xs text-white">
                               <i class="fa fa-print"></i> Print
                             </button> 
 
-                            <button @click="initDetail(hr_ygn_inquire.id, hr_ygn_inquire.section.duration.course.id, hr_ygn_inquire.s_id)" class="btn btn-info btn-xs text-white">
+                            <button @click="initDetail(hr_ygn_inquire.id)" class="btn btn-info btn-xs text-white">
                                   <i class="fa fa-eye"></i> Detail
                             </button>
 
-                            <button @click="initUpdate(hr_ygn_inquire.id, hr_ygn_inquire.section.duration.course.id)" class="btn btn-warning btn-xs">
+                            <button @click="initUpdate(hr_ygn_inquire.id)" class="btn btn-warning btn-xs">
                               <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            <button @click="deleteInquire(hr_ygn_inquire.id, hr_ygn_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    
-                  </table>
-                </div>
-                
-              </div>
-
-              <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( HR - MDY )' ? 'show active' : '' ]" id="nav-hr_mdy" role="tabpanel" aria-labelledby="nav-hr_mdy-tab">
-                <div class="form-row form-group">
-                  <div class="col-md-8">
-                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
-                  </div>
-                  <div class="col-md-4">
-                    <select name="actionstatus" id="actionstatus_id" class="form-control">
-                      <option value="">Please select one</option>
-                      <option  data-actionstatus="1" selected="selected"> All </option>
-                      <option  data-actionstatus="0"> Enroll </option>
-                      <option  data-actionstatus="0"> Leave </option>
-                      <option  data-actionstatus="0"> Cancel </option>
-
-                    </select>
-                  </div>
-                </div>
-
-                <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
-                    <thead class="bg-primary text-white">
-                        <tr class="text-center">
-                          <th> No </th>
-                          <th> Receive No </th>
-                          <th> Name </th>
-                          <th> Phone No:</th>
-                          <th> Action </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(hr_mdy_inquire, index) in filterMembers">
-                          <td> {{ index + 1 }} </td>
-                          <td> {{ hr_mdy_inquire.receiveno}}</td>
-                          <td> {{ hr_mdy_inquire.name }} </td>
-                          <td>  {{ hr_mdy_inquire.phno}}</td>
-                          
-                          <td> 
-                            <button @click="printInquire(hr_mdy_inquire.id, hr_mdy_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
-                              <i class="fa fa-print"></i> Print
-                            </button> 
-
-                            <button @click="initDetail(hr_mdy_inquire.id, hr_mdy_inquire.section.duration.course.id, hr_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
-                              <i class="fa fa-eye"></i> Detail
-                            </button>
-
-                            <button @click="initUpdate(hr_mdy_inquire.id,hr_mdy_inquire.section.duration.course.id)" class="btn btn-warning btn-xs">
-                              <i class="fas fa-edit"></i> Edit
-                            </button>
-                            
-                            <button @click="deleteInquire(hr_mdy_inquire.id,hr_mdy_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    
-                  </table>
-                </div>
-                
-              </div>
-
-              <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - YGN )' ? 'show active' : '' ]" id="nav-php_bootcamp" role="tabpanel" aria-labelledby="nav-php_bootcamp-tab">
-                <!-- For Receiveno Search -->
-                <div class="form-row form-group">
-                  <div class="col-md-8">
-                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
-                  </div>
-                  <div class="col-md-4">
-                    <select name="actionstatus" id="actionstatus_id" class="form-control">
-                      <option value="">Please select one</option>
-                      <option  data-actionstatus="1" selected="selected"> All </option>
-                      <option  data-actionstatus="0"> Enroll </option>
-                      <option  data-actionstatus="0"> Leave </option>
-                      <option  data-actionstatus="0"> Cancel </option>
-
-                    </select>
-                  </div>
-                </div>
-
-                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
-                      <thead class="bg-primary text-white">
-                        <tr class="text-center">
-                          <th> No </th>
-                          <th> Receive No </th>
-                          <th> Name </th>
-                          <th> Phone No:</th>
-                          <th> Action </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(php_inquire, index) in filterMembers">
-                          <td> {{ index + 1 }} </td>
-                          <td> {{ php_inquire.receiveno}}</td>
-                          <td> {{ php_inquire.name }} </td>
-                          <td> {{ php_inquire.phno}}</td>
-                          
-                         
-                          <td> 
-                            <button @click="printInquire(php_inquire.id, php_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
-                              <i class="fa fa-print"></i> Print
-                            </button> 
-
-                            <button @click="initDetail(php_inquire.id, php_inquire.section.duration.course.id, php_inquire.s_id)" class="btn btn-info btn-xs text-white">
-                                <i class="fa fa-eye"></i> Detail
-                            </button>
-
-                            <button @click="initUpdate(php_inquire.id,php_inquire.section.duration.course.id)" class="btn btn-warning btn-xs">
-                              <i class="fas fa-edit"></i> Edit
-                            </button>
-                            
-                            <button @click="deleteInquire(php_inquire.id,php_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                      
-                    </table>
-                 </div>
-                   
-              </div>
-
-              <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( PHP Bootcamp - MDY )' ? 'show active' : '' ]" id="nav-php_mdy_bootcamp" role="tabpanel" aria-labelledby="nav-php_mdy_bootcamp-tab">
-
-                <!-- For Receiveno Search -->
-                <div class="form-row form-group">
-                  <div class="col-md-8">
-                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
-                  </div>
-                  <div class="col-md-4">
-                    <select name="actionstatus" id="actionstatus_id" class="form-control">
-                      <option value="">Please select one</option>
-                      <option  data-actionstatus="1" selected="selected"> All </option>
-                      <option  data-actionstatus="0"> Enroll </option>
-                      <option  data-actionstatus="0"> Leave </option>
-                      <option  data-actionstatus="0"> Cancel </option>
-
-                    </select>
-                  </div>
-                </div>
-
-                 <div class="table-responsive">
-                  <!-- {{filterMembers}} -->
-                    <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
-                      <thead class="bg-primary text-white">
-                        <tr class="text-center">
-                          <th> No </th>
-                          <th> Receive No </th>
-                          <th> Name </th>
-                          <th> Phone No:</th>
-                          <th> Action </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(php_mdy_inquire, index) in filterMembers">
-                          <td> {{ index + 1 }} </td>
-                          <td> {{ php_mdy_inquire.receiveno}}</td>
-                          <td> {{ php_mdy_inquire.name }} </td>
-                          <td>  {{ php_mdy_inquire.phno}}</td>
-                          
-                         
-                          <td> 
-                            <button @click="printInquire(php_mdy_inquire.id, php_mdy_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
-                              <i class="fa fa-print"></i> Print
-                            </button>
-
-                            <button @click="initDetail(php_mdy_inquire.id, php_mdy_inquire.section.duration.course.id, php_mdy_inquire.s_id)" class="btn btn-info btn-xs text-white">
-                                <i class="fa fa-eye"></i> Detail
-                            </button>
-
-                            <button @click="initUpdate(php_mdy_inquire.id,  php_mdy_inquire.section.duration.course.id )" class="btn btn-warning btn-xs">
-                              <i class="fas fa-edit"></i> Edit
-                            </button>
-                            
-                            <button @click="deleteInquire(php_mdy_inquire.id,php_mdy_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
-                              <i class="fas fa-trash-alt"></i>  Delete
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                      
-                    </table>
-                 </div>
-                   
-              </div>
-
-              <div class="tab-pane fade" v-bind:class="[ activetab === 'Accept Student Enquiry ( iOS - YGN )' ? 'show active' : '' ]" id="nav-ios" role="tabpanel" aria-labelledby="nav-ios-tab">
-
-                <div class="form-row form-group">
-                  <div class="col-md-8">
-                    <input type="text" name="sreceiveno" class="form-control" placeholder="Receiveno.." v-model="sreceiveno">
-                  </div>
-                  <div class="col-md-4">
-                    <select name="actionstatus" id="actionstatus_id" class="form-control">
-                      <option value="">Please select one</option>
-                      <option  data-actionstatus="1" selected="selected"> All </option>
-                      <option  data-actionstatus="0"> Enroll </option>
-                      <option  data-actionstatus="0"> Leave </option>
-                      <option  data-actionstatus="0"> Cancel </option>
-
-                    </select>
-                  </div>
-                </div>
-
-                <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="table_id" cellspacing="0" v-if="filterMembers && (filterMembers.length > 0)">
-                    <thead class="bg-primary text-white">
-                        <tr class="text-center">
-                          <th> No </th>
-                          <th> Receive No </th>
-                          <th> Name </th>
-                          <th> Phone No:</th>
-                          <th> Action </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(ios_inquire, index) in filterMembers">
-                          <td> {{ index + 1 }} </td>
-                          <td> {{ ios_inquire.receiveno}}</td>
-                          <td> {{ ios_inquire.name }} </td>
-                          <td> {{ ios_inquire.phno}}</td>
-                          
-                          <td>
-                            <button @click="printInquire(ios_inquire.id, ios_inquire.section.duration.course.id)" class="btn btn-success btn-xs text-white">
-                              <i class="fa fa-print"></i> Print
-                            </button> 
-                            
-                            <button @click="initDetail(ios_inquire.id, ios_inquire.section.duration.course.id, ios_inquire.s_id)" class="btn btn-info btn-xs text-white">
-                                  <i class="fa fa-eye"></i> Detail
-                            </button>
-                            
-                            <button @click="initUpdate(ios_inquire.id, ios_inquire.section.duration.course.id)" class="btn btn-warning btn-xs">
-                              <i class="fas fa-edit"></i> Edit
-                            </button>
-                            
-                            <button @click="deleteInquire(ios_inquire.id, ios_inquire.section.duration.course.id)" class="btn btn-danger btn-xs">
+                            <button @click="deleteInquire(hr_ygn_inquire.id)" class="btn btn-danger btn-xs">
                               <i class="fas fa-trash-alt"></i>  Delete
                             </button>
                           </td>
@@ -947,13 +683,14 @@
                print_inquire:{},
                sreceiveno:'',
                activetab: '',
-               selected: ''
+               selected: '',
+               allInquires: [],
            }
        },
        mounted()
        {
-          this.activetab = this.permissions[0].name;
-          this.readInquire();
+          this.activetab = this.permissions[0].id;
+          this.readInquire(this.activetab);
           this.readTownship();
           // this.readSections();
           this.readSection();
@@ -962,82 +699,52 @@
           this.callFunction();
           this.readEducation();
           this.getDate();
-          this.php_mdy_inquires = this.filterMembers;
+          // this.php_mdy_inquires = this.filterMembers;
        },
-      computed: {
-        filterMembers: function() {
-          let filtered;
-          if (this.activetab == 'Accept Student Enquiry ( HR - YGN )') {
-            filtered = this.hr_ygn_inquires;
-          }else if (this.activetab == 'Accept Student Enquiry ( HR - MDY )') {
-            filtered = this.hr_mdy_inquires;
-          }else if (this.activetab == 'Accept Student Enquiry ( PHP Bootcamp - YGN )') {
-            filtered = this.php_inquires;
-          }else if (this.activetab == 'Accept Student Enquiry ( PHP Bootcamp - MDY )') {
-            filtered = this.php_mdy_inquires;
-          }else if (this.activetab == 'Accept Student Enquiry ( iOS - YGN )') {
-            filtered = this.ios_inquires;
-          }
+      // computed: {
+      //   filterMembers: function() {
+      //     let filtered;
+      //     if (this.activetab == 'Accept Student Enquiry ( HR - YGN )') {
+      //       filtered = this.hr_ygn_inquires;
+      //     }else if (this.activetab == 'Accept Student Enquiry ( HR - MDY )') {
+      //       filtered = this.hr_mdy_inquires;
+      //     }else if (this.activetab == 'Accept Student Enquiry ( PHP Bootcamp - YGN )') {
+      //       filtered = this.php_inquires;
+      //     }else if (this.activetab == 'Accept Student Enquiry ( PHP Bootcamp - MDY )') {
+      //       filtered = this.php_mdy_inquires;
+      //     }else if (this.activetab == 'Accept Student Enquiry ( iOS - YGN )') {
+      //       filtered = this.ios_inquires;
+      //     }
           
-          if (this.sreceiveno) {
-            filtered = filtered.filter(
-              m => m.receiveno === this.sreceiveno
-            );
-          }
-          return filtered;
-        }
-      },
+      //     if (this.sreceiveno) {
+      //       filtered = filtered.filter(
+      //         m => m.receiveno === this.sreceiveno
+      //       );
+      //     }
+      //     return filtered;
+      //   }
+      // },
       methods: {
             setActive(tabname){
               this.activetab = tabname;
             },
-            deleteInquire(index, courseid)
+            deleteInquire(index)
             {
               let conf = confirm("Do you ready want to delete this city?");
               if (conf === true) 
               {
-                var inquire_data;
-                if (courseid == 1)  // hr_ygn_sections
-                {
-                  inquire_data = this.hr_ygn_inquires.find(
-                    m => m.id === index
-                  );
-                  // inquire_data = this.hr_ygn_inquires[index].id
-                }
-                else if (courseid == 2 ) // hr_mdy_sections
-                {
-                  inquire_data = this.hr_mdy_inquires.find(
-                    m => m.id === index
-                  );
-                  // inquire_data = this.hr_mdy_inquires[index].id
-                }
-                else if (courseid == 3) // php_sections
-                {
-                  inquire_data = this.php_inquires.find(
-                    m => m.id === index
-                  );
-                  // inquire_data = this.php_inquires[index].id
-                }
-                else if (courseid == 4)
-                {
-                  inquire_data = this.ios_inquires.find(
-                    m => m.id === index
-                  );
-                  // inquire_data = this.ios_inquires[index].id
-                }else{
-                  inquire_data = this.php_mdy_inquires.find(
-                    m => m.id === index
-                  );
-                }
-
+                var inquire_data = this.hr_ygn_inquires.find(
+                  m => m.id === index
+                );
+                
                 axios.delete('/api/setup/inquire/' + inquire_data.id)
-                       .then(response => {
-                           this.inquires.splice(index, 1);
-                           this.delete_noti=true;
-                           this.message="Existing Inquire has been sucessfully deleted!!";
-                       })
-                       .catch(error => {
-                       });
+                  .then(response => {
+                     this.inquires.splice(index, 1);
+                     this.delete_noti=true;
+                     this.message="Existing Inquire has been sucessfully deleted!!";
+                  })
+                  .catch(error => {
+                  });
               }
             },
             initAddInquire()
@@ -1132,22 +839,40 @@
             {
               this.inquire.name = '';
             },
-            readInquire()
+            readInquire(course_id)
             { 
-               axios.get('/api/setup/inquire')
+              axios.get('/api/setup/inquire')
                    .then(response => {
-                       this.inquires = response.data.inquires;
-                       this.hr_ygn_inquires = response.data.hr_ygn_inquires;
-                       this.hr_mdy_inquires = response.data.hr_mdy_inquires;
-                       this.php_inquires = response.data.php_inquires;
-                       this.ios_inquires = response.data.ios_inquires;
-                       this.php_mdy_inquires = response.data.php_mdy_inquires;
-                       // console.log("php section =>",this.php_sections);
-                       
+                       this.allInquires = response.data;
+
+                       if (course_id == 1) {
+                          this.inquires = response.data.hr_ygn_inquires;
+                        }else if (course_id == 2) {
+                          this.inquires = response.data.hr_mdy_inquires;
+                        }else if (course_id == 3) {
+                          this.inquires = response.data.php_inquires;
+                        }else if (course_id == 4) {
+                          this.inquires = response.data.ios_inquires;
+                        }else {
+                          this.inquires = response.data.php_mdy_inquires;
+                        }
                        this.noti=false;
                        this.notiup=false;
                        this.notidel=false;
                    });
+            },
+            getInquiresData(course_id){
+              if (course_id == 1) {
+                  this.inquires = this.allInquires.hr_ygn_inquires;
+                }else if (course_id == 2) {
+                  this.inquires = this.allInquires.hr_mdy_inquires;
+                }else if (course_id == 3) {
+                  this.inquires = this.allInquires.php_inquires;
+                }else if (course_id == 4) {
+                  this.inquires = this.allInquires.ios_inquires;
+                }else {
+                  this.inquires = this.allInquires.php_mdy_inquires;
+                }
             },
             readCourses()
             {
@@ -1172,7 +897,6 @@
                     console.log(response.data.courses);
                    });
             },
-
             readSection()
             {
               axios.get('/api/setup/section')
@@ -1183,245 +907,206 @@
                });
               this.setZero();
             },
+            printInquire(index)
+            {
+              var inquire_data = this.inquires.find(
+                m => m.id === index
+              );
+              
+              console.log(inquire_data);
+              this.print(inquire_data);
+            },
+            print(index)
+            {
+              console.log(index);
+              //  location.href="interview/"+id;
+              this.print_inquire = index;
+              console.log(this.print_inquire);
+              console.log(this.print_inquire.course);
 
-        printInquire(index, courseid)
-        {
-          var inquire_data;
-          if (courseid == 1)  // hr_ygn_sections
-          {
-            inquire_data = this.hr_ygn_inquires.find(
-              m => m.id === index
-            );
-            // inquire_data = this.hr_ygn_inquires[index]
-          }
-          else if (courseid == 2 ) // hr_mdy_sections
-          {
-            inquire_data = this.hr_mdy_inquires.find(
-              m => m.id === index
-            );
-            // inquire_data = this.hr_mdy_inquires[index]
-          }
-          else if (courseid == 3) // php_sections
-          {
-            inquire_data = this.php_inquires.find(
-              m => m.id === index
-            );
-            // inquire_data = this.php_inquires[index]
-          }
-          else if (courseid == 4)
-          {
-            inquire_data = this.ios_inquires.find(
-              m => m.id === index
-            );
-            // inquire_data = this.ios_inquires[index]
-          }else
-          {
-            inquire_data = this.php_mdy_inquires.find(
-              m => m.id === index
-            );
-            // inquire_data = this.php_mdy_inquires[index]
-          }
-          // console.log(inquire_data);
-          this.print(inquire_data);
+              let stylesHtml = '';
+              for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+                stylesHtml += node.outerHTML;
+              }
 
-        },
+              var currentDate = new Date().toJSON().slice(0,10).replace(/-/g,' / ');
 
-        print(index)
-           {
-            // console.log(index);
-            //  location.href="interview/"+id;
-            this.print_inquire = index;
-            console.log(this.print_inquire);
-            console.log(this.print_inquire.course);
-
-            let stylesHtml = '';
-            for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
-              stylesHtml += node.outerHTML;
-            }
-
-            var currentDate = new Date().toJSON().slice(0,10).replace(/-/g,' / ');
-
-            var course = this.print_inquire.section.duration.course.name;
-            var title = this.print_inquire.section.title;
-            var receiveno = this.print_inquire.receiveno;
-            var name = this.print_inquire.name;
-            var coursefees = this.print_inquire.section.duration.course.fees;
-            var installment = this.print_inquire.installmentamount;
-            var due = parseInt(coursefees) - parseInt(installment);
-            var startdate = this.print_inquire.startdate;
-            var time = this.print_inquire.time;
+              var course = this.print_inquire.section.duration.course.name;
+              var title = this.print_inquire.section.title;
+              var receiveno = this.print_inquire.receiveno;
+              var name = this.print_inquire.name;
+              var coursefees = this.print_inquire.section.duration.course.fees;
+              var installment = this.print_inquire.installmentamount;
+              var due = parseInt(coursefees) - parseInt(installment);
+              var startdate = this.print_inquire.startdate;
+              var time = this.print_inquire.time;
 
 
-            const WinPrint = window.open();
-            WinPrint.document.write(`<!DOCTYPE html>
-            <html>
-              <head>
-                ${stylesHtml}
-              </head>
-              <body>
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-7">
-                      <h2 class="font-weight-bold"> <i> Myanmar IT Consulting Receive </i> </h2>
-                      <p class="mb-5"> Myanmar IT Consulting, Room No.8-A, MTP Condo, Insein Rd </p>
-                      <p class="mt-5 pt-5"> <b> Phone : </b> 09-772750502 / 09-772750503 / 09-772750504 / 09450875999 </p>
-                      <p> <b> Email :  </b> info@myanmaritc.com </p>
-                    </div>
-                    <div class="col-md-5">
-
-                      <div class="row">
-                        <div class="col-md-12 border">
-                          <p class="pt-3 text-center"> ${receiveno} </p>
-                        </div>
+              const WinPrint = window.open();
+              WinPrint.document.write(`<!DOCTYPE html>
+              <html>
+                <head>
+                  ${stylesHtml}
+                </head>
+                <body>
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-7">
+                        <h2 class="font-weight-bold"> <i> Myanmar IT Consulting Receive </i> </h2>
+                        <p class="mb-5"> Myanmar IT Consulting, Room No.8-A, MTP Condo, Insein Rd </p>
+                        <p class="mt-5 pt-5"> <b> Phone : </b> 09-772750502 / 09-772750503 / 09-772750504 / 09450875999 </p>
+                        <p> <b> Email :  </b> info@myanmaritc.com </p>
                       </div>
-                      
-                      <div class="row">
-                        <div class="col-md-3 text-uppercase"> 
-                          Date :
-                        </div>
-                        <div class="col-md-9">
-                          <p> ${currentDate} </p>  
-                        </div>
-                      </div>
+                      <div class="col-md-5">
 
-                      <div class="row">
-                        <div class="col-md-3 text-uppercase"> 
-                          Invoice#
+                        <div class="row">
+                          <div class="col-md-12 border">
+                            <p class="pt-3 text-center"> ${receiveno} </p>
+                          </div>
                         </div>
-                        <div class="col-md-9">
-                          <p> ${course} <br> 
-                          (  ${title} ) </p> 
+                        
+                        <div class="row">
+                          <div class="col-md-3 text-uppercase"> 
+                            Date :
+                          </div>
+                          <div class="col-md-9">
+                            <p> ${currentDate} </p>  
+                          </div>
                         </div>
-                      </div>
 
-                      <div class="row">
-                        <div class="col-md-3 text-uppercase">
-                          For
+                        <div class="row">
+                          <div class="col-md-3 text-uppercase"> 
+                            Invoice#
+                          </div>
+                          <div class="col-md-9">
+                            <p> ${course} <br> 
+                            (  ${title} ) </p> 
+                          </div>
                         </div>
-                        <div class="col-md-9 img-fluid">
-                          <img src="img/mmit_receivelogo_one.png" style="width:200px; height:200px;">  
+
+                        <div class="row">
+                          <div class="col-md-3 text-uppercase">
+                            For
+                          </div>
+                          <div class="col-md-9 img-fluid">
+                            <img src="img/mmit_receivelogo_one.png" style="width:200px; height:200px;">  
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="row mt-5">
-                    <div class="col-md-12">
-                      <table class="table">
-                        <thead class="text-white bg-dark">
-                          <tr> 
-                            <th class="text-uppercase" colspan="2"> Description </th>
-                            <th class="text-uppercase"> Amount </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td> Training Fess  </td>
-                            <td> ${name} </td>
-                            <td> ${coursefees} Kyats </td>  
-                          </tr>
+                    <div class="row mt-5">
+                      <div class="col-md-12">
+                        <table class="table">
+                          <thead class="text-white bg-dark">
+                            <tr> 
+                              <th class="text-uppercase" colspan="2"> Description </th>
+                              <th class="text-uppercase"> Amount </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td> Training Fess  </td>
+                              <td> ${name} </td>
+                              <td> ${coursefees} Kyats </td>  
+                            </tr>
 
-                          <tr>
-                            <td> Padin Amount </td>
-                            <td> ${currentDate} </td>
-                            <td> ${installment} Kyats </td>
-                          </tr>
+                            <tr>
+                              <td> Padin Amount </td>
+                              <td> ${currentDate} </td>
+                              <td> ${installment} Kyats </td>
+                            </tr>
 
-                          <tr>
-                            <td colspan="2"> Due </td>
-                            <td> ${due} Kyats </td>
-                          </tr>
+                            <tr>
+                              <td colspan="2"> Due </td>
+                              <td> ${due} Kyats </td>
+                            </tr>
 
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div class="row mt-5">
-                    <div class="col-md-12">
-                      <i> မှတ်ချက် - သင်တန်းအပ်ပြီး ပြန်ထွက်လျင် သင်တန်းကြေးပြန်မအမ်းပါ။  </i>
-                    </div>
-                  </div>
-
-                  <div class="row mt-5">
-                    <div class="col-md-8">
-                      <p>
-                        <b> Training Start Date : </b>
-                        ${startdate}
-                      </p> 
-
-                      <p>
-                        <b> Time : </b>
-                        ${time}
-                      </p> 
-
-                    </div>
-                    <div class="col-md-4">
-                      <div class="row">
-                        <div class="col-md-12 border">
-                          <p class="pt-3 text-center text-uppercase font-weight-bold" style="letter-spacing: 10px; font-size:18px"> Paid </p>
-                        </div>
+                          </tbody>
+                        </table>
                       </div>
-
                     </div>
-                  </div>
 
-                  <div class="row mt-5"> 
-                    <div class="col-md-12">
-                      <b style="font-size: 20px"> Bank Account Information : </b>
-                      
-                      <p style="font-size: 18px"> <b> CB </b> Bank ATM Card Accountant -  0002 6001 0011 0329
-                      </p>
-
-                      <p style="font-size: 18px"> <b> AYA </b> Bank ATM Card Accountant -  0063 2010 1000 9409
-                      </p>
-
-                      <p style="font-size: 18px"> <b> KBZ </b> Bank ATM Card Accountant -  999 307 999 2846 6801
-                      </p>
-                      
-                      <p style="font-size: 18px"> Account Holder Name : U Yan Myoe Aung </p>
-
+                    <div class="row mt-5">
+                      <div class="col-md-12">
+                        <i> မှတ်ချက် - သင်တန်းအပ်ပြီး ပြန်ထွက်လျင် သင်တန်းကြေးပြန်မအမ်းပါ။  </i>
+                      </div>
                     </div>
+
+                    <div class="row mt-5">
+                      <div class="col-md-8">
+                        <p>
+                          <b> Training Start Date : </b>
+                          ${startdate}
+                        </p> 
+
+                        <p>
+                          <b> Time : </b>
+                          ${time}
+                        </p> 
+
+                      </div>
+                      <div class="col-md-4">
+                        <div class="row">
+                          <div class="col-md-12 border">
+                            <p class="pt-3 text-center text-uppercase font-weight-bold" style="letter-spacing: 10px; font-size:18px"> Paid </p>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row mt-5"> 
+                      <div class="col-md-12">
+                        <b style="font-size: 20px"> Bank Account Information : </b>
+                        
+                        <p style="font-size: 18px"> <b> CB </b> Bank ATM Card Accountant -  0002 6001 0011 0329
+                        </p>
+
+                        <p style="font-size: 18px"> <b> AYA </b> Bank ATM Card Accountant -  0063 2010 1000 9409
+                        </p>
+
+                        <p style="font-size: 18px"> <b> KBZ </b> Bank ATM Card Accountant -  999 307 999 2846 6801
+                        </p>
+                        
+                        <p style="font-size: 18px"> Account Holder Name : U Yan Myoe Aung </p>
+
+                      </div>
+                    </div>
+
+                    <div class="row mt-5">
+                      <h3 class="font-weight-bold text-uppercase"> Thank You For Your Business! </h3>
+                    </div>
+      
                   </div>
+                  
+                </body>
+              </html>`);
 
-                  <div class="row mt-5">
-                    <h3 class="font-weight-bold text-uppercase"> Thank You For Your Business! </h3>
-                  </div>
-    
-                </div>
-                
-              </body>
-            </html>`);
+              WinPrint.document.close();
+              WinPrint.focus();
+              WinPrint.print();
+              WinPrint.close();
+            },
+            setZero(){
+              // console.log(this.duration);
+              this.duration='';
+              this.section='';
+            },   
+            readSections(){
+              this.duration_id=this.duration;
+              if(this.duration_id){
 
-            WinPrint.document.close();
-            WinPrint.focus();
-            WinPrint.print();
-            WinPrint.close();
-
-           },
-
-        setZero(){
-          // console.log(this.duration);
-          this.duration='';
-          this.section='';
-        },
-
-           
-        readSections(){
-          this.duration_id=this.duration;
-          if(this.duration_id){
-
-            axios.get(`/api/setup/section/${this.duration_id}`)
-                   .then(response => {
-                       //console.log(response.data.sections);
-                       this.sections=response.data.sections
-                   });
-                   
-                 }else{
-                  console.log('nothing');
-                 }
-          
-        },
+                axios.get(`/api/setup/section/${this.duration_id}`)
+                       .then(response => {
+                           //console.log(response.data.sections);
+                           this.sections=response.data.sections
+                       });
+                       
+                     }else{
+                      console.log('nothing');
+                     }    
+            },
 
             readDurations()
             {
@@ -1442,105 +1127,31 @@
                       $('.camphide').hide();
                    }
             },
-           initUpdate(index,courseid,)
-           {
+            initUpdate(index)
+            {
               this.errors = [];
 
-              var inquire_data;
-              console.log(courseid);
-              if (courseid == 1)  // hr_ygn_sections
-              {
-                inquire_data = this.hr_ygn_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.hr_ygn_inquires[index]
-              }
-              else if (courseid == 2 ) // hr_mdy_sections
-              {
-                inquire_data = this.hr_mdy_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.hr_mdy_inquires[index]
-              }
-              else if (courseid == 3) // php_sections
-              {
-                inquire_data = this.php_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.php_inquires[index]
-              }
-              else if (courseid == 4) // ios_sections
-              {
-                inquire_data = this.ios_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.ios_inquires[index]
-              }
-              else 
-              {
-                inquire_data = this.php_mdy_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.php_mdy_inquires[index]
-              }
+              var inquire_data = this.hr_ygn_inquires.find(
+                m => m.id === index
+              );
              
-               $("#update_inquire_model").modal("show");
+              $("#update_inquire_model").modal("show");
                
-               this.update_inquire = inquire_data;
-               this.update_inquire.selected = courseid;
-               // console.log(this.update_inquire);
-           },
-           initDetail(index, c_id, s_id)
-           {
-              var inquire_data;
-              // console.log(index);
-               this.errors = [];
-
-              if (c_id == 1)  // hr_ygn_sections
-              {
-                inquire_data = this.hr_ygn_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.hr_ygn_inquires[index]
-              }
-              else if (c_id == 2 ) // hr_mdy_sections
-              {
-                inquire_data = this.hr_mdy_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.hr_mdy_inquires[index]
-              }
-              else if (c_id == 3) // php_sections
-              {
-                // inquire_data = this.php_inquires[index]
-                inquire_data = this.php_inquires.find(
-                  m => m.id === index
-                );
-              }
-              else if (c_id == 4)
-              {
-                inquire_data = this.ios_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.ios_inquires[index]
-              }else
-              {
-                inquire_data = this.php_mdy_inquires.find(
-                  m => m.id === index
-                );
-                // inquire_data = this.php_mdy_inquires[index]
-              }
-
-              // console.log(inquire_data);
-
-               $("#detail_inquire_model").modal("show");
-               this.detail_inquire = inquire_data;
-
-               // this.detail_inquire = JSON.parse(JSON.stringify(inquire_data));
-               // this.detail_inquire.push(teacherlist);
-           },
-           updateInquire()
-           {
+              this.update_inquire = inquire_data;
+              this.update_inquire.selected = courseid;
+              // console.log(this.update_inquire);
+            },
+            initDetail(index)
+            {
+              var inquire_data = this.inquires.find(
+                m => m.id === index
+              );
+              
+              $("#detail_inquire_model").modal("show");
+              this.detail_inquire = inquire_data;
+            },
+            updateInquire()
+            {
                axios.patch('/api/setup/inquire/' + this.update_inquire.id, {
                  userid: this.update_inquire.userid,
                  receiveno:this.update_inquire.receiveno,
@@ -1574,77 +1185,64 @@
                            this.errors.push(error.response.data.errors.name[0]);
                        }
                    });
-           },
-          
+            },
             readTownship()
-           {
-            axios.get('/api/setup/township')
+            {
+              axios.get('/api/setup/township')
                    .then(response => {
                        this.townships = response.data.townships;
                    });
-           },
-           readEducation()
-           {
+            },
+            readEducation()
+            {
              axios.get(`/api/setup/education`)
                 .then(response => {
                   // console.log(response.data.educations);
                   this.educations = response.data.educations;
                   
                 })
-           },
-          callFunction() {
-            /*var currentDate = new Date();
-            console.log(currentDate);*/
-            
-
-            // this.readInquire();
-
-             axios.get('/api/setup/lastinquire')
-                .then(response => {
-                  /*console.log(response.data.inquire);*/
-                   this.lastinquire = response.data.inquire;
-                   // console.log("last inquire"+this.lastinquire.receiveno);
-                    
-                    this.caculatedate(this.lastinquire.inquireno);
-                });
-          },
-          caculatedate(inquireno){
-
-            var currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-
-
-            var datearray=currentDateWithFormat.split("/");
-            var day=datearray[2];
-            var month=datearray[1];
-            var year=datearray[0];
-            var date=day+month+year;
-            var output='';
-            
-            
-
-            if (inquireno == 0) {
-              // console.log('0 condition');
-              this.inquireno = date+'0001';
-            }else{
-              var currentreceiveno=inquireno.substring(0,8);
-              // console.log(currentreceiveno+'=='+date);
-            }
-
-
-            if(currentreceiveno==date){ // 04092019 == 04092019
-
-              let newreceiveno = ++inquireno; // 040920190001 -> 40920190002 (number)
-
-              output = newreceiveno.toString();
-              if(parseInt(day)<10){
-                output = '0'+newreceiveno.toString();
+            },
+            callFunction() {
+              axios.get('/api/setup/lastinquire')
+                  .then(response => {
+                    /*console.log(response.data.inquire);*/
+                     this.lastinquire = response.data.inquire;
+                     // console.log("last inquire"+this.lastinquire.receiveno);
+                      
+                      this.caculatedate(this.lastinquire.inquireno);
+                  });
+            },
+            caculatedate(inquireno){
+              var currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+              var datearray=currentDateWithFormat.split("/");
+              var day=datearray[2];
+              var month=datearray[1];
+              var year=datearray[0];
+              var date=day+month+year;
+              var output='';
+              
+              if (inquireno == 0) {
+                // console.log('0 condition');
+                this.inquireno = date+'0001';
+              }else{
+                var currentreceiveno=inquireno.substring(0,8);
+                // console.log(currentreceiveno+'=='+date);
               }
-              this.receiveno= output; // 040920190002
-            }else{
-              this.receiveno= date+'0001'; // 050920190001
+
+
+              if(currentreceiveno==date){ // 04092019 == 04092019
+
+                let newreceiveno = ++inquireno; // 040920190001 -> 40920190002 (number)
+
+                output = newreceiveno.toString();
+                if(parseInt(day)<10){
+                  output = '0'+newreceiveno.toString();
+                }
+                this.receiveno= output; // 040920190002
+              }else{
+                this.receiveno= date+'0001'; // 050920190001
+              }
             }
-          }
-         
        }
    }
 </script>

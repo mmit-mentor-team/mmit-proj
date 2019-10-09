@@ -19,7 +19,7 @@ class Staff extends Model
 
     public function location()
     {
-        return $this->belongsTo('App\Location','location_id');
+        return $this->belongsTo('App\Model\Location','location_id');
     }
 
     public function teacher()

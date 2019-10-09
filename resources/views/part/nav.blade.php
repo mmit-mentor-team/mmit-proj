@@ -111,7 +111,7 @@
             Student
           </div>
 
-          @canany(['Accept Student Enquiry ( PHP Bootcamp - YGN )', 'Accept Student Enquiry ( HR - YGN )', 'Accept Student Enquiry ( HR - MDY )', 'Accept Student Enquiry ( iOS - YGN )', 'Enroll Student ( PHP Bootcamp - YGN )', 'Enroll Student ( HR - YGN )', 'Enroll Student ( HR - MDY )', 'Enroll Student ( iOS - YGN )'])
+          @canany(['Accept Student Inquiry','Enroll Student'])
 
           <!-- Nav Item - Student -->
           <li class="nav-item">
@@ -125,13 +125,13 @@
                   Student List:
                 </h6>
 
-                @canany(['Accept Student Enquiry ( PHP Bootcamp - YGN )', 'Accept Student Enquiry ( HR - YGN )', 'Accept Student Enquiry ( HR - MDY )', 'Accept Student Enquiry ( iOS - YGN )'])
+                @canany('Accept Student Inquiry')
                   <a class="collapse-item" href="{{ route('student') }}">
                     Student
                   </a>
                 @endcanany
 
-                @canany(['Enroll Student ( PHP Bootcamp - YGN )', 'Enroll Student ( HR - YGN )', 'Enroll Student ( HR - MDY )', 'Enroll Student ( iOS - YGN )'])
+                @canany('Enroll Student')
                   <a class="collapse-item" href="{{ route('inquire') }}">
                     Inquire
                   </a>
@@ -173,7 +173,7 @@
           </li>
           @endcan
 
-          @canany(['Find HR Jobs ( YGN )', 'Find HR Jobs ( MDY )', 'Find PHP Jobs'])
+          @canany('Find Jobs')
           <!-- Nav Item - Company -->
           <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany" aria-expanded="true" aria-controls="collapseCompany">

@@ -714,15 +714,22 @@
                activetab: '',
                selected: '',
                allInquires: [],
+
                type_id: '',
                disableDuration: true,
                disableSection: true,
-               courseid: ''
+               courseid: '',
+
+               permission_courses : '',
+               courseid_arr : {},
+               // type_id: ''
+
            }
        },
        mounted()
        {
           this.activetab = this.permissions[0].id;
+          this.permission_courses = this.permissions;
           this.readInquire(this.activetab);
           this.readTownship();
           // this.readSections();
@@ -734,29 +741,6 @@
           this.getDate();
           // this.php_mdy_inquires = this.filterMembers;
        },
-      // computed: {
-      //   filterMembers: function() {
-      //     let filtered;
-      //     if (this.activetab == 'Accept Student Enquiry ( HR - YGN )') {
-      //       filtered = this.hr_ygn_inquires;
-      //     }else if (this.activetab == 'Accept Student Enquiry ( HR - MDY )') {
-      //       filtered = this.hr_mdy_inquires;
-      //     }else if (this.activetab == 'Accept Student Enquiry ( PHP Bootcamp - YGN )') {
-      //       filtered = this.php_inquires;
-      //     }else if (this.activetab == 'Accept Student Enquiry ( PHP Bootcamp - MDY )') {
-      //       filtered = this.php_mdy_inquires;
-      //     }else if (this.activetab == 'Accept Student Enquiry ( iOS - YGN )') {
-      //       filtered = this.ios_inquires;
-      //     }
-          
-      //     if (this.sreceiveno) {
-      //       filtered = filtered.filter(
-      //         m => m.receiveno === this.sreceiveno
-      //       );
-      //     }
-      //     return filtered;
-      //   }
-      // },
       methods: {
             setActive(tabname){
               this.activetab = tabname;
@@ -929,7 +913,7 @@
             },
             readCourses()
             {
-              axios.get('/api/setup/course')
+              axios.get('/api/setup/permissioncourse')
                    .then(response => {
                         var courses = response.data.courses;
 
@@ -947,7 +931,7 @@
 
                         this.courses = reformattedArray;
 
-                    console.log(response.data.courses);
+                    // console.log(response.data.courses);
                    });
             },
             readSection()

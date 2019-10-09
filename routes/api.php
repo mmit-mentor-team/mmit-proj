@@ -68,6 +68,9 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth:api'], function()
 
 	Route::get('/interviews/students', 'Api\InterviewController@getStudentsForInterview');
 	Route::get('/interviews/sections','Api\InterviewController@getSections');
+
+	Route::get('/permissioncourse', 'Api\CourseController@permissioncourse');
+
 });
 
 // Student
